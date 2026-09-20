@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/* Brand tokens. Exposed to Tailwind as cc-* utilities (bg-cc-primary, text-cc-grey, ...). */
+@theme {
+  /* Official MTA brand colours — see theme.ts for the source and the rules. */
+  --color-cc-primary: #08179C;
+  --color-cc-accent: #0062CF;
+  --color-cc-ground: #F4F6FA;
+  --color-cc-exposure: #EB6800;
+  --color-cc-grey: #7C858C;
+
+  /* Helvetica is the MTA's system typeface. It ships with macOS and iOS, and
+     Arial substitutes metric-for-metric elsewhere — so no webfont is linked
+     and the demo still makes zero network requests. */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background: var(--color-cc-ground);
+}
+
+@keyframes cc-typing {
+  0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-2px); }
+}
+
+@keyframes cc-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cc-rise {
+  animation: cc-rise 180ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-rise { animation: none; }
+}
+
+@keyframes cc-sheet-up {
+  from { transform: translateY(14%); opacity: 0.6; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes cc-scrim-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cc-sheet { animation: cc-sheet-up 220ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.cc-scrim { animation: cc-scrim-in 220ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-sheet, .cc-scrim { animation: none; }
+}
