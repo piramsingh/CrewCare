@@ -10,6 +10,12 @@ export default defineConfig({
     // hostname has to be allowed or every request 403s.
     allowedHosts: ['.trycloudflare.com', '.ngrok-free.app', '.ngrok.io'],
   },
+  optimizeDeps: {
+    // MapLibre ships its renderer as a web worker. Vite's dep pre-bundling
+    // rewrites the import and the worker then 404s, leaving an empty map
+    // canvas with no error in the page — excluding it keeps the worker intact.
+    exclude: ['maplibre-gl'],
+  },
   build: {
     // Inline every asset we ship, so the built demo issues no requests of its
     // own beyond the document itself.

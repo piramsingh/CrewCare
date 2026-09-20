@@ -1,16 +1,40 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import {
+  LngLatBounds,
+  Map as MapLibreMap,
+  type GeoJSONSource,
+  type MapLayerMouseEvent,
+  type MapMouseEvent,
+} from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
 
 import { LEVEL_COLOR, LEVEL_LEGEND, type OpsStation } from '../../api/ops'
 
 /**
  * The station map.
  *
- * Real coordinates from the spine, projected into the panel rather than drawn
- * on map tiles. Tiles would mean a third-party request on every pan; an
- * equirectangular projection over a 25 km city is accurate to well under a
- * pixel here, and the marker positions are the part that has to be right.
+ * Real coordinates from the spine on a real basemap, so the streets a station
+ * sits on are visible. Tiles are CARTO's dark-matter vector style over
+ * OpenStreetMap data: no API key, and dark enough that the risk colours stay
+ * the brightest thing on the panel, which is the one job the map has.
+ *
+ * Markers are a GPU circle layer rather than 496 absolutely-positioned nodes —
+ * DOM markers have to be repositioned on every frame of a pan, and at this
+ * count that drops frames. The trade is keyboard reach, so the same stations
+ * are also rendered as a visually-hidden button list below the canvas.
+ *
+ * Everything around the canvas — panel, header, legend, zoom buttons, popup
+ * placement and the caption — is unchanged from the hand-projected version
+ * this replaces.
  */
-const PAD = 0.04
+const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+
+/** Bounds padding, in pixels, when framing the whole network. */
+const FIT_PAD = 28
+
+const SOURCE = 'stations'
+const LAYER = 'station-dots'
+const LAYER_SELECTED = 'station-selected'
 
 function MapButton({
   children,
@@ -33,33 +57,40 @@ function MapButton({
   )
 }
 
-/**
- * One label per borough, placed at the centroid of its own stations.
- *
- * Derived from the same coordinates as the markers rather than hand-placed,
- * so the labels cannot drift out of agreement with the dots.
- */
-function boroughLabels(
-  stations: OpsStation[],
-  project: (s: OpsStation) => { x: number; y: number },
-) {
-  const groups = new Map<string, { x: number; y: number; n: number }>()
-  for (const station of stations) {
-    if (!station.borough) continue
-    const point = project(station)
-    const acc = groups.get(station.borough) ?? { x: 0, y: 0, n: 0 }
-    groups.set(station.borough, { x: acc.x + point.x, y: acc.y + point.y, n: acc.n + 1 })
-  }
-  return [...groups.entries()]
-    .filter(([, g]) => g.n >= 5)
-    .map(([name, g]) => ({ name, x: g.x / g.n, y: g.y / g.n }))
-}
-
 const POPUP_W = 340
 //: Tall enough for the metrics and three reports, short enough that the map
 //: it sits on is still readable around it.
 const POPUP_MAX_H = 430
 const GAP = 14
+
+/** Level colour as a data-driven style expression, from the same table the legend uses. */
+function colorExpression() {
+  const match: (string | number | string[])[] = ['match', ['get', 'level']]
+  for (const [level, color] of Object.entries(LEVEL_COLOR)) {
+    match.push(Number(level), color)
+  }
+  match.push('#7C858C') // no level modelled
+  return match
+}
+
+function toFeatureCollection(stations: OpsStation[]) {
+  return {
+    type: 'FeatureCollection' as const,
+    features: stations.map((station) => ({
+      type: 'Feature' as const,
+      id: station.id,
+      properties: {
+        id: station.id,
+        level: station.level ?? 0,
+        name: station.name ?? '',
+      },
+      geometry: {
+        type: 'Point' as const,
+        coordinates: [station.lon as number, station.lat as number],
+      },
+    })),
+  }
+}
 
 export function RiskMap({
   stations,
@@ -78,24 +109,119 @@ export function RiskMap({
   onDismiss: () => void
 }) {
   const boxRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLDivElement>(null)
   const popupRef = useRef<HTMLDivElement>(null)
-  const [zoom, setZoom] = useState(1)
+  const mapRef = useRef<MapLibreMap | null>(null)
+  const [ready, setReady] = useState(false)
   const [place, setPlace] = useState<{ left: number; top: number } | null>(null)
+  // Bumped on every map move so the popup re-anchors to its marker as the
+  // operator pans or zooms underneath it.
+  const [view, setView] = useState(0)
+
   const placed = stations.filter((s) => s.lat != null && s.lon != null)
-  const lats = placed.map((s) => s.lat as number)
-  const lons = placed.map((s) => s.lon as number)
-  const minLat = Math.min(...lats)
-  const maxLat = Math.max(...lats)
-  const minLon = Math.min(...lons)
-  const maxLon = Math.max(...lons)
-
-  const project = (station: OpsStation) => ({
-    // Latitude increases north, so y is inverted.
-    x: (((station.lon as number) - minLon) / (maxLon - minLon)) * (1 - 2 * PAD) * 100 + PAD * 100,
-    y: (1 - ((station.lat as number) - minLat) / (maxLat - minLat)) * (1 - 2 * PAD) * 100 + PAD * 100,
-  })
-
   const selected = placed.find((s) => s.id === selectedId) ?? null
+
+  const bounds = useCallback(() => {
+    const box = new LngLatBounds()
+    for (const station of placed) box.extend([station.lon as number, station.lat as number])
+    return box
+  }, [placed])
+
+  // --- the map itself, created once ---------------------------------------
+  useEffect(() => {
+    if (!canvasRef.current || mapRef.current) return
+    const map = new MapLibreMap({
+      container: canvasRef.current,
+      style: BASEMAP,
+      center: [-73.94, 40.72],
+      zoom: 9.6,
+      attributionControl: { compact: true },
+      // Bottom-left: the caption owns the bottom-right corner.
+      canvasContextAttributes: {
+        // Without this the WebGL buffer is cleared before anything can read it,
+        // so the map is invisible to canvas exports and headless screenshots —
+        // which is how the demo gets captured for slides.
+        preserveDrawingBuffer: true,
+      },
+    })
+    mapRef.current = map
+    // Dev-only handle, so a browser test can project a station's coordinates
+    // to a screen point and click the right pixel.
+    if (import.meta.env.DEV) (window as unknown as Record<string, unknown>).__map = map
+
+    map.on('load', () => {
+      const attribution = map.getContainer().querySelector<HTMLElement>(
+        '.maplibregl-ctrl-bottom-right',
+      )
+      if (attribution) {
+        attribution.style.right = 'auto'
+        attribution.style.left = '0'
+      }
+      map.addSource(SOURCE, { type: 'geojson', data: toFeatureCollection(placed) })
+      map.addLayer({
+        id: LAYER,
+        type: 'circle',
+        source: SOURCE,
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 3.5, 12, 6, 15, 9],
+          'circle-color': colorExpression() as never,
+          'circle-stroke-width': 0.5,
+          'circle-stroke-color': 'rgba(0,0,0,0.35)',
+        },
+      })
+      map.addLayer({
+        id: LAYER_SELECTED,
+        type: 'circle',
+        source: SOURCE,
+        filter: ['==', ['get', 'id'], ''],
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 7, 12, 9, 15, 12],
+          'circle-color': colorExpression() as never,
+          'circle-stroke-width': 3,
+          'circle-stroke-color': 'rgba(255,255,255,0.95)',
+        },
+      })
+      if (placed.length) map.fitBounds(bounds(), { padding: FIT_PAD, animate: false })
+      setReady(true)
+    })
+
+    map.on('click', LAYER, (event: MapLayerMouseEvent) => {
+      const feature = event.features?.[0]
+      if (feature) onSelect(String(feature.properties?.id))
+    })
+    // A click on the basemap itself dismisses, matching the old behaviour of
+    // clicking the panel background.
+    map.on('click', (event: MapMouseEvent) => {
+      const hits = map.queryRenderedFeatures(event.point, { layers: [LAYER, LAYER_SELECTED] })
+      if (!hits.length) onDismiss()
+    })
+    // Tile, style and WebGL failures arrive here and nowhere else; without a
+    // handler the panel just stays empty with nothing in the console.
+    map.on('error', (event) => console.error('[maplibre]', event.error?.message ?? event))
+    map.on('mouseenter', LAYER, () => (map.getCanvas().style.cursor = 'pointer'))
+    map.on('mouseleave', LAYER, () => (map.getCanvas().style.cursor = ''))
+    map.on('move', () => setView((v) => v + 1))
+
+    return () => {
+      map.remove()
+      mapRef.current = null
+    }
+    // Created once: later station updates go through the source below.
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // --- data and selection updates -----------------------------------------
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !ready) return
+    const source = map.getSource(SOURCE) as GeoJSONSource | undefined
+    source?.setData(toFeatureCollection(placed))
+  }, [ready, placed])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !ready || !map.getLayer(LAYER_SELECTED)) return
+    map.setFilter(LAYER_SELECTED, ['==', ['get', 'id'], selectedId ?? ''])
+  }, [ready, selectedId])
 
   /**
    * Anchor the popup beside its marker, then keep it inside the map.
@@ -105,26 +231,24 @@ export function RiskMap({
    * edge still gets a fully visible card.
    */
   useLayoutEffect(() => {
-    if (!popupOpen || !selected || !boxRef.current) {
+    const map = mapRef.current
+    if (!popupOpen || !selected || !boxRef.current || !map || !ready) {
       setPlace(null)
       return
     }
     const box = boxRef.current.getBoundingClientRect()
     const height = Math.min(popupRef.current?.offsetHeight ?? 320, POPUP_MAX_H)
-    const point = project(selected)
-    // Markers scale about the centre, so the anchor must too.
-    const markerX = box.width / 2 + ((point.x / 100) * box.width - box.width / 2) * zoom
-    const markerY = box.height / 2 + ((point.y / 100) * box.height - box.height / 2) * zoom
+    const point = map.project([selected.lon as number, selected.lat as number])
 
-    let left = markerX + GAP
-    if (left + POPUP_W > box.width - GAP) left = markerX - GAP - POPUP_W
+    let left = point.x + GAP
+    if (left + POPUP_W > box.width - GAP) left = point.x - GAP - POPUP_W
     left = Math.min(Math.max(GAP, left), Math.max(GAP, box.width - POPUP_W - GAP))
 
-    let top = markerY - height / 2
+    let top = point.y - height / 2
     top = Math.min(Math.max(GAP, top), Math.max(GAP, box.height - height - GAP))
 
     setPlace({ left, top })
-  }, [popupOpen, selectedId, zoom, stations.length])
+  }, [popupOpen, selectedId, ready, view, stations.length])
 
   return (
     <section className="flex flex-col rounded-xl border border-cc-grey/15 bg-white">
@@ -150,73 +274,32 @@ export function RiskMap({
 
       <div
         ref={boxRef}
-        onClick={onDismiss}
         className="relative mx-4 mb-4 min-h-[460px] flex-1 overflow-hidden rounded-lg bg-[#0B1B3F]">
-        <svg
-          viewBox="0 0 100 62"
-          preserveAspectRatio="none"
-          className="absolute inset-0 h-full w-full"
-          aria-hidden="true"
-        >
-          <rect width="100" height="62" fill="#0B1B3F" />
-          <g stroke="#24407D" strokeWidth="0.18" opacity="0.7">
-            {[10, 20, 30, 40, 50].map((y) => (
-              <line key={y} x1="0" y1={y} x2="100" y2={y} />
-            ))}
-            {[20, 40, 60, 80].map((x) => (
-              <line key={x} x1={x} y1="0" x2={x} y2="62" />
-            ))}
-          </g>
-        </svg>
+        {/* h-full as well as inset-0: maplibre-gl.css sets position:relative on
+            its own container, which beats the absolute positioning and would
+            otherwise collapse the map to zero height. */}
+        <div ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-        <div
-          className="absolute inset-0 origin-center transition-transform duration-200"
-          style={{ transform: `scale(${zoom})` }}
-        >
-        {boroughLabels(placed, project).map((label) => (
-          <span
-            key={label.name}
-            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 text-[11px] font-semibold tracking-wide text-white/35"
-            style={{ left: `${label.x}%`, top: `${label.y}%` }}
+        {/* Keyboard and screen-reader reach for markers the GPU layer draws. */}
+        <ul className="sr-only">
+          {placed.map((station) => (
+            <li key={station.id}>
+              <button type="button" onClick={() => onSelect(station.id)}>
+                {station.name}, {station.levelName ?? 'no data'}
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5">
+          <MapButton label="Zoom in" onClick={() => mapRef.current?.zoomIn()}>+</MapButton>
+          <MapButton label="Zoom out" onClick={() => mapRef.current?.zoomOut()}>−</MapButton>
+          <MapButton
+            label="Reset view"
+            onClick={() =>
+              placed.length && mapRef.current?.fitBounds(bounds(), { padding: FIT_PAD })
+            }
           >
-            {label.name}
-          </span>
-        ))}
-
-        {placed.map((station) => {
-          const { x, y } = project(station)
-          const selected = station.id === selectedId
-          return (
-            <button
-              key={station.id}
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation()
-                onSelect(station.id)
-              }}
-              title={`${station.name} — ${station.levelName ?? 'no data'}`}
-              aria-label={`${station.name}, ${station.levelName ?? 'no data'}`}
-              className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-[width,height]"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                width: selected ? 14 : 7,
-                height: selected ? 14 : 7,
-                background: LEVEL_COLOR[station.level ?? 1] ?? '#7C858C',
-                boxShadow: selected
-                  ? '0 0 0 3px rgba(255,255,255,0.95)'
-                  : '0 0 0 0.5px rgba(0,0,0,0.35)',
-                zIndex: selected ? 2 : 1,
-              }}
-            />
-          )
-        })}
-        </div>
-
-        <div className="absolute top-3 right-3 flex flex-col gap-1.5" onClick={(e) => e.stopPropagation()}>
-          <MapButton label="Zoom in" onClick={() => setZoom((z) => Math.min(3, +(z + 0.4).toFixed(1)))}>+</MapButton>
-          <MapButton label="Zoom out" onClick={() => setZoom((z) => Math.max(1, +(z - 0.4).toFixed(1)))}>−</MapButton>
-          <MapButton label="Reset view" onClick={() => setZoom(1)}>
             <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 fill-none stroke-current stroke-[1.5]">
               <circle cx="8" cy="8" r="4.5" />
               <path d="M8 1v2M8 13v2M1 8h2M13 8h2" />
@@ -240,7 +323,7 @@ export function RiskMap({
           </div>
         )}
 
-        <p className="pointer-events-none absolute right-3 bottom-2 rounded bg-[#0B1B3F]/80 px-1.5 py-0.5 text-[10px] text-white/55">
+        <p className="pointer-events-none absolute right-3 bottom-2 z-10 rounded bg-[#0B1B3F]/80 px-1.5 py-0.5 text-[10px] text-white/55">
           {placed.length} stations · live outdoor readings, modelled platform values
         </p>
       </div>

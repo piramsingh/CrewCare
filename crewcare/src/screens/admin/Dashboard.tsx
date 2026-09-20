@@ -205,7 +205,9 @@ function Overview({
           rangeLabel={`In ${window}`}
           demo={snapshot.reportsAreDemo}
         />
-        <Recommendations items={snapshot.recommendations} />
+        {/* ?? [] so an older server build degrades to the empty state
+            rather than taking the whole Overview down. */}
+        <Recommendations items={snapshot.recommendations ?? []} />
       </div>
     </div>
   )
