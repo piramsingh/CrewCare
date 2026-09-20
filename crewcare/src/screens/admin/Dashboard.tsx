@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { DataNotice } from '../../components/DataNotice'
 import { MaterialIcon, type MaterialIconName } from '../../components/MaterialIcon'
 import { AgencyMark } from '../../components/AgencyMark'
-import { type OpsSnapshot, type OpsStation } from '../../api/ops'
+import { type OpsSnapshot, type OpsStation, type Recommendation } from '../../api/ops'
 import { RANGES, type Range } from '../../data/mockOperations'
 import { brand } from '../../theme'
 import { useOps } from './useOps'
@@ -106,7 +106,16 @@ export function Dashboard({ onSignOut }: { onSignOut: () => void }) {
           )}
           {section === 'Risk Analytics' && (
             <div className="flex flex-col gap-5">
-              <ExposureChart />
+              {state.status === 'loading' && <Banner>Loading live conditions…</Banner>}
+              {state.status === 'error' && (
+                <Banner tone="error">
+                  {state.message}{' '}
+                  <button type="button" onClick={reload} className="font-bold underline">
+                    Retry
+                  </button>
+                </Banner>
+              )}
+              {snapshot && <ExposureChart exposure={snapshot.exposureByLine} />}
               <ExposureTable />
             </div>
           )}
@@ -196,7 +205,7 @@ function Overview({
           rangeLabel={`In ${window}`}
           demo={snapshot.reportsAreDemo}
         />
-        <Recommendations />
+        <Recommendations items={snapshot.recommendations} />
       </div>
     </div>
   )
@@ -403,8 +412,15 @@ function Header({
   )
 }
 
-/** Where the model's suggestions will land once it has data to work from. */
-function Recommendations() {
+/**
+ * What to look at first, from the same snapshot the rest of the screen shows.
+ *
+ * The entries are query results phrased as actions — computed in
+ * `server/ops/api.py`, not written by a language model — so the card cannot
+ * assert something the data does not support. With nothing to say it keeps its
+ * empty state rather than inventing an item.
+ */
+function Recommendations({ items }: { items: Recommendation[] }) {
   return (
     <section className="flex flex-col rounded-xl border border-cc-grey/15 bg-white px-5 pt-5 pb-5">
       <div className="flex items-center justify-between">
@@ -413,16 +429,31 @@ function Recommendations() {
           AI-assisted
         </span>
       </div>
-      <div className="flex flex-1 flex-col items-center justify-center py-8 text-center">
-        <svg viewBox="0 0 24 24" className="h-9 w-9 fill-none stroke-cc-grey/45 stroke-[1.3]">
-          <path d="M6 2.5h8l4 4v15H6z" />
-          <path d="M14 2.5V7h4M9 12h6M9 16h6" />
-        </svg>
-        <p className="pt-3 text-[13px] font-semibold text-cc-grey">
-          Recommendations will appear here
-        </p>
-        <p className="pt-1 text-[12px] text-cc-grey/80">Based on live data and worker reports</p>
-      </div>
+      {items.length === 0 ? (
+        <div className="flex flex-1 flex-col items-center justify-center py-8 text-center">
+          <svg viewBox="0 0 24 24" className="h-9 w-9 fill-none stroke-cc-grey/45 stroke-[1.3]">
+            <path d="M6 2.5h8l4 4v15H6z" />
+            <path d="M14 2.5V7h4M9 12h6M9 16h6" />
+          </svg>
+          <p className="pt-3 text-[13px] font-semibold text-cc-grey">
+            Recommendations will appear here
+          </p>
+          <p className="pt-1 text-[12px] text-cc-grey/80">Based on live data and worker reports</p>
+        </div>
+      ) : (
+        <ul className="flex flex-1 flex-col justify-center gap-3.5 pt-4">
+          {items.map((item) => (
+            <li key={item.id}>
+              <p className="truncate text-[13px] font-semibold text-cc-primary">{item.title}</p>
+              {/* Truncated, not wrapped: the card's height belongs to the
+                  design, so a long detail ellipsises rather than growing it. */}
+              <p className="truncate pt-0.5 text-[12px] leading-snug text-cc-grey">
+                {item.detail}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   )
 }
