@@ -16,6 +16,7 @@ Two rules the endpoints keep:
 from __future__ import annotations
 
 import math
+import statistics
 from datetime import date, datetime
 from typing import Any
 
@@ -30,6 +31,143 @@ router = APIRouter()
 RANGE_DAYS: dict[str, int | None] = {
     "Live": None, "Today": 0, "7 Days": 7, "30 Days": 30, "60 Days": 60,
 }
+
+
+#: A route needs at least this many scored stations before its median means
+#: anything. Below it, one station's reading is the whole bar.
+MIN_STATIONS_PER_LINE = 5
+
+#: How many bars the exposure chart has room for.
+LINES_SHOWN = 6
+
+#: NWS "Extreme Caution" begins here, which is where heat guidance starts.
+HEAT_INDEX_CAUTION_F = 90.0
+
+#: The card has room for three.
+MAX_RECOMMENDATIONS = 3
+
+
+def _median(values: list[float]) -> float | None:
+    return statistics.median(values) if values else None
+
+
+def _exposure_by_line(stations: list[dict]) -> dict:
+    """Median platform PM2.5 per route, as a multiple of the network median.
+
+    This is a CONCENTRATION, not a dose: it says what the stations on a line
+    are modelled at, not what a worker accumulates over a tour. Tour exposure
+    would need a roster and tour lengths, which nothing in this repo has.
+    """
+    readings = [s["pm25"] for s in stations if s["pm25"] is not None]
+    network = _median(readings)
+    if not network:
+        return {"networkMedian": None, "lines": []}
+
+    per_route: dict[str, list[float]] = {}
+    for station in stations:
+        if station["pm25"] is None:
+            continue
+        for route in station["routes"]:
+            per_route.setdefault(route, []).append(station["pm25"])
+
+    lines = [
+        {
+            "line": route,
+            "ratio": round(_median(values) / network, 2),
+            "stations": len(values),
+        }
+        for route, values in per_route.items()
+        if len(values) >= MIN_STATIONS_PER_LINE
+    ]
+    # Station count then name break the ties, so the bars keep a stable order
+    # between refreshes instead of shuffling among equal ratios.
+    lines.sort(key=lambda row: (-row["ratio"], -row["stations"], row["line"]))
+    return {"networkMedian": round(network, 1), "lines": lines[:LINES_SHOWN]}
+
+
+def _recommendations(stations: list[dict], reports: list[dict], days: int | None) -> list[dict]:
+    """What to do first, derived from the same figures the screen is showing.
+
+    Each entry is a query result phrased as an action. Nothing is generated
+    prose, so nothing can claim something the data does not show. Rules are
+    tried in priority order and the card takes the first three that fire;
+    if none do, it keeps its empty state rather than inventing an item.
+    """
+    window = f"in the last {days} days" if days else "in this window"
+    out: list[dict] = []
+
+    # 1. Both signals at once: the model and the crew pointing at one platform.
+    both = sorted(
+        (s for s in stations if (s["level"] or 0) >= 4 and s["reports"] > 0),
+        key=lambda s: (-s["reports"], -(s["pm25"] or 0)),
+    )
+    if both:
+        worst = both[0]
+        out.append({
+            "id": "both-signals",
+            "title": f"Rotate platform assignments at {worst['name']}",
+            "detail": (
+                f"Level {worst['level']} · {worst['pm25']:.0f} µg/m³ · "
+                f"feels {worst['feelsF']:.0f}°F · {worst['reports']} report(s) {window}"
+            ),
+        })
+
+    # 2. Heat, across the network rather than at one station.
+    hot = [s for s in stations if (s["feelsF"] or 0) >= HEAT_INDEX_CAUTION_F]
+    if hot:
+        peak = max(hot, key=lambda s: s["feelsF"])
+        out.append({
+            "id": "heat",
+            "title": f"Issue heat guidance on {len(hot)} platforms",
+            "detail": (
+                f"Feels-like ≥ {HEAT_INDEX_CAUTION_F:.0f}°F, peaking at "
+                f"{peak['feelsF']:.0f}°F at {peak['name']} · NIOSH work/rest applies"
+            ),
+        })
+
+    # 3. Severity, which decides who the report goes to.
+    unwell = [r for r in reports if r.get("severity") == "Made me unwell"]
+    if unwell:
+        where = {str(r.get("station_id")) for r in unwell}
+        out.append({
+            "id": "severity",
+            "title": f"Route {len(unwell)} reports to occupational health",
+            "detail": (
+                f"{len(where)} stations {window} · a clinical referral, not a "
+                f"maintenance ticket"
+            ),
+        })
+
+    # 4-5. Clusters of one concern at one station: a maintenance job, not a
+    # rotation. These only surface when a rule above had nothing to say.
+    for category, verb, note in (
+        ("Ventilation or airflow", "Check the fans at", "ventilation report(s)"),
+        ("Damp, mould or standing water", "Inspect", "damp report(s)"),
+    ):
+        if len(out) >= MAX_RECOMMENDATIONS:
+            break
+        counts: dict[str, int] = {}
+        for report in reports:
+            if report.get("category") == category:
+                key = str(report.get("station_id"))
+                counts[key] = counts.get(key, 0) + 1
+        clustered = sorted(
+            ((sid, n) for sid, n in counts.items() if n >= 2), key=lambda kv: -kv[1]
+        )
+        if not clustered:
+            continue
+        station_id, count = clustered[0]
+        station = next((s for s in stations if s["id"] == station_id), None)
+        if not station:
+            continue
+        humidity = f", platform humidity {station['humidity']:.0f}%" if station["humidity"] is not None else ""
+        out.append({
+            "id": f"cluster-{category}",
+            "title": f"{verb} {station['name']}",
+            "detail": f"{count} {note} {window} · level {station['level']}{humidity}",
+        })
+
+    return out[:MAX_RECOMMENDATIONS]
 
 
 def _clean(value: Any) -> Any:
@@ -152,6 +290,8 @@ def snapshot(range: str = Query("30 Days"), ttl_hours: float = 3.0) -> dict:
         },
         "stations": stations,
         "concerns": concerns,
+        "exposureByLine": _exposure_by_line(stations),
+        "recommendations": _recommendations(stations, reports, days),
         "reportsAreDemo": all(r.get("demo") for r in reports) if reports else True,
         "provenance": {
             "outdoor": "live",      # Open-Meteo, no key, 3h disk cache

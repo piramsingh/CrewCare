@@ -38,6 +38,14 @@ export type OpsStation = {
 
 export type Concern = { label: string; count: number; percent: number }
 
+/** Median platform PM2.5 per route, as a multiple of the network median. */
+export type LineExposure = { line: string; ratio: number; stations: number }
+
+export type ExposureByLine = { networkMedian: number | null; lines: LineExposure[] }
+
+/** An action derived from the snapshot, computed server-side. */
+export type Recommendation = { id: string; title: string; detail: string }
+
 export type OpsSnapshot = {
   generatedAt: string
   range: string
@@ -50,6 +58,8 @@ export type OpsSnapshot = {
   }
   stations: OpsStation[]
   concerns: Concern[]
+  exposureByLine: ExposureByLine
+  recommendations: Recommendation[]
   reportsAreDemo: boolean
   provenance: Provenance
 }

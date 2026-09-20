@@ -1,24 +1,30 @@
-import { byLine, CHART_CAPTION } from '../../data/mockExposure'
+import type { ExposureByLine } from '../../api/ops'
 import { color, mix } from '../../theme'
 
 const TOP_N = 2
 const AXIS = [0, 1, 2, 3]
 
 /**
- * Median tour exposure by line.
+ * Median platform PM2.5 by line.
  *
- * Signal Orange marks the two lines carrying the highest exposure — the colour
+ * Signal Orange marks the two lines carrying the highest reading — the colour
  * is doing the work of the reading, not decorating the chart. Everything below
  * walks from Line Blue toward Slate so the eye falls off the scale.
+ *
+ * This is a concentration, not a dose. It reports what the stations on a line
+ * are modelled at, not what a worker accumulates over a tour — that would need
+ * a roster and tour lengths, which no data here provides.
  */
-export function ExposureChart() {
+export function ExposureChart({ exposure }: { exposure: ExposureByLine }) {
   const max = AXIS[AXIS.length - 1]
+  const byLine = exposure.lines
 
   return (
     <section className="rounded-xl border border-cc-grey/15 bg-white p-6">
-      <h2 className="text-[15px] font-bold text-cc-primary">Median tour exposure by line</h2>
+      <h2 className="text-[15px] font-bold text-cc-primary">Median platform PM2.5 by line</h2>
       <p className="pt-1 text-[13px] text-cc-grey">
-        Multiple of the system median for an 8-hour tour.
+        Multiple of the network median platform concentration
+        {exposure.networkMedian != null ? ` (${exposure.networkMedian} µg/m³)` : ''}.
       </p>
 
       <div className="flex gap-4 pt-6">
@@ -80,7 +86,10 @@ export function ExposureChart() {
         </div>
       </div>
 
-      <p className="pt-5 text-[12px] text-cc-grey">{CHART_CAPTION}</p>
+      <p className="pt-5 text-[12px] text-cc-grey">
+        Modelled platform values over a live outdoor reading — a concentration at
+        the stations each line serves, not a worker's tour dose.
+      </p>
     </section>
   )
 }
