@@ -12,22 +12,33 @@ import { brand } from '../theme'
  * One door for everyone: the role comes off the account and the app routes
  * itself. The screen never asks which kind of person this is.
  *
- * This is a visual mock. Both fields are uncontrolled, any input is accepted
- * including empty, and nothing typed is validated, transmitted or stored. The
- * employee ID is read once on submit to resolve a role and is then cleared;
- * the password field is a no-op that is never read at all.
+ * Both fields are uncontrolled and any input is accepted, including empty.
+ * The password field is a no-op: never read, never held in state.
+ *
+ * The employee ID is read once on submit and handed to the app, because
+ * linking a phone to a worker needs to know which worker. That is a real
+ * change from the offline demo, where the ID was resolved to a role and
+ * immediately discarded — the app now knows who you are for the length of
+ * the session. It is still never persisted: signing out drops it, and a
+ * reload starts over.
  */
-export function SignIn({ onContinue }: { onContinue: (role: Role) => void }) {
+export function SignIn({
+  onContinue,
+}: {
+  onContinue: (role: Role, employeeId: string) => void
+}) {
   const idRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
-    const role = resolveRole(idRef.current?.value ?? '')
-    // Clear both fields before routing. Neither value outlives this handler.
+    const employeeId = (idRef.current?.value ?? '').trim()
+    const role = resolveRole(employeeId)
+    // The password is never read. The ID is cleared from the field and lives
+    // only in React state from here on.
     if (idRef.current) idRef.current.value = ''
     if (passwordRef.current) passwordRef.current.value = ''
-    onContinue(role)
+    onContinue(role, employeeId)
   }
 
   return (

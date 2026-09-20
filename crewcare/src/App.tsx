@@ -16,18 +16,26 @@ import { channels, type Channel } from './theme'
  * asks the person which one they are, and the two paths never meet. Signing
  * out bumps `session`, which remounts the whole subtree — the surest way to
  * guarantee no answer, image or draft survives a reset.
+ *
+ * The employee id is held here for the worker's session because linking a
+ * phone needs it. It is never written to storage and never reaches the admin
+ * subtree, which takes no props at all beyond a sign-out callback.
  */
 type Route =
   | { screen: 'signin' }
-  | { screen: 'worker'; channel: Channel | null }
+  | { screen: 'worker'; employeeId: string; channel: Channel | null }
   | { screen: 'admin' }
 
 export function App() {
   const [route, setRoute] = useState<Route>({ screen: 'signin' })
   const [session, setSession] = useState(0)
 
-  function signIn(role: Role) {
-    setRoute(role === 'admin' ? { screen: 'admin' } : { screen: 'worker', channel: null })
+  function signIn(role: Role, employeeId: string) {
+    setRoute(
+      role === 'admin'
+        ? { screen: 'admin' }
+        : { screen: 'worker', employeeId, channel: null },
+    )
   }
 
   function signOut() {
@@ -48,7 +56,10 @@ export function App() {
       ) : (
         <ChannelSelect
           key={session}
-          onChoose={(channel) => setRoute({ screen: 'worker', channel })}
+          employeeId={route.employeeId}
+          onChoose={(channel) =>
+            setRoute({ screen: 'worker', employeeId: route.employeeId, channel })
+          }
           onSignOut={signOut}
         />
       )

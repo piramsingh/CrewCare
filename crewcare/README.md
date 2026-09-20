@@ -115,6 +115,28 @@ project has been built around. Flip the import there to use the other.
   internet.
 - **No async queue.** The webhook processes inline.
 
+### Linking a phone from the web app
+
+Sign in on the web → **Link my phone** → a six-digit code and a `wa.me` deep
+link that opens WhatsApp with the code already typed. Text it, and the
+conversation runs on the phone.
+
+`src/api/linking.ts` is the only module in the front end that makes a network
+request. Everything else — the simulated thread, the dashboard, sign-in —
+still works with no server at all, and the browser suite asserts the offline
+path issues zero off-origin requests.
+
+**Sign-in now keeps the employee ID for the session.** It previously resolved
+a role and discarded it; linking a phone to a worker needs to know which
+worker. It is held in React state, never persisted, and never reaches the
+admin subtree. That is a deliberate trade, not an oversight: the app now
+knows who you are.
+
+The linking screen uses its own `DataNotice` variant. The worker copy —
+"nothing is transmitted or retained" — is true of the simulator and false of
+linking, and putting it under a button that transmits would be a lie. A test
+asserts that screen never shows it.
+
 ### The privacy claims change here
 
 The browser demo can honestly say nothing is transmitted or retained, and

@@ -109,13 +109,13 @@ async def _process_single_message(db: Session, from_number: str, text_body: str)
             linking_service.verify_and_link(db, code_candidate, from_number)
             await client.send_text_message(
                 from_number,
-                "Your WhatsApp is now linked to your StationShield account. Reply START to begin.",
+                "Your WhatsApp is now linked to CrewCare. Reply START to begin.",
             )
         except linking_service.LinkingError as exc:
             await client.send_text_message(
                 from_number,
-                f"{exc} If you haven't already, generate a code from the StationShield app under "
-                "'Connect WhatsApp'.",
+                f"{exc} If you haven't already, sign in to CrewCare and tap "
+                "'Link my phone' to get a code.",
             )
         return
 
@@ -161,7 +161,7 @@ async def start_linking(
     return {
         "code": code.code,
         "expires_at": code.expires_at.isoformat(),
-        "instructions": "Send this code to the StationShield WhatsApp number to link your account.",
+        "instructions": "Text this code to the CrewCare WhatsApp number to link your phone.",
     }
 
 

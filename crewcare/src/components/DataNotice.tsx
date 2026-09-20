@@ -7,6 +7,13 @@ const COPY = {
     'Your answers and any files you send stay in this browser tab. They shape only your own alerts, never a report. Nothing is transmitted or retained — closing the tab erases it.',
   admin:
     'Aggregate exposure only. No individual health information is collected in this view.',
+  /**
+   * The linking screen offers two paths with genuinely different consequences,
+   * so it cannot use the worker copy: that claims nothing is transmitted,
+   * which stops being true the moment someone taps Link my phone.
+   */
+  linking:
+    'Preview here and nothing leaves this tab. Link your phone and the conversation moves to WhatsApp, where messages pass through Meta and your answers are stored by CrewCare.',
 } as const
 
 export function DataNotice({ variant }: { variant: keyof typeof COPY }) {
