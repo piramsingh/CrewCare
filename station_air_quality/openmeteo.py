@@ -13,10 +13,13 @@ coordinates through the live API and reading back the lat/lon it echoes):
 
 Together those mean a whole-city snapshot -- current conditions plus a 5-day
 hourly series for every station -- costs exactly TWO HTTP requests, ~250 KB.
-Everything else here exists to make sure we spend those two and then leave the
-API alone until the TTL expires. Both a process-local memory cache (the caller
-wraps these in st.cache_data) and an on-disk JSON cache are used, so restarting
-the app inside the TTL window refetches nothing.
+A third request adds 31 days of daily temperature means (the thermal model's
+trailing-mean input), and a fourth adds 14 days of daily river discharge from
+the Flood API (GloFAS) for the mold-risk model in flood.py. Everything else
+here exists to make sure we spend those four and then leave the API alone
+until the TTL expires. Both a process-local memory cache (the caller wraps
+these in st.cache_data) and an on-disk JSON cache are used, so restarting the
+app inside the TTL window refetches nothing.
 
 No API key is required for Open-Meteo's free non-commercial tier.
 """
@@ -40,6 +43,7 @@ CACHE_DIR = APP_DIR / ".cache"
 
 AIR_QUALITY_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
 FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
+FLOOD_URL = "https://flood-api.open-meteo.com/v1/flood"
 
 TIMEZONE = "America/New_York"
 PAST_DAYS = 2
@@ -52,11 +56,23 @@ FORECAST_DAYS = 3
 # of hourly data, which is why it is a third request rather than a wider second.
 DAILY_PAST_DAYS = 31
 
+# The flood model looks back far enough to catch the mold-risk decay window
+# (EPA/CDC: growth risk rises over the ~72 hours after a wet event and mold is
+# typically established by day 7-12) with a few days of margin, and asks for no
+# forecast -- flood risk here is scored from what already happened, not GloFAS's
+# river forecast. Daily resolution only: river discharge is a daily quantity in
+# this API regardless of what is requested.
+FLOOD_PAST_DAYS = 14
+FLOOD_FORECAST_DAYS = 1
+
 # Model grid resolutions, in degrees. Sampling finer than this buys nothing but
 # API calls: the service interpolates to the same cell and echoes back the same
 # snapped coordinate.
 AQ_RESOLUTION = 0.1
 WX_RESOLUTION = 0.05
+# GloFAS resolves to ~5 km, the same as the weather grid, so the flood API
+# shares WX_RESOLUTION rather than defining its own.
+FLOOD_RESOLUTION = WX_RESOLUTION
 
 DEFAULT_TTL_HOURS = 3
 REQUEST_TIMEOUT = 60
@@ -129,6 +145,11 @@ METRICS: tuple[Metric, ...] = (
                 "honest measure of how much moisture is actually present."),
     Metric("surface_pressure", "Pressure", "hPa", "wx", decimals=0,
            note="Station-level air pressure, used to convert humidity to a mixing ratio."),
+    Metric("precipitation", "Precipitation", "mm", "wx", decimals=2,
+           note="Rain, showers and snowmelt combined for that hour. Compared against "
+                "NYC DEP's stated 1.75 in/hr (~44.5 mm/hr) storm-sewer design "
+                "capacity to flag hours the system is likely to be overwhelmed -- "
+                "see flood.py."),
     Metric("wind_speed_10m", "Wind", "km/h", "wx", hourly=False),
 )
 
@@ -236,6 +257,10 @@ def load_stations(path: Path | str = DEFAULT_SPINE) -> pd.DataFrame:
         _cell_key("wx", a, b, WX_RESOLUTION)
         for a, b in zip(stations["lat"], stations["lon"])
     ]
+    stations["fl_cell"] = [
+        _cell_key("fl", a, b, FLOOD_RESOLUTION)
+        for a, b in zip(stations["lat"], stations["lon"])
+    ]
 
     # 117 stop names repeat across lines, so the picker label needs the routes
     # and borough too -- and the GTFS id on the handful that still collide.
@@ -252,9 +277,12 @@ def load_stations(path: Path | str = DEFAULT_SPINE) -> pd.DataFrame:
     return stations.sort_values("label").reset_index(drop=True)
 
 
+_CELL_COLUMNS = {"aq": "aq_cell", "wx": "wx_cell", "fl": "fl_cell"}
+
+
 def unique_cells(stations: pd.DataFrame, source: str) -> list[tuple[float, float]]:
     """Distinct model-grid points the station set touches, in a stable order."""
-    column = "aq_cell" if source == "aq" else "wx_cell"
+    column = _CELL_COLUMNS[source]
     keys = sorted(stations[column].unique())
     return [
         tuple(float(part) for part in cell_coordinates(key).split(","))
@@ -364,6 +392,7 @@ class Snapshot:
     current: pd.DataFrame       # one row per grid cell, indexed by cell key
     hourly: pd.DataFrame        # long: cell, time, metric, value
     daily: pd.DataFrame         # long: cell, date, t_mean -- drives the thermal lag
+    flood: pd.DataFrame         # long: cell, date, river_discharge (m3/s) -- GloFAS
     fetched_at: datetime
     from_cache: bool
     requests_made: int
@@ -482,6 +511,23 @@ def fetch_snapshot(
         force=force,
     )
 
+    fl_cells = unique_cells(stations, "fl")
+    # No `timezone` param here: the Flood API's documented parameter list does
+    # not include one (dates come back as plain ISO calendar days, GMT), unlike
+    # every other endpoint this module calls. bruh.
+    flood_payload, flood_time, flood_cached = _fetch_grid(
+        url=FLOOD_URL,
+        cells=fl_cells, # Note: Open Meteo does NOT return NYC, it gets data based on long/lat. We are getting data based on subway loc in dataset
+        params={
+            "past_days": FLOOD_PAST_DAYS,
+            "forecast_days": FLOOD_FORECAST_DAYS,
+            "daily": "river_discharge",
+        },
+        cache_name="flood",
+        ttl_hours=ttl_hours,
+        force=force,
+    )
+
     aq_current, aq_hourly_frame = _frames_from_payload(
         aq_payload, aq_cells, aq_metrics, aq_hourly, "aq"
     )
@@ -507,6 +553,24 @@ def fetch_snapshot(
         else pd.DataFrame(columns=["cell", "date", "t_mean"])
     )
 
+    flood_frames = []
+    for (lat, lon), location in zip(fl_cells, flood_payload):
+        block = location.get("daily") or {}
+        if not block.get("time"):
+            continue
+        flood_frames.append(
+            pd.DataFrame({
+                "cell": f"fl:{lat:.4f},{lon:.4f}",
+                "date": pd.to_datetime(block["time"]),
+                "river_discharge": block.get("river_discharge"),
+            })
+        )
+    flood = (
+        pd.concat(flood_frames, ignore_index=True)
+        if flood_frames
+        else pd.DataFrame(columns=["cell", "date", "river_discharge"])
+    )
+
     aq_current["source"] = "aq"
     wx_current["source"] = "wx"
     current = pd.concat([aq_current, wx_current])
@@ -516,11 +580,15 @@ def fetch_snapshot(
         current=current,
         hourly=hourly,
         daily=daily,
-        # The oldest of the three responses is the honest age of the snapshot.
-        fetched_at=min(aq_time, wx_time, daily_time),
-        from_cache=aq_cached and wx_cached and daily_cached,
-        requests_made=int(not aq_cached) + int(not wx_cached) + int(not daily_cached),
-        cell_counts={"aq": len(aq_cells), "wx": len(wx_cells)},
+        flood=flood,
+        # The oldest of the four responses is the honest age of the snapshot.
+        fetched_at=min(aq_time, wx_time, daily_time, flood_time),
+        from_cache=aq_cached and wx_cached and daily_cached and flood_cached,
+        requests_made=(
+            int(not aq_cached) + int(not wx_cached)
+            + int(not daily_cached) + int(not flood_cached)
+        ),
+        cell_counts={"aq": len(aq_cells), "wx": len(wx_cells), "fl": len(fl_cells)},
     )
 
 
@@ -571,3 +639,33 @@ def station_daily_means(snapshot: Snapshot, station: pd.Series) -> list[float]:
         return []
     rows = snapshot.daily[snapshot.daily["cell"] == station["wx_cell"]]
     return [v for v in rows.sort_values("date")["t_mean"] if pd.notna(v)]
+
+
+def station_flood_series(snapshot: Snapshot, station: pd.Series) -> pd.DataFrame:
+    """Daily river discharge (m3/s) at this station's flood cell, oldest first.
+
+    Columns: date, river_discharge. Empty frame if the API returned nothing for
+    this cell (e.g. no river GloFAS resolves within 5 km of a fully tidal reach).
+    """
+    if snapshot.flood.empty:
+        return pd.DataFrame(columns=["date", "river_discharge"])
+    rows = snapshot.flood[snapshot.flood["cell"] == station["fl_cell"]]
+    return rows.sort_values("date")[["date", "river_discharge"]].reset_index(drop=True)
+
+
+def station_precipitation_series(snapshot: Snapshot, station: pd.Series) -> pd.DataFrame:
+    """Hourly precipitation (mm) at this station's weather cell, oldest first.
+
+    Columns: time, precipitation_mm. This is the pluvial (rainfall-driven) flood
+    signal -- see flood.py -- distinct from the Flood API's river discharge,
+    which tracks a different flood mechanism entirely.
+    """
+    rows = snapshot.hourly[
+        (snapshot.hourly["cell"] == station["wx_cell"])
+        & (snapshot.hourly["metric"] == "precipitation")
+    ]
+    return (
+        rows.sort_values("time")[["time", "value"]]
+        .rename(columns={"value": "precipitation_mm"})
+        .reset_index(drop=True)
+    )

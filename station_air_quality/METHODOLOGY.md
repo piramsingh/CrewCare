@@ -1,8 +1,10 @@
-# How the three station figures are calculated
+# How the four station figures are calculated
 
-The dashboard shows three modelled values for a chosen NYC subway station:
-**PM2.5**, **temperature** and **humidity**. None is measured. Each takes a live
-outdoor reading and transforms it using a physical model of the station.
+The dashboard shows four modelled values for a chosen NYC subway station:
+**PM2.5**, **temperature**, **humidity**, and **flood & mold risk**. None is
+measured. The first three take a live outdoor reading and transform it using a
+physical model of the station; the fourth is a threshold classifier built on
+precipitation, platform humidity, and (as separate context) river discharge.
 
 This document states each model, its inputs, and where it is weak.
 
@@ -300,6 +302,93 @@ clearance.
 
 ---
 
+## 4 · Flood & mold risk
+
+Unlike the three models above, this one is not a physical balance solved for a
+steady state — it's a threshold classifier, because the thing it's estimating
+(mold colonization) is a biological process with published onset windows
+rather than a quantity with a governing equation.
+
+### Two flood mechanisms, kept separate
+
+**Pluvial (rainfall) flooding** is what actually floods most NYC subway
+stations: rain heavier than the storm-sewer system can carry away backs up
+and pours down entrances and stairwells. NYC DEP states the system's design
+capacity as **1.75 in/hr (44.45 mm/hr)**, which is also the figure MTA's own
+resiliency briefings cite alongside real storms that exceeded it (Ida: 3.45
+in/hr peak; Elsa: 2.2 in/hr; Ophelia: 1.93 in/hr — all caused documented
+station flooding). This model flags every hour Open-Meteo's `precipitation`
+crosses that line. Nothing from the Flood API is involved in this part.
+
+**Fluvial (river) flooding** is what the Flood API actually reports: daily
+discharge (m³/s) for the largest river GloFAS resolves within 5 km of a
+point. This is a real, useful signal near an actual river — but it is the
+**wrong mechanism** for most of the system. GloFAS models catchment river
+routing, not tidal estuaries or storm sewers, so for a station near the
+Hudson or the (tidal) East River, the "largest river" it finds may not
+correspond to anything that would flood a platform, and many cells resolve to
+no meaningful river at all. It is surfaced as separate, clearly-labelled
+context — `river_discharge_context()` in `flood.py` — and is **never** used
+in the mold-risk score.
+
+### The mold-risk classifier
+
+Thresholds are general building-science and public-health figures (EPA,
+ASHRAE, CDC, OSHA), not anything NYC- or subway-specific, because no public
+per-station mold dataset exists to calibrate or validate against:
+
+| threshold | value | source |
+|---|---|---|
+| Active-growth relative humidity | ≥ 70% | Consensus critical RH for surface mold growth (building-science / microbiology literature) |
+| Caution-band relative humidity | 60–70% | ASHRAE's stated ceiling for indoor RH |
+| Drying window | 24–48 h | EPA/CDC/OSHA: dry a wet area within this window and growth is preventable |
+
+The classifier (`flood._mold_risk`):
+
+```
+no recent pluvial exceedance:
+    RH >= 70%           -> Elevated (humidity alone is already in the active band)
+    60% <= RH < 70%      -> Caution
+    RH < 60%             -> Low
+
+recent pluvial exceedance, `h` hours ago:
+    h <= 48h and RH < 60%           -> Low       (dried before the window closed)
+    h > 48h  or  RH >= 70%          -> High       (past the window, or already wet)
+    otherwise (h <= 48h, 60-70% RH) -> Elevated   (still inside the window, outcome pending)
+```
+
+Platform RH (from the humidity model in section 3, not street RH) is the input
+— an enclosed station's own modelled humidity, not the outdoor reading.
+
+### Weaknesses
+
+- **The classifier is a threshold rule, not a fitted or validated model.** It
+  encodes published general-population thresholds; it has not been checked
+  against any actual subway mold outcome, because — as covered in the app's
+  own research phase — the MTA does not publish anything resembling a
+  station-level mold dataset. Treat the output as a risk indicator built from
+  established environmental thresholds, not a forecast.
+- **Precipitation is read at the weather grid (~5 km), same limitation as
+  temperature and humidity.** A cloudburst localized to one neighborhood may
+  not register at the resolution Open-Meteo returns.
+- **The drying window assumes someone acts on it.** The 24–48h EPA/CDC/OSHA
+  figures describe how fast mold *can* establish if a wet area is left alone;
+  they say nothing about how quickly MTA crews actually pump and dry a given
+  station, which is real operational data this model doesn't have (MTA has
+  reported pumping up to 228,000 gallons/hour system-wide during major
+  storms, but not broken out by station or by how long any one platform
+  stayed wet).
+- **River discharge context can be silently unavailable.** A large share of
+  stations — especially in Manhattan — will resolve to no GloFAS river at
+  all, or one dominated by tidal dynamics GloFAS doesn't model. The UI states
+  this plainly rather than fabricating a number.
+- **No historical baseline for the discharge anomaly.** `river_discharge_context`
+  compares today's value only against the 14-day fetched window's own
+  median, not a true seasonal or return-period baseline — it can tell you
+  "higher than the last two weeks," not "unusually high for this river."
+
+---
+
 ## Limitations that apply to all three
 
 **Nothing here is measured.** Every model is honest arithmetic on assumed
@@ -346,7 +435,9 @@ roofless, nothing quantifies the exchange rate.
 | `openmeteo.py` | live outdoor readings, grid dedupe, disk cache, metric registry |
 | `indoor.py` | PM2.5 source model; retained infiltration model (unused by the UI) |
 | `thermal.py` | heat balance, psychrometrics, wet bulb, WBGT, heat index |
+| `flood.py` | pluvial exceedance, GloFAS river-discharge context, mold-risk classifier |
 | `app.py` | the dashboard |
 
-A refresh costs three HTTP requests for the entire system — air quality, hourly
-weather, and 31 days of daily means — cached to disk for 3 hours.
+A refresh costs four HTTP requests for the entire system — air quality, hourly
+weather, 31 days of daily temperature means, and 14 days of daily river
+discharge — cached to disk for 3 hours.
