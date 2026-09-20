@@ -24,5 +24,20 @@ export function resolveRole(employeeId: string): Role {
   return 'worker'
 }
 
+/**
+ * Stand-in id for someone who signs in with the field empty.
+ *
+ * An empty field is a valid demo path — the brief requires it — but linking a
+ * phone needs *some* id to tie the WhatsApp number to, and sending an empty
+ * one just produces a 401 the person cannot act on. This keeps the empty path
+ * working end to end.
+ */
+export const DEMO_EMPLOYEE_ID = 'W0000'
+
+/** The id to carry for this session: what was typed, or the demo stand-in. */
+export function sessionEmployeeId(typed: string): string {
+  return typed.trim() || DEMO_EMPLOYEE_ID
+}
+
 /** Operator-facing hint shown under the Continue button. Not the rule itself. */
 export const DEMO_HINT = 'Demo: any ID works. Try W1042 or A0117.'

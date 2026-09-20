@@ -517,3 +517,13 @@ test('reset clears every answer', () => {
   assert.deepEqual(fresh.answers, {})
   assert.deepEqual(fresh.messages, [])
 })
+
+test('an empty employee id still yields a usable session id', async () => {
+  const { resolveRole, sessionEmployeeId, DEMO_EMPLOYEE_ID } = await import('../src/auth/roles.ts')
+  // The brief requires an empty field to work; linking needs some id to
+  // attach a phone number to, and an empty one is a 401 with no recourse.
+  assert.equal(resolveRole(''), 'worker')
+  assert.equal(sessionEmployeeId(''), DEMO_EMPLOYEE_ID)
+  assert.equal(sessionEmployeeId('   '), DEMO_EMPLOYEE_ID)
+  assert.equal(sessionEmployeeId(' W1042 '), 'W1042')
+})

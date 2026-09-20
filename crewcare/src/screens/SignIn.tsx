@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
 import { AgencyMark } from '../components/AgencyMark'
-import { DEMO_HINT, resolveRole, type Role } from '../auth/roles'
+import { DEMO_HINT, resolveRole, sessionEmployeeId, type Role } from '../auth/roles'
 import { DemoBanner } from '../components/DemoBanner'
 import { PhoneFrame } from '../components/PhoneFrame'
 import { brand } from '../theme'
@@ -32,8 +32,9 @@ export function SignIn({
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
-    const employeeId = (idRef.current?.value ?? '').trim()
-    const role = resolveRole(employeeId)
+    const typed = idRef.current?.value ?? ''
+    const role = resolveRole(typed)
+    const employeeId = sessionEmployeeId(typed)
     // The password is never read. The ID is cleared from the field and lives
     // only in React state from here on.
     if (idRef.current) idRef.current.value = ''

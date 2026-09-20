@@ -4,6 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    // Vite rejects requests whose Host header it does not recognise. When the
+    // dev server is exposed through a tunnel for phone testing, the tunnel's
+    // hostname has to be allowed or every request 403s.
+    allowedHosts: ['.trycloudflare.com', '.ngrok-free.app', '.ngrok.io'],
+  },
   build: {
     // Inline every asset we ship, so the built demo issues no requests of its
     // own beyond the document itself.

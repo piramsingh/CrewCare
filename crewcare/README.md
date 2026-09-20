@@ -18,6 +18,54 @@ npm run build
 Sign in with any ID. `W1042` lands on the worker path, `A0117` on the
 dashboard; an empty field lands on the worker path.
 
+## Running it (for a teammate picking this up)
+
+**Browser only — no Meta account, no server.** This is enough to see the whole
+worker conversation and the admin dashboard:
+
+```bash
+npm install
+npm run dev          # http://localhost:5173
+```
+
+Sign in with `W1042` (worker) or `A0117` (admin), then **Preview the
+conversation here**. Nothing leaves the tab.
+
+**With real WhatsApp** — you need your own Meta credentials; `.env` is not in
+the repo:
+
+```bash
+cd server
+python3 -m venv .venv && ./.venv/bin/pip install -r whatsapp/requirements.txt
+cp whatsapp/.env.example whatsapp/.env     # fill in from your Meta app
+./.venv/bin/uvicorn main:app --port 8000
+```
+
+Then expose the server so Meta can reach it, and point the web app at it:
+
+```bash
+cloudflared tunnel --url http://localhost:8000      # prints https://<api>
+VITE_API_BASE=https://<api> npm run dev             # web app talks to it
+```
+
+Paste `https://<api>/api/webhooks/whatsapp` plus your `WHATSAPP_VERIFY_TOKEN`
+into Meta's webhook config, and subscribe the `messages` field.
+
+**Testing on a phone** needs the web app exposed too:
+
+```bash
+npm run dev -- --port 5180 --host
+cloudflared tunnel --url http://localhost:5180      # open this on the phone
+WEB_ORIGINS=https://<web-tunnel> ./.venv/bin/uvicorn main:app --port 8000
+```
+
+Tunnel hostnames are already allowed in `vite.config.ts`. Set `WEB_ORIGINS` to
+a comma-separated list if you need several origins at once.
+
+⚠️ **Cloudflare quick tunnels get dropped after a while.** When that happens
+both URLs change and the Meta webhook has to be re-pasted. For anything
+lasting more than an afternoon, deploy the server somewhere with a fixed URL.
+
 ## What is real and what is simulated
 
 | Area | Status |
