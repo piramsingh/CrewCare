@@ -1,0 +1,6 @@
+# CrewCare operations API.
+#   uvicorn main:app --port 8000
+fastapi
+uvicorn[standard]
+pandas
+requests
