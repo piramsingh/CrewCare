@@ -1,0 +1,450 @@
+id,station_id,days_ago,reported_on,category,severity,text,demo
+0cb4eb9e34e0,718,0,2026-09-20,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour along the express track.,true
+37c679d51b2f,F14,0,2026-09-20,"Damp, mould or standing water",Made me unwell,Water pooling by the turnstiles for days after the last rain.,true
+d59ab46c6727,G19,0,2026-09-20,Dust or air quality,Made me unwell,Coughing through the tour and for an hour after I get home.,true
+9db42d228007,B23,0,2026-09-20,Heat,Made me unwell,"Stifling near the stairs to the street for most of the tour, no relief anywhere in the station.",true
+a4d86fa55f6a,J31,0,2026-09-20,Noise,Made me unwell,Braking screech on the mezzanine is painful without plugs.,true
+28a4f66d585d,D39,0,2026-09-20,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour on the mezzanine.,true
+bdae25aa353a,F24,0,2026-09-20,"Damp, mould or standing water",Noticeable,Standing water on the floor by the turnstiles and the air is heavy with it.,true
+445f918500ec,A50,0,2026-09-20,Heat,Made me unwell,Had to step up to the street twice by the turnstiles just to cool down.,true
+be76de855f37,B19,1,2026-09-19,"Damp, mould or standing water",Affects my work,Standing water on the floor near the stairs to the street and the air is heavy with it.,true
+88de6b77cba4,R05,1,2026-09-19,Noise,Noticeable,Constant structural rumble along the express track through the whole tour.,true
+40cd6a9823d8,219,1,2026-09-19,Heat,Made me unwell,"Heat on the mezzanine is worse than the street by a long way, even after dark.",true
+1bfbf0516958,603,1,2026-09-19,"Damp, mould or standing water",Affects my work,"Mould visible on the wall in the crew room, nothing has been cleaned.",true
+98f0d50172db,504,1,2026-09-19,Heat,Affects my work,Had to step up to the street twice by the turnstiles just to cool down.,true
+695dfd52b5de,216,1,2026-09-19,Dust or air quality,Noticeable,Black grit over every surface along the express track within an hour of it being wiped.,true
+63368435c7be,A47,1,2026-09-19,Heat,Made me unwell,"Heat on the mezzanine is worse than the street by a long way, even after dark.",true
+a60b8586f3db,A53,2,2026-09-18,Heat,Noticeable,"Stifling near the stairs to the street for most of the tour, no relief anywhere in the station.",true
+511506d198b0,248,2,2026-09-18,"Damp, mould or standing water",Made me unwell,"Mould visible on the wall at the south end, nothing has been cleaned.",true
+2db8a0be542d,M22,2,2026-09-18,Heat,Noticeable,No shade and no airflow at the south end; the whole tour is spent in it.,true
+a8eea31ce88b,A12,2,2026-09-18,Dust or air quality,Affects my work,Visible haze by the booth through the evening peak.,true
+f9cee7b0a4f5,617,2,2026-09-18,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+fa3f8ef59e33,G12,2,2026-09-18,Dust or air quality,Noticeable,Black grit over every surface on the mezzanine within an hour of it being wiped.,true
+59c4ddcf0f76,F22,2,2026-09-18,Fumes or exhaust,Noticeable,Exhaust smell along the express track that lingers well after the equipment has gone.,true
+c5554a2c8b29,F26,2,2026-09-18,"Damp, mould or standing water",Noticeable,"Mould visible on the wall on the mezzanine, nothing has been cleaned.",true
+5b31f8112d48,A28,2,2026-09-18,Ventilation or airflow,Noticeable,No noticeable airflow on the mezzanine at any point in the tour.,true
+04bd5f573a77,127,3,2026-09-17,Heat,Affects my work,Platform is stifling by the end of the tour even with the street cool. No relief anywhere on the mezzanine.,true
+8d4a65afb54f,624,3,2026-09-17,Ventilation or airflow,Noticeable,Air is completely still between trains on the mezzanine.,true
+e759ef36337b,N05,3,2026-09-17,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour near the stairs to the street.,true
+4ac235ab333a,M14,3,2026-09-17,Noise,Noticeable,Constant structural rumble near the stairs to the street through the whole tour.,true
+391dc9b6b7ab,R44,4,2026-09-16,"Damp, mould or standing water",Noticeable,Water pooling by the turnstiles for days after the last rain.,true
+005080990085,A42,4,2026-09-16,"Damp, mould or standing water",Noticeable,"Persistent damp smell at the south end, dark staining on the tiles.",true
+320a68a3fa99,638,4,2026-09-16,Ventilation or airflow,Made me unwell,Air is completely still between trains at the north end of the platform.,true
+ccf693e8bc2e,R16,5,2026-09-15,Heat,Made me unwell,Felt lightheaded near the end of shift. Had to sit down in the booth for twenty minutes before I could carry on.,true
+6a229ef789c0,718,5,2026-09-15,Noise,Affects my work,Announcement speakers at the south end distort loud enough to hurt.,true
+ff82845ec521,419,5,2026-09-15,Other,Affects my work,"Lighting on the mezzanine has been out for weeks, hard to see the platform edge.",true
+bcadb703950a,S03,5,2026-09-15,Dust or air quality,Noticeable,Visible haze by the turnstiles through the evening peak.,true
+4f728dfdc83c,136,5,2026-09-15,Ventilation or airflow,Noticeable,No noticeable airflow in the crew room at any point in the tour.,true
+9b407b06c988,L13,5,2026-09-15,Heat,Affects my work,"Stifling on the mezzanine for most of the tour, no relief anywhere in the station.",true
+1ff6540d78c7,G18,5,2026-09-15,Ventilation or airflow,Affects my work,Air is completely still between trains by the turnstiles.,true
+2f3ea146b8e0,108,5,2026-09-15,Noise,Made me unwell,Constant structural rumble by the booth through the whole tour.,true
+94e5052d000c,A17,5,2026-09-15,Dust or air quality,Noticeable,Visible haze on the mezzanine through the evening peak.,true
+3fbc948815ff,A02,6,2026-09-14,"Damp, mould or standing water",Made me unwell,Persistent damp smell at the north end of the platform. Dark staining on the wall tiles that has not been cleaned in months.,true
+14f0fc55e910,253,6,2026-09-14,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+5f488d28e7a4,613,6,2026-09-14,Dust or air quality,Made me unwell,Coughing through the tour and for an hour after I get home.,true
+5d424a131c3a,L08,6,2026-09-14,Heat,Affects my work,"Heat at the south end is worse than the street by a long way, even after dark.",true
+6aaca8b5f5d6,G33,6,2026-09-14,"Damp, mould or standing water",Noticeable,Water pooling by the booth for days after the last rain.,true
+676d27069752,A30,6,2026-09-14,Ventilation or airflow,Made me unwell,The fans in the crew room have not run for weeks.,true
+7b43256fc381,109,6,2026-09-14,Noise,Noticeable,Braking screech at the south end is painful without plugs.,true
+0978c8d8e668,F04,6,2026-09-14,Heat,Made me unwell,"Heat by the booth is worse than the street by a long way, even after dark.",true
+2b56a2be366b,S25,6,2026-09-14,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+bc16f0cd1718,227,6,2026-09-14,Ventilation or airflow,Affects my work,Air is completely still between trains by the turnstiles.,true
+dc40074312fb,R01,6,2026-09-14,Dust or air quality,Affects my work,Black grit over every surface near the stairs to the street within an hour of it being wiped.,true
+72d7cb3c2011,117,6,2026-09-14,Heat,Noticeable,No shade and no airflow at the south end; the whole tour is spent in it.,true
+45bb0955718b,618,7,2026-09-13,Heat,Noticeable,"Stifling at the south end for most of the tour, no relief anywhere in the station.",true
+1fa367b3d5f8,629,7,2026-09-13,Dust or air quality,Affects my work,Black grit over every surface on the mezzanine within an hour of it being wiped.,true
+a96726d008cc,B19,7,2026-09-13,"Damp, mould or standing water",Noticeable,"Persistent damp smell along the express track, dark staining on the tiles.",true
+f2c4b96687a1,205,7,2026-09-13,"Damp, mould or standing water",Made me unwell,Standing water on the floor by the booth and the air is heavy with it.,true
+606decf6dd2e,Q05,7,2026-09-13,Heat,Noticeable,"Heat at the south end is worse than the street by a long way, even after dark.",true
+99f9937ca78c,G18,7,2026-09-13,Heat,Noticeable,No shade and no airflow in the crew room; the whole tour is spent in it.,true
+c74ada36e62d,G12,7,2026-09-13,Heat,Affects my work,Had to step up to the street twice on the mezzanine just to cool down.,true
+0b8590ca92cd,R21,7,2026-09-13,Ventilation or airflow,Noticeable,Air is completely still between trains in the crew room.,true
+3b25c7ad869e,G09,7,2026-09-13,Fumes or exhaust,Noticeable,Exhaust smell on the mezzanine that lingers well after the equipment has gone.,true
+52ef8d65c112,635,8,2026-09-12,Dust or air quality,Made me unwell,Coughing through the whole tour and for an hour after I get home. Worse on days I am on the platform rather than in the booth.,true
+242b48fcac9a,124,8,2026-09-12,Fumes or exhaust,Noticeable,Diesel work train sat in the station close to an hour on the midnights.,true
+ddd0d70a4bd2,113,8,2026-09-12,Heat,Affects my work,Had to step up to the street twice near the stairs to the street just to cool down.,true
+74b0d4c16e7b,B19,8,2026-09-12,Ventilation or airflow,Made me unwell,Air is completely still between trains on the mezzanine.,true
+3a8dbba0683f,726,8,2026-09-12,Heat,Noticeable,Had to step up to the street twice along the express track just to cool down.,true
+110101530a83,S03,8,2026-09-12,"Damp, mould or standing water",Made me unwell,"Persistent damp smell by the booth, dark staining on the tiles.",true
+e043e4fe4260,413,8,2026-09-12,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+70d54bbb5d19,608,8,2026-09-12,Heat,Noticeable,No shade and no airflow near the stairs to the street; the whole tour is spent in it.,true
+0d595e78b489,D17,9,2026-09-11,Fumes or exhaust,Made me unwell,"Diesel work train sat in the station for close to an hour on the midnights. Eyes streaming, headache for the rest of the tour.",true
+49ae81cbb9e0,618,9,2026-09-11,Heat,Affects my work,Had to step up to the street twice at the north end of the platform just to cool down.,true
+9acbfae340f1,139,9,2026-09-11,Heat,Noticeable,Had to step up to the street twice at the north end of the platform just to cool down.,true
+4b62d2cae51a,L13,9,2026-09-11,Ventilation or airflow,Noticeable,No noticeable airflow at the south end at any point in the tour.,true
+5478fc91d318,233,9,2026-09-11,"Damp, mould or standing water",Affects my work,Water pooling by the turnstiles for days after the last rain.,true
+9720448592b3,108,9,2026-09-11,"Damp, mould or standing water",Noticeable,"Persistent damp smell along the express track, dark staining on the tiles.",true
+ac26840f6ae6,504,9,2026-09-11,Other,Noticeable,Rodents along the express track through the overnight tour.,true
+b73fed22a32d,619,9,2026-09-11,"Damp, mould or standing water",Noticeable,Water pooling along the express track for days after the last rain.,true
+52c1d3ddfaed,F20,9,2026-09-11,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour near the stairs to the street.,true
+e17e4204da05,B13,9,2026-09-11,Heat,Affects my work,No shade and no airflow by the turnstiles; the whole tour is spent in it.,true
+6b5618634fe9,629,10,2026-09-10,Ventilation or airflow,Noticeable,Air is completely still between trains along the express track.,true
+c2c9e29e8c55,R05,10,2026-09-10,Ventilation or airflow,Affects my work,The fans at the south end have not run for weeks.,true
+219f32c8f1bc,E01,10,2026-09-10,Heat,Noticeable,"Stifling by the booth for most of the tour, no relief anywhere in the station.",true
+bf53c1dfe2f8,R20,10,2026-09-10,Heat,Noticeable,Had to step up to the street twice in the crew room just to cool down.,true
+8b5ff90d1d4a,B12,10,2026-09-10,Ventilation or airflow,Affects my work,The fans in the crew room have not run for weeks.,true
+5edcaf622a9e,B08,10,2026-09-10,Heat,Made me unwell,"Stifling at the south end for most of the tour, no relief anywhere in the station.",true
+e1717a2103e5,F03,10,2026-09-10,Fumes or exhaust,Made me unwell,Diesel work train sat in the station close to an hour on the midnights.,true
+1ee02e2e4052,127,11,2026-09-09,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour on the platform.,true
+fb185a8260b9,124,11,2026-09-09,"Damp, mould or standing water",Affects my work,"Persistent damp smell at the south end, dark staining on the tiles.",true
+edb883644646,E01,11,2026-09-09,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+0bff2d694342,139,11,2026-09-09,Heat,Noticeable,"Stifling near the stairs to the street for most of the tour, no relief anywhere in the station.",true
+fea064b5700e,L08,11,2026-09-09,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+20192eeb16f5,104,11,2026-09-09,Heat,Made me unwell,Had to step up to the street twice along the express track just to cool down.,true
+a3589068a6bc,229,11,2026-09-09,Heat,Noticeable,"Stifling by the turnstiles for most of the tour, no relief anywhere in the station.",true
+15e9cc615ff0,222,11,2026-09-09,Ventilation or airflow,Noticeable,No noticeable airflow at the south end at any point in the tour.,true
+95a62574efd8,D07,11,2026-09-09,Heat,Made me unwell,Had to step up to the street twice near the stairs to the street just to cool down.,true
+e47680cbc1b9,A49,11,2026-09-09,Ventilation or airflow,Made me unwell,No noticeable airflow along the express track at any point in the tour.,true
+c768b2feed7d,624,12,2026-09-08,Ventilation or airflow,Noticeable,No noticeable airflow along the express track at any point in the tour.,true
+b776896f278f,726,12,2026-09-08,Heat,Noticeable,"Heat near the stairs to the street is worse than the street by a long way, even after dark.",true
+672d901d2c64,H03,12,2026-09-08,Heat,Affects my work,Had to step up to the street twice along the express track just to cool down.,true
+824eaf8c8cd8,216,12,2026-09-08,Heat,Made me unwell,Had to step up to the street twice at the north end of the platform just to cool down.,true
+ca2e0220488b,R31,12,2026-09-08,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour in the crew room.,true
+a001c6201f5c,R45,12,2026-09-08,Dust or air quality,Affects my work,Black grit over every surface at the south end within an hour of it being wiped.,true
+ffcac9a5f7ed,G08,12,2026-09-08,Other,Affects my work,Broken tiles and debris at the south end that nobody has come to clear.,true
+d4a6732c591b,L06,13,2026-09-07,Dust or air quality,Noticeable,Fine dust on the benches within an hour of cleaning.,true
+6539f8841c5f,138,13,2026-09-07,"Damp, mould or standing water",Noticeable,Water pooling at the north end of the platform for days after the last rain.,true
+2bedcbfacfef,D19,13,2026-09-07,Fumes or exhaust,Noticeable,Diesel work train sat in the station close to an hour on the midnights.,true
+4cab656008dc,624,14,2026-09-06,Dust or air quality,Affects my work,Visible haze on the mezzanine through the evening peak.,true
+abad79ccfaf0,253,14,2026-09-06,Other,Affects my work,Rodents by the booth through the overnight tour.,true
+e2206cdd555a,120,14,2026-09-06,Dust or air quality,Noticeable,Black grit over every surface in the crew room within an hour of it being wiped.,true
+4dec0a9a98b4,238,14,2026-09-06,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour at the south end.,true
+56c15280ab00,713,14,2026-09-06,"Damp, mould or standing water",Affects my work,"Persistent damp smell near the stairs to the street, dark staining on the tiles.",true
+096406417c3f,D07,14,2026-09-06,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour by the booth.,true
+c22366a73adc,D21,14,2026-09-06,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour in the crew room.,true
+b6f19484c490,123,14,2026-09-06,Dust or air quality,Noticeable,Visible haze at the north end of the platform through the evening peak.,true
+a6314e6f3196,246,14,2026-09-06,Dust or air quality,Made me unwell,Visible haze by the booth through the evening peak.,true
+a161f3ea1f9c,F21,14,2026-09-06,Dust or air quality,Affects my work,Visible haze on the mezzanine through the evening peak.,true
+cbedc400fe51,R16,15,2026-09-05,Dust or air quality,Affects my work,Visible haze along the platform during the evening peak.,true
+f0977f1843ab,718,15,2026-09-05,Noise,Noticeable,Constant structural rumble near the stairs to the street through the whole tour.,true
+29e7497137c4,F14,15,2026-09-05,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour on the mezzanine.,true
+592446117a6c,705,15,2026-09-05,"Damp, mould or standing water",Noticeable,"Mould visible on the wall near the stairs to the street, nothing has been cleaned.",true
+0e3aab9ebf16,205,15,2026-09-05,Noise,Affects my work,Braking screech at the south end is painful without plugs.,true
+909b5d0885c2,A60,15,2026-09-05,Ventilation or airflow,Made me unwell,No noticeable airflow near the stairs to the street at any point in the tour.,true
+ab4deba782b3,L20,15,2026-09-05,Dust or air quality,Affects my work,Black grit over every surface in the crew room within an hour of it being wiped.,true
+c3fa323b2705,603,15,2026-09-05,"Damp, mould or standing water",Affects my work,"Mould visible on the wall by the turnstiles, nothing has been cleaned.",true
+126440800c6a,R21,15,2026-09-05,Heat,Affects my work,"Heat along the express track is worse than the street by a long way, even after dark.",true
+883347f11ed7,B22,15,2026-09-05,Other,Noticeable,Rodents along the express track through the overnight tour.,true
+b92e40e8f2ce,124,16,2026-09-04,Ventilation or airflow,Affects my work,No noticeable airflow at the north end of the platform at any point in the tour.,true
+64e1bdc723ce,253,16,2026-09-04,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour along the express track.,true
+ad2b6622146f,120,16,2026-09-04,Ventilation or airflow,Noticeable,The fans at the north end of the platform have not run for weeks.,true
+724687b1fa23,F14,16,2026-09-04,Heat,Noticeable,"Heat in the crew room is worse than the street by a long way, even after dark.",true
+a2e763ac6a49,B08,16,2026-09-04,Other,Noticeable,"Lighting on the mezzanine has been out for weeks, hard to see the platform edge.",true
+7edb11aa630b,Q04,16,2026-09-04,Noise,Affects my work,Announcement speakers along the express track distort loud enough to hurt.,true
+a60eaf21658d,419,17,2026-09-03,Fumes or exhaust,Noticeable,Fumes drifting down from the street vent at the north end of the platform.,true
+44f6907ec4c0,205,17,2026-09-03,Dust or air quality,Affects my work,Visible haze at the north end of the platform through the evening peak.,true
+78cd508dd8ec,A53,17,2026-09-03,Dust or air quality,Noticeable,Visible haze near the stairs to the street through the evening peak.,true
+7c7bb1b2229d,L14,17,2026-09-03,Fumes or exhaust,Affects my work,Diesel work train sat in the station close to an hour on the midnights.,true
+9b91374c8ce7,A12,17,2026-09-03,Heat,Noticeable,"Stifling by the turnstiles for most of the tour, no relief anywhere in the station.",true
+bf126f5c951d,A60,17,2026-09-03,Dust or air quality,Affects my work,Visible haze on the mezzanine through the evening peak.,true
+9731183ff23c,251,17,2026-09-03,Heat,Noticeable,Had to step up to the street twice in the crew room just to cool down.,true
+892dd7e70f1e,413,17,2026-09-03,Heat,Noticeable,"Heat along the express track is worse than the street by a long way, even after dark.",true
+8b85b256c5fa,S29,17,2026-09-03,Heat,Affects my work,"Heat near the stairs to the street is worse than the street by a long way, even after dark.",true
+00a888c4929c,S19,17,2026-09-03,Dust or air quality,Made me unwell,Metallic taste in the mouth after a full tour along the express track.,true
+17fd402c97f0,122,17,2026-09-03,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour on the mezzanine.,true
+8901819dbd1d,R44,18,2026-09-02,Fumes or exhaust,Noticeable,Diesel work train sat in the station close to an hour on the midnights.,true
+bd3e7ebe1ee6,F14,18,2026-09-02,Heat,Noticeable,"Stifling in the crew room for most of the tour, no relief anywhere in the station.",true
+83e3efad12e7,243,18,2026-09-02,Dust or air quality,Noticeable,Black grit over every surface at the south end within an hour of it being wiped.,true
+ab69d6e85936,B16,18,2026-09-02,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+49f71988aa56,A33,18,2026-09-02,Heat,Noticeable,"Heat by the booth is worse than the street by a long way, even after dark.",true
+ab3c24a04536,A02,19,2026-09-01,Dust or air quality,Affects my work,Black grit settles on every surface in the booth overnight. Wiping it down twice a shift and it comes straight back.,true
+689e91738a03,718,19,2026-09-01,Heat,Noticeable,Had to step up to the street twice along the express track just to cool down.,true
+c5bf4f76b4bf,Q05,19,2026-09-01,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour by the booth.,true
+16a8d1de4d7c,A34,19,2026-09-01,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+b9093a488ad5,A11,19,2026-09-01,Noise,Affects my work,Constant structural rumble by the turnstiles through the whole tour.,true
+711f6be82bd5,G10,19,2026-09-01,Heat,Noticeable,"Stifling in the crew room for most of the tour, no relief anywhere in the station.",true
+87be41dc676c,215,19,2026-09-01,Heat,Made me unwell,No shade and no airflow at the north end of the platform; the whole tour is spent in it.,true
+d6fdb58d83c8,113,20,2026-08-31,Ventilation or airflow,Affects my work,The fans by the turnstiles have not run for weeks.,true
+180111e80b02,629,20,2026-08-31,Heat,Affects my work,Had to step up to the street twice at the north end of the platform just to cool down.,true
+ffa58721cadc,R44,20,2026-08-31,Heat,Made me unwell,No shade and no airflow on the mezzanine; the whole tour is spent in it.,true
+9c9437f1ac7f,136,20,2026-08-31,Fumes or exhaust,Noticeable,Exhaust smell at the south end that lingers well after the equipment has gone.,true
+139cdc3bed43,114,20,2026-08-31,Heat,Affects my work,"Heat near the stairs to the street is worse than the street by a long way, even after dark.",true
+c7c71e25a1fe,603,20,2026-08-31,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour near the stairs to the street.,true
+f815b556db9c,640,20,2026-08-31,Heat,Made me unwell,No shade and no airflow in the crew room; the whole tour is spent in it.,true
+e24bc982ad8c,M20,20,2026-08-31,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour along the express track.,true
+be45af32dd91,A06,20,2026-08-31,"Damp, mould or standing water",Noticeable,"Persistent damp smell in the crew room, dark staining on the tiles.",true
+093342ed1adc,635,21,2026-08-30,Ventilation or airflow,Affects my work,The fans at the south end have not run in weeks.,true
+7193412167e6,419,21,2026-08-30,Fumes or exhaust,Affects my work,Exhaust smell on the mezzanine that lingers well after the equipment has gone.,true
+8c2762b21c75,406,21,2026-08-30,Noise,Noticeable,Announcement speakers at the south end distort loud enough to hurt.,true
+ca67d3dae12d,G33,21,2026-08-30,"Damp, mould or standing water",Noticeable,Water pooling in the crew room for days after the last rain.,true
+d2be46888f3f,D06,21,2026-08-30,Fumes or exhaust,Noticeable,Diesel work train sat in the station close to an hour on the midnights.,true
+07973ade6f11,629,22,2026-08-29,Dust or air quality,Affects my work,Visible haze in the crew room through the evening peak.,true
+fc73ffede2c5,136,22,2026-08-29,"Damp, mould or standing water",Made me unwell,"Persistent damp smell in the crew room, dark staining on the tiles.",true
+7853bc0f161b,A53,22,2026-08-29,Heat,Noticeable,No shade and no airflow by the booth; the whole tour is spent in it.,true
+1aa0ea6b3fbc,L14,22,2026-08-29,Dust or air quality,Made me unwell,Metallic taste in the mouth after a full tour by the booth.,true
+c2b81d02ffb8,J13,22,2026-08-29,Dust or air quality,Noticeable,Visible haze on the mezzanine through the evening peak.,true
+50ad55f9b89e,104,22,2026-08-29,Dust or air quality,Made me unwell,Black grit over every surface by the booth within an hour of it being wiped.,true
+078001e60f61,123,22,2026-08-29,Heat,Affects my work,"Heat on the mezzanine is worse than the street by a long way, even after dark.",true
+56b2ea337d23,D01,22,2026-08-29,Heat,Affects my work,"Stifling by the booth for most of the tour, no relief anywhere in the station.",true
+c6a2f95d90f8,D29,22,2026-08-29,Heat,Noticeable,No shade and no airflow by the turnstiles; the whole tour is spent in it.,true
+a3ba6390fa24,113,23,2026-08-28,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+244e60e074bc,253,23,2026-08-28,Dust or air quality,Made me unwell,Black grit over every surface in the crew room within an hour of it being wiped.,true
+c143f070a27a,219,23,2026-08-28,Noise,Noticeable,Announcement speakers in the crew room distort loud enough to hurt.,true
+76a8e14cb378,705,23,2026-08-28,"Damp, mould or standing water",Made me unwell,"Persistent damp smell at the south end, dark staining on the tiles.",true
+1c106db33d57,M22,23,2026-08-28,Dust or air quality,Noticeable,Black grit over every surface near the stairs to the street within an hour of it being wiped.,true
+4e2bc444e1f7,N06,23,2026-08-28,Heat,Noticeable,No shade and no airflow at the north end of the platform; the whole tour is spent in it.,true
+0ec726be4f2f,B12,23,2026-08-28,Dust or air quality,Affects my work,Visible haze at the south end through the evening peak.,true
+351826253442,227,23,2026-08-28,Heat,Affects my work,"Stifling by the turnstiles for most of the tour, no relief anywhere in the station.",true
+dbceeb6b01be,J20,23,2026-08-28,Other,Affects my work,Rodents by the turnstiles through the overnight tour.,true
+30dbe88fe32b,301,23,2026-08-28,Fumes or exhaust,Affects my work,Diesel work train sat in the station close to an hour on the midnights.,true
+8fc2a2daa162,127,24,2026-08-27,Noise,Noticeable,Braking screech on the express track is painful without plugs.,true
+f04e017da0b3,R44,24,2026-08-27,Ventilation or airflow,Affects my work,The fans at the south end have not run for weeks.,true
+e14f12ea386c,B19,24,2026-08-27,Ventilation or airflow,Noticeable,The fans at the south end have not run for weeks.,true
+d71579ece2bf,705,24,2026-08-27,Noise,Noticeable,Braking screech at the north end of the platform is painful without plugs.,true
+28a07f65b480,251,24,2026-08-27,Fumes or exhaust,Affects my work,Fumes drifting down from the street vent in the crew room.,true
+afb1de3c4e2c,238,24,2026-08-27,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour along the express track.,true
+04d94cc471ea,D21,24,2026-08-27,Dust or air quality,Made me unwell,Coughing through the tour and for an hour after I get home.,true
+dfd67ab22f7e,618,25,2026-08-26,Heat,Affects my work,"Stifling on the mezzanine for most of the tour, no relief anywhere in the station.",true
+078b559e2321,726,25,2026-08-26,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+cacbf385e921,S04,25,2026-08-26,"Damp, mould or standing water",Affects my work,Standing water on the floor along the express track and the air is heavy with it.,true
+0a9f85889539,D12,25,2026-08-26,Dust or air quality,Noticeable,Black grit over every surface along the express track within an hour of it being wiped.,true
+85704c800cf2,624,26,2026-08-25,Heat,Affects my work,No shade and no airflow at the south end; the whole tour is spent in it.,true
+9461504254db,F14,26,2026-08-25,Heat,Affects my work,Had to step up to the street twice on the mezzanine just to cool down.,true
+59c08b9d908c,138,26,2026-08-25,Heat,Affects my work,No shade and no airflow by the turnstiles; the whole tour is spent in it.,true
+bb4d41054fd3,B12,26,2026-08-25,Noise,Noticeable,Announcement speakers at the north end of the platform distort loud enough to hurt.,true
+e6624738a7b9,617,26,2026-08-25,Dust or air quality,Noticeable,Visible haze near the stairs to the street through the evening peak.,true
+d53e7abd6b6d,A10,26,2026-08-25,Other,Affects my work,Broken tiles and debris near the stairs to the street that nobody has come to clear.,true
+f0e1d8f0ef2c,D28,26,2026-08-25,Heat,Noticeable,"Heat at the north end of the platform is worse than the street by a long way, even after dark.",true
+52232b841c67,A02,27,2026-08-24,Ventilation or airflow,Noticeable,Air feels completely still between trains on the overnight tour.,true
+33a000a38125,718,27,2026-08-24,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour near the stairs to the street.,true
+95c5a2e65d5e,R20,27,2026-08-24,Ventilation or airflow,Affects my work,Air is completely still between trains along the express track.,true
+7b3d950cb4df,A30,27,2026-08-24,Dust or air quality,Noticeable,Black grit over every surface on the mezzanine within an hour of it being wiped.,true
+b78ffeaeb962,222,27,2026-08-24,Dust or air quality,Made me unwell,Visible haze on the mezzanine through the evening peak.,true
+2a35ab815ee2,J16,27,2026-08-24,Heat,Noticeable,No shade and no airflow on the mezzanine; the whole tour is spent in it.,true
+55a18017ebeb,M01,27,2026-08-24,Other,Noticeable,Rodents by the turnstiles through the overnight tour.,true
+40e8f1bc7021,A03,27,2026-08-24,Heat,Noticeable,"Stifling on the mezzanine for most of the tour, no relief anywhere in the station.",true
+36505f5eac9b,R20,28,2026-08-23,"Damp, mould or standing water",Noticeable,"Mould visible on the wall at the south end, nothing has been cleaned.",true
+d388b63560e0,248,28,2026-08-23,Heat,Noticeable,Had to step up to the street twice at the north end of the platform just to cool down.,true
+e068823bebaf,N06,28,2026-08-23,Heat,Noticeable,Had to step up to the street twice along the express track just to cool down.,true
+187f79ff815e,J13,28,2026-08-23,Heat,Noticeable,Had to step up to the street twice on the mezzanine just to cool down.,true
+4b6dda81c699,414,28,2026-08-23,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+44320e85ffef,D30,28,2026-08-23,Heat,Affects my work,"Stifling at the north end of the platform for most of the tour, no relief anywhere in the station.",true
+ff6ef7cabf6f,124,29,2026-08-22,"Damp, mould or standing water",Made me unwell,Standing water on the floor at the north end of the platform and the air is heavy with it.,true
+91cc09faf42e,726,29,2026-08-22,Heat,Made me unwell,"Stifling by the turnstiles for most of the tour, no relief anywhere in the station.",true
+f488ab908f40,Q05,29,2026-08-22,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour near the stairs to the street.,true
+fcbd5f117133,243,29,2026-08-22,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour in the crew room.,true
+2a1df833643b,L16,29,2026-08-22,Heat,Affects my work,"Stifling at the north end of the platform for most of the tour, no relief anywhere in the station.",true
+e77b19dd68a7,S25,29,2026-08-22,Dust or air quality,Noticeable,Visible haze by the booth through the evening peak.,true
+64ae5b5b9e98,638,29,2026-08-22,Dust or air quality,Made me unwell,Coughing through the tour and for an hour after I get home.,true
+864d2c94089d,R31,29,2026-08-22,Dust or air quality,Noticeable,Black grit over every surface by the booth within an hour of it being wiped.,true
+12abe2e4a153,G16,29,2026-08-22,Ventilation or airflow,Affects my work,Air is completely still between trains at the south end.,true
+cadd19ccbab3,N09,30,2026-08-21,Ventilation or airflow,Noticeable,No noticeable airflow by the turnstiles at any point in the tour.,true
+e9f7800cea8e,B08,30,2026-08-21,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+f5898df895e5,220,30,2026-08-21,Heat,Affects my work,"Heat in the crew room is worse than the street by a long way, even after dark.",true
+c10217c35668,S04,30,2026-08-21,Heat,Noticeable,"Stifling at the north end of the platform for most of the tour, no relief anywhere in the station.",true
+a3f312dcd2dc,L14,31,2026-08-20,Ventilation or airflow,Noticeable,Air is completely still between trains near the stairs to the street.,true
+4281ba1a5223,B23,31,2026-08-20,Heat,Noticeable,Had to step up to the street twice near the stairs to the street just to cool down.,true
+3980c1d12e0b,614,31,2026-08-20,Dust or air quality,Affects my work,Black grit over every surface by the booth within an hour of it being wiped.,true
+c70ee4bdcb17,G10,31,2026-08-20,Heat,Affects my work,"Stifling by the booth for most of the tour, no relief anywhere in the station.",true
+da94eaf147b4,215,31,2026-08-20,Fumes or exhaust,Noticeable,Exhaust smell by the turnstiles that lingers well after the equipment has gone.,true
+2d01cb496b5a,R35,31,2026-08-20,Heat,Noticeable,"Heat along the express track is worse than the street by a long way, even after dark.",true
+e1a0367c4a30,F32,31,2026-08-20,Fumes or exhaust,Affects my work,Fumes drifting down from the street vent on the mezzanine.,true
+e090cb9ce75c,R44,32,2026-08-19,Heat,Noticeable,No shade and no airflow by the turnstiles; the whole tour is spent in it.,true
+0e4fd08310dd,139,32,2026-08-19,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour by the turnstiles.,true
+03b9f8f6a83a,F23,32,2026-08-19,Dust or air quality,Affects my work,Black grit over every surface by the booth within an hour of it being wiped.,true
+6498886495c4,726,33,2026-08-18,Heat,Affects my work,Had to step up to the street twice at the north end of the platform just to cool down.,true
+9bdd3d959ea8,419,33,2026-08-18,"Damp, mould or standing water",Made me unwell,Standing water on the floor near the stairs to the street and the air is heavy with it.,true
+803bec769310,406,33,2026-08-18,"Damp, mould or standing water",Noticeable,"Mould visible on the wall by the booth, nothing has been cleaned.",true
+0f175d8b2576,S03,33,2026-08-18,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour near the stairs to the street.,true
+87c112336101,243,33,2026-08-18,Ventilation or airflow,Made me unwell,No noticeable airflow by the turnstiles at any point in the tour.,true
+33541ddfc981,A42,33,2026-08-18,Noise,Affects my work,Braking screech on the mezzanine is painful without plugs.,true
+474d59d314cf,608,33,2026-08-18,Noise,Affects my work,Constant structural rumble along the express track through the whole tour.,true
+e721aa509e6f,206,33,2026-08-18,Heat,Affects my work,Had to step up to the street twice at the north end of the platform just to cool down.,true
+2571a0b016a2,629,34,2026-08-17,Heat,Noticeable,"Heat at the south end is worse than the street by a long way, even after dark.",true
+4a1a3888b4e9,R44,34,2026-08-17,Dust or air quality,Noticeable,Black grit over every surface on the mezzanine within an hour of it being wiped.,true
+04296314c79d,219,34,2026-08-17,Heat,Noticeable,Had to step up to the street twice near the stairs to the street just to cool down.,true
+4fe63b9097ab,L20,34,2026-08-17,Heat,Noticeable,"Stifling by the booth for most of the tour, no relief anywhere in the station.",true
+9724ee88f508,108,34,2026-08-17,Dust or air quality,Affects my work,Black grit over every surface along the express track within an hour of it being wiped.,true
+1a8cfafd21be,710,34,2026-08-17,Other,Affects my work,"Lighting on the mezzanine has been out for weeks, hard to see the platform edge.",true
+b6dda0dbc738,231,34,2026-08-17,Ventilation or airflow,Noticeable,The fans by the booth have not run for weeks.,true
+8eef989b540c,D04,34,2026-08-17,"Damp, mould or standing water",Noticeable,"Persistent damp smell by the turnstiles, dark staining on the tiles.",true
+be751a0d5950,113,35,2026-08-16,Ventilation or airflow,Noticeable,No noticeable airflow near the stairs to the street at any point in the tour.,true
+d070b86ad258,718,35,2026-08-16,"Damp, mould or standing water",Noticeable,"Persistent damp smell near the stairs to the street, dark staining on the tiles.",true
+cbfa0ebd105c,B19,35,2026-08-16,Other,Affects my work,Rodents along the express track through the overnight tour.,true
+4819a9dc146e,219,35,2026-08-16,Noise,Affects my work,Constant structural rumble along the express track through the whole tour.,true
+51f0f9c45323,Q05,35,2026-08-16,Dust or air quality,Affects my work,Black grit over every surface along the express track within an hour of it being wiped.,true
+41d64082bc4a,R32,35,2026-08-16,Ventilation or airflow,Affects my work,The fans in the crew room have not run for weeks.,true
+343729588865,M05,35,2026-08-16,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+f174066dd964,208,35,2026-08-16,Heat,Noticeable,No shade and no airflow by the turnstiles; the whole tour is spent in it.,true
+b1c55e9e01ed,219,36,2026-08-15,Heat,Noticeable,Had to step up to the street twice at the south end just to cool down.,true
+b7f8c35dbdef,M05,36,2026-08-15,Other,Made me unwell,Broken tiles and debris at the south end that nobody has come to clear.,true
+2ab95b03167b,R19,36,2026-08-15,Ventilation or airflow,Noticeable,Air is completely still between trains by the booth.,true
+3fb1c1713fc8,A12,37,2026-08-14,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour on the mezzanine.,true
+8dd3ac930530,F04,37,2026-08-14,Heat,Affects my work,"Heat along the express track is worse than the street by a long way, even after dark.",true
+5dc54d0c8c77,104,37,2026-08-14,Heat,Affects my work,Had to step up to the street twice in the crew room just to cool down.,true
+dbcbe7e9dc12,S29,37,2026-08-14,Ventilation or airflow,Made me unwell,No noticeable airflow at the south end at any point in the tour.,true
+de13885c6364,M06,37,2026-08-14,Heat,Made me unwell,"Stifling at the north end of the platform for most of the tour, no relief anywhere in the station.",true
+6b60152d438b,A43,37,2026-08-14,Heat,Affects my work,Had to step up to the street twice near the stairs to the street just to cool down.,true
+411f7a037cd7,F18,37,2026-08-14,Ventilation or airflow,Noticeable,Air is completely still between trains in the crew room.,true
+6ac5efd59469,726,38,2026-08-13,Heat,Noticeable,"Stifling by the booth for most of the tour, no relief anywhere in the station.",true
+527d019ce892,705,38,2026-08-13,Noise,Affects my work,Constant structural rumble along the express track through the whole tour.,true
+8f3e3745e963,F35,38,2026-08-13,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+5761433dcbef,902,38,2026-08-13,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+9681fdb6a132,R24,38,2026-08-13,Ventilation or airflow,Noticeable,No noticeable airflow on the mezzanine at any point in the tour.,true
+cb8fd898f2c3,205,39,2026-08-12,Heat,Affects my work,"Stifling near the stairs to the street for most of the tour, no relief anywhere in the station.",true
+02d4d2c34591,114,39,2026-08-12,Dust or air quality,Noticeable,Black grit over every surface by the turnstiles within an hour of it being wiped.,true
+c90cb59dae5a,233,39,2026-08-12,Ventilation or airflow,Noticeable,Air is completely still between trains at the north end of the platform.,true
+fe5cd8489805,N09,39,2026-08-12,Heat,Noticeable,"Stifling near the stairs to the street for most of the tour, no relief anywhere in the station.",true
+0ac0989f64b5,D15,39,2026-08-12,Ventilation or airflow,Affects my work,Air is completely still between trains by the booth.,true
+aa52bdddfe56,N08,39,2026-08-12,"Damp, mould or standing water",Affects my work,"Mould visible on the wall along the express track, nothing has been cleaned.",true
+2cf2fb0c15bd,613,40,2026-08-11,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour on the mezzanine.,true
+2e563ddaf410,219,40,2026-08-11,"Damp, mould or standing water",Noticeable,Water pooling along the express track for days after the last rain.,true
+af8315528d9e,J13,40,2026-08-11,Noise,Affects my work,Announcement speakers on the mezzanine distort loud enough to hurt.,true
+b1c844e7c2d7,Q04,40,2026-08-11,Noise,Affects my work,Constant structural rumble at the south end through the whole tour.,true
+6daddeeb709e,A47,40,2026-08-11,Heat,Affects my work,"Heat at the north end of the platform is worse than the street by a long way, even after dark.",true
+8183e238d78c,217,40,2026-08-11,Fumes or exhaust,Noticeable,Fumes drifting down from the street vent in the crew room.,true
+99a6bca741be,D18,41,2026-08-10,Fumes or exhaust,Noticeable,Exhaust smell near the stairs to the street that lingers well after the equipment has gone.,true
+c164c118290e,618,42,2026-08-09,Dust or air quality,Noticeable,Black grit over every surface at the south end within an hour of it being wiped.,true
+b22b94406eba,613,42,2026-08-09,Heat,Affects my work,"Stifling along the express track for most of the tour, no relief anywhere in the station.",true
+4bbfe2e79a16,F14,42,2026-08-09,Fumes or exhaust,Noticeable,Fumes drifting down from the street vent along the express track.,true
+2a50b0e1c39d,138,42,2026-08-09,Ventilation or airflow,Affects my work,Air is completely still between trains in the crew room.,true
+6204d9ce03db,230,42,2026-08-09,Dust or air quality,Noticeable,Visible haze at the north end of the platform through the evening peak.,true
+1f9899ca6c09,214,42,2026-08-09,Heat,Made me unwell,"Stifling in the crew room for most of the tour, no relief anywhere in the station.",true
+3b39ce2121cc,219,43,2026-08-08,Noise,Noticeable,Braking screech along the express track is painful without plugs.,true
+a56ed26e69fe,406,43,2026-08-08,Other,Noticeable,Rodents on the mezzanine through the overnight tour.,true
+6cb556c3f203,N06,43,2026-08-08,Heat,Affects my work,"Stifling along the express track for most of the tour, no relief anywhere in the station.",true
+6bf5ee962af4,D19,43,2026-08-08,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+cb286af5798c,A07,43,2026-08-08,Dust or air quality,Noticeable,Black grit over every surface along the express track within an hour of it being wiped.,true
+2a658dd352a8,R05,44,2026-08-07,Dust or air quality,Noticeable,Visible haze at the south end through the evening peak.,true
+7244dc2256e7,613,45,2026-08-06,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour by the booth.,true
+872c55bb819a,613,45,2026-08-06,"Damp, mould or standing water",Noticeable,Water pooling along the express track for days after the last rain.,true
+9be52ab0b945,243,45,2026-08-06,Other,Noticeable,"Lighting on the mezzanine has been out for weeks, hard to see the platform edge.",true
+1dc03f6e6eaf,617,45,2026-08-06,Heat,Noticeable,Had to step up to the street twice by the turnstiles just to cool down.,true
+0ac432d1b2bd,640,45,2026-08-06,Heat,Affects my work,"Heat in the crew room is worse than the street by a long way, even after dark.",true
+a5fb4bc2e432,F01,45,2026-08-06,Heat,Affects my work,"Stifling at the south end for most of the tour, no relief anywhere in the station.",true
+59568601e2b8,114,46,2026-08-05,Dust or air quality,Affects my work,Visible haze at the north end of the platform through the evening peak.,true
+48e31c2e697c,F04,46,2026-08-05,Heat,Affects my work,Had to step up to the street twice at the north end of the platform just to cool down.,true
+1da45ecc26cf,H03,46,2026-08-05,Ventilation or airflow,Made me unwell,No noticeable airflow along the express track at any point in the tour.,true
+5dac2d436545,F22,46,2026-08-05,Other,Affects my work,Broken tiles and debris on the mezzanine that nobody has come to clear.,true
+46fa9da6fe96,G26,46,2026-08-05,Dust or air quality,Affects my work,Black grit over every surface by the turnstiles within an hour of it being wiped.,true
+2f920692ec5a,124,47,2026-08-04,Ventilation or airflow,Made me unwell,Air is completely still between trains on the mezzanine.,true
+1a31e0a6e8bc,F14,47,2026-08-04,Ventilation or airflow,Noticeable,No noticeable airflow at the north end of the platform at any point in the tour.,true
+513e752a7eb8,J16,47,2026-08-04,Heat,Noticeable,Had to step up to the street twice near the stairs to the street just to cool down.,true
+17fc427b4634,R43,47,2026-08-04,Dust or air quality,Noticeable,Visible haze in the crew room through the evening peak.,true
+897517abb2c1,F29,47,2026-08-04,Fumes or exhaust,Noticeable,Diesel work train sat in the station close to an hour on the midnights.,true
+23541280dff5,257,48,2026-08-03,Other,Affects my work,Rodents near the stairs to the street through the overnight tour.,true
+bdf25f2bc614,607,48,2026-08-03,Noise,Affects my work,Announcement speakers on the mezzanine distort loud enough to hurt.,true
+cb55eadad957,E01,49,2026-08-02,Heat,Made me unwell,No shade and no airflow along the express track; the whole tour is spent in it.,true
+7334e15e1cc8,139,49,2026-08-02,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour on the mezzanine.,true
+f04e9c37198c,406,49,2026-08-02,"Damp, mould or standing water",Affects my work,Standing water on the floor in the crew room and the air is heavy with it.,true
+01dd83c1e1ca,109,49,2026-08-02,Other,Affects my work,Rodents in the crew room through the overnight tour.,true
+da4689ba48af,L16,49,2026-08-02,Ventilation or airflow,Made me unwell,The fans on the mezzanine have not run for weeks.,true
+2288359cf2f5,N07,49,2026-08-02,Heat,Affects my work,"Stifling along the express track for most of the tour, no relief anywhere in the station.",true
+ed0161508415,629,50,2026-08-01,"Damp, mould or standing water",Noticeable,Water pooling at the south end for days after the last rain.,true
+a97782662071,F04,50,2026-08-01,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+21d3983c5490,G19,50,2026-08-01,Heat,Noticeable,"Heat on the mezzanine is worse than the street by a long way, even after dark.",true
+0eb1075e7fda,229,50,2026-08-01,"Damp, mould or standing water",Noticeable,Water pooling on the mezzanine for days after the last rain.,true
+3ac5e67356ef,J31,50,2026-08-01,Dust or air quality,Noticeable,Black grit over every surface at the south end within an hour of it being wiped.,true
+1b403055c966,626,50,2026-08-01,Ventilation or airflow,Noticeable,Air is completely still between trains in the crew room.,true
+942acfcbd220,726,51,2026-07-31,Ventilation or airflow,Affects my work,The fans near the stairs to the street have not run for weeks.,true
+fb35a30aad9b,G32,51,2026-07-31,Dust or air quality,Made me unwell,Coughing through the tour and for an hour after I get home.,true
+b0814fe9bc7a,M21,51,2026-07-31,Heat,Noticeable,Had to step up to the street twice by the booth just to cool down.,true
+c6fc99f62689,113,52,2026-07-30,Ventilation or airflow,Noticeable,Air is completely still between trains at the south end.,true
+0dbc38f431cc,M22,52,2026-07-30,Heat,Affects my work,"Heat in the crew room is worse than the street by a long way, even after dark.",true
+53c015258fbb,N09,52,2026-07-30,Fumes or exhaust,Noticeable,Fumes drifting down from the street vent along the express track.,true
+fae4c6cf521c,A19,52,2026-07-30,Ventilation or airflow,Noticeable,The fans near the stairs to the street have not run for weeks.,true
+f2c5ebadb099,M06,52,2026-07-30,Heat,Affects my work,No shade and no airflow at the south end; the whole tour is spent in it.,true
+334b0cb2172e,M12,52,2026-07-30,Heat,Affects my work,"Heat at the north end of the platform is worse than the street by a long way, even after dark.",true
+7a23716d1402,726,53,2026-07-29,Dust or air quality,Made me unwell,Visible haze in the crew room through the evening peak.,true
+d210292d944a,A42,53,2026-07-29,Heat,Noticeable,"Stifling near the stairs to the street for most of the tour, no relief anywhere in the station.",true
+098d473aebfa,133,53,2026-07-29,Other,Noticeable,Broken tiles and debris near the stairs to the street that nobody has come to clear.,true
+19314b15b04c,A60,54,2026-07-28,Heat,Affects my work,Had to step up to the street twice by the turnstiles just to cool down.,true
+e96b069eb3c1,L20,54,2026-07-28,Heat,Noticeable,"Heat on the mezzanine is worse than the street by a long way, even after dark.",true
+92e55b6f5588,104,54,2026-07-28,Other,Noticeable,"Lighting on the mezzanine has been out for weeks, hard to see the platform edge.",true
+fb7e01953272,A34,54,2026-07-28,Heat,Noticeable,"Heat by the turnstiles is worse than the street by a long way, even after dark.",true
+a71131b19799,A06,54,2026-07-28,Ventilation or airflow,Affects my work,Air is completely still between trains at the north end of the platform.,true
+d635511f8ef5,253,55,2026-07-27,"Damp, mould or standing water",Noticeable,Standing water on the floor along the express track and the air is heavy with it.,true
+bc694401bfcf,R44,55,2026-07-27,Dust or air quality,Affects my work,Black grit over every surface by the turnstiles within an hour of it being wiped.,true
+8d1107b24282,248,55,2026-07-27,Fumes or exhaust,Affects my work,Fumes drifting down from the street vent at the south end.,true
+26479776e650,619,55,2026-07-27,Ventilation or airflow,Affects my work,The fans by the turnstiles have not run for weeks.,true
+1b9bfc6fedaf,F24,55,2026-07-27,Fumes or exhaust,Noticeable,Exhaust smell by the turnstiles that lingers well after the equipment has gone.,true
+349a11f35cee,D19,56,2026-07-26,Ventilation or airflow,Affects my work,Air is completely still between trains at the north end of the platform.,true
+cf16a73930c6,129,56,2026-07-26,Heat,Noticeable,"Heat near the stairs to the street is worse than the street by a long way, even after dark.",true
+957de39d43b5,N04,56,2026-07-26,Heat,Made me unwell,Had to step up to the street twice at the north end of the platform just to cool down.,true
+11400ffd42c9,233,57,2026-07-25,Dust or air quality,Affects my work,Black grit over every surface along the express track within an hour of it being wiped.,true
+69e0a4039599,R34,57,2026-07-25,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+60fe4777edde,N07,58,2026-07-24,Dust or air quality,Affects my work,Visible haze on the mezzanine through the evening peak.,true
+2536839af1a5,F20,58,2026-07-24,Ventilation or airflow,Affects my work,The fans by the booth have not run for weeks.,true
+dc012ede07bc,F14,59,2026-07-23,Ventilation or airflow,Noticeable,No noticeable airflow along the express track at any point in the tour.,true
+150289e8ba73,L14,59,2026-07-23,Heat,Noticeable,"Stifling along the express track for most of the tour, no relief anywhere in the station.",true
+7392720d43a6,F31,59,2026-07-23,Other,Affects my work,Broken tiles and debris along the express track that nobody has come to clear.,true
+128d4c7d73d2,A52,59,2026-07-23,Dust or air quality,Affects my work,Black grit over every surface at the north end of the platform within an hour of it being wiped.,true
+0dc6d2ac0c23,A36,59,2026-07-23,Fumes or exhaust,Noticeable,Fumes drifting down from the street vent at the north end of the platform.,true
+edf3b2e7f6d3,R32,60,2026-07-22,Ventilation or airflow,Affects my work,No noticeable airflow by the turnstiles at any point in the tour.,true
+e81c76fa21b1,115,60,2026-07-22,Ventilation or airflow,Noticeable,No noticeable airflow on the mezzanine at any point in the tour.,true
+26da45b362c9,253,61,2026-07-21,Noise,Noticeable,Announcement speakers along the express track distort loud enough to hurt.,true
+26851dbdb62e,618,61,2026-07-21,Dust or air quality,Noticeable,Black grit over every surface along the express track within an hour of it being wiped.,true
+b61fff02a002,B08,61,2026-07-21,Heat,Affects my work,Had to step up to the street twice at the south end just to cool down.,true
+3fc6682dc3f3,220,61,2026-07-21,"Damp, mould or standing water",Made me unwell,"Persistent damp smell at the south end, dark staining on the tiles.",true
+f45106b0698e,257,61,2026-07-21,Ventilation or airflow,Made me unwell,Air is completely still between trains at the south end.,true
+ce953c1e4fe3,249,61,2026-07-21,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour in the crew room.,true
+734123d5f023,128,61,2026-07-21,Heat,Affects my work,"Stifling near the stairs to the street for most of the tour, no relief anywhere in the station.",true
+7eeafe579f04,219,62,2026-07-20,Heat,Made me unwell,"Heat at the south end is worse than the street by a long way, even after dark.",true
+cd4183790f12,N05,62,2026-07-20,Ventilation or airflow,Made me unwell,Air is completely still between trains by the turnstiles.,true
+dfc34d1f52e9,120,63,2026-07-19,"Damp, mould or standing water",Noticeable,"Persistent damp smell by the turnstiles, dark staining on the tiles.",true
+d87077b7735e,L20,63,2026-07-19,Heat,Noticeable,Had to step up to the street twice on the mezzanine just to cool down.,true
+180960565f0b,633,63,2026-07-19,Heat,Affects my work,No shade and no airflow along the express track; the whole tour is spent in it.,true
+ee9d5ce5b9d7,L08,64,2026-07-18,Dust or air quality,Noticeable,Black grit over every surface on the mezzanine within an hour of it being wiped.,true
+8c6153cd6b5e,603,64,2026-07-18,Heat,Noticeable,"Heat along the express track is worse than the street by a long way, even after dark.",true
+9f311b695d97,S16,64,2026-07-18,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour by the booth.,true
+f34d9f7d4fe0,D15,64,2026-07-18,"Damp, mould or standing water",Noticeable,Standing water on the floor in the crew room and the air is heavy with it.,true
+9eed57c63c9a,L13,65,2026-07-17,Dust or air quality,Noticeable,Black grit over every surface by the booth within an hour of it being wiped.,true
+fddf4e6ba745,G18,65,2026-07-17,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour by the turnstiles.,true
+824c87302856,902,65,2026-07-17,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour by the turnstiles.,true
+d2b666e09f6c,L19,65,2026-07-17,"Damp, mould or standing water",Noticeable,"Mould visible on the wall at the north end of the platform, nothing has been cleaned.",true
+983d3b3e96fd,B12,66,2026-07-16,"Damp, mould or standing water",Noticeable,Water pooling along the express track for days after the last rain.,true
+c041f3ce0032,N05,66,2026-07-16,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+51f6c796d505,R05,67,2026-07-15,Dust or air quality,Affects my work,Black grit over every surface in the crew room within an hour of it being wiped.,true
+85db7824fbfc,M20,67,2026-07-15,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+3cea423ace84,R40,67,2026-07-15,Heat,Affects my work,Had to step up to the street twice near the stairs to the street just to cool down.,true
+6f8500d92222,113,68,2026-07-14,"Damp, mould or standing water",Noticeable,"Mould visible on the wall along the express track, nothing has been cleaned.",true
+89015326df45,629,68,2026-07-14,Noise,Affects my work,Announcement speakers in the crew room distort loud enough to hurt.,true
+df967d051402,R05,68,2026-07-14,"Damp, mould or standing water",Made me unwell,Water pooling by the turnstiles for days after the last rain.,true
+41d73626097b,109,68,2026-07-14,Other,Affects my work,Rodents at the north end of the platform through the overnight tour.,true
+2b3b00009c63,E01,69,2026-07-13,"Damp, mould or standing water",Noticeable,Water pooling at the south end for days after the last rain.,true
+95aff0584587,N06,69,2026-07-13,Dust or air quality,Affects my work,Visible haze on the mezzanine through the evening peak.,true
+9ac1cf12ed5c,G18,69,2026-07-13,Ventilation or airflow,Noticeable,The fans at the north end of the platform have not run for weeks.,true
+27bca8b59e0b,N09,69,2026-07-13,Ventilation or airflow,Affects my work,No noticeable airflow by the booth at any point in the tour.,true
+95737058a7fe,S16,69,2026-07-13,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour by the turnstiles.,true
+50886626ec34,R34,69,2026-07-13,Ventilation or airflow,Affects my work,No noticeable airflow by the turnstiles at any point in the tour.,true
+8dd28b328e5b,S15,69,2026-07-13,"Damp, mould or standing water",Made me unwell,"Mould visible on the wall in the crew room, nothing has been cleaned.",true
+8f982cc83163,629,70,2026-07-12,Fumes or exhaust,Affects my work,Exhaust smell at the south end that lingers well after the equipment has gone.,true
+cd878b96022f,241,70,2026-07-12,Heat,Noticeable,"Heat by the turnstiles is worse than the street by a long way, even after dark.",true
+8ea3eec51ce7,624,71,2026-07-11,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+da842f5e0dc3,G33,71,2026-07-11,Dust or air quality,Noticeable,Black grit over every surface in the crew room within an hour of it being wiped.,true
+9ef8887cb6ec,L13,71,2026-07-11,"Damp, mould or standing water",Noticeable,Water pooling by the booth for days after the last rain.,true
+4f2c04d40e6d,H09,71,2026-07-11,Noise,Noticeable,Constant structural rumble at the south end through the whole tour.,true
+1999610df11a,D39,71,2026-07-11,Ventilation or airflow,Made me unwell,Air is completely still between trains near the stairs to the street.,true
+17ec26e04101,607,71,2026-07-11,Heat,Affects my work,No shade and no airflow near the stairs to the street; the whole tour is spent in it.,true
+56f17ebfe1de,120,72,2026-07-10,Heat,Made me unwell,"Stifling along the express track for most of the tour, no relief anywhere in the station.",true
+952e13aef02d,F35,72,2026-07-10,Noise,Affects my work,Braking screech at the north end of the platform is painful without plugs.,true
+8b791552b2ec,B20,72,2026-07-10,Dust or air quality,Affects my work,Visible haze in the crew room through the evening peak.,true
+97b33b21083b,B19,73,2026-07-09,Heat,Affects my work,"Heat on the mezzanine is worse than the street by a long way, even after dark.",true
+2cf41212228d,H09,73,2026-07-09,Heat,Affects my work,"Heat on the mezzanine is worse than the street by a long way, even after dark.",true
+de52275c49a4,614,73,2026-07-09,Ventilation or airflow,Affects my work,No noticeable airflow along the express track at any point in the tour.,true
+f60008a1c65f,624,74,2026-07-08,Heat,Noticeable,"Heat at the south end is worse than the street by a long way, even after dark.",true
+7f92011706ba,R44,74,2026-07-08,Dust or air quality,Noticeable,Black grit over every surface near the stairs to the street within an hour of it being wiped.,true
+5dbb94d2a4fb,R20,74,2026-07-08,Dust or air quality,Noticeable,Metallic taste in the mouth after a full tour along the express track.,true
+079ed545d5b3,G09,74,2026-07-08,Ventilation or airflow,Noticeable,No noticeable airflow at the south end at any point in the tour.,true
+f14ca0568c09,414,74,2026-07-08,Dust or air quality,Made me unwell,Visible haze on the mezzanine through the evening peak.,true
+5bfbc4e7b4d2,713,75,2026-07-07,Ventilation or airflow,Affects my work,No noticeable airflow on the mezzanine at any point in the tour.,true
+5ce32fb0ec7b,B06,75,2026-07-07,Fumes or exhaust,Noticeable,Exhaust smell by the turnstiles that lingers well after the equipment has gone.,true
+f46e433555eb,A11,76,2026-07-06,Heat,Noticeable,"Heat near the stairs to the street is worse than the street by a long way, even after dark.",true
+b99020ea902b,133,76,2026-07-06,Dust or air quality,Made me unwell,Black grit over every surface near the stairs to the street within an hour of it being wiped.,true
+eb693f84c93a,228,76,2026-07-06,Ventilation or airflow,Affects my work,The fans at the north end of the platform have not run for weeks.,true
+293a66daf58c,253,77,2026-07-05,Dust or air quality,Affects my work,Metallic taste in the mouth after a full tour by the turnstiles.,true
+8fad9055c6a6,A12,77,2026-07-05,"Damp, mould or standing water",Made me unwell,"Mould visible on the wall at the south end, nothing has been cleaned.",true
+5e873da9bef1,L22,77,2026-07-05,Other,Noticeable,Broken tiles and debris at the south end that nobody has come to clear.,true
+3a46b7186286,248,78,2026-07-04,"Damp, mould or standing water",Noticeable,"Mould visible on the wall on the mezzanine, nothing has been cleaned.",true
+4b8804418855,D06,78,2026-07-04,Dust or air quality,Affects my work,Coughing through the tour and for an hour after I get home.,true
+bdb5c9a9a7b6,B04,78,2026-07-04,Heat,Noticeable,"Stifling by the turnstiles for most of the tour, no relief anywhere in the station.",true
+4d73f5ed0823,A60,79,2026-07-03,Fumes or exhaust,Affects my work,Diesel work train sat in the station close to an hour on the midnights.,true
+f2229e0de3f2,A19,79,2026-07-03,"Damp, mould or standing water",Noticeable,Standing water on the floor along the express track and the air is heavy with it.,true
+9a39a8e5cb57,S14,79,2026-07-03,Dust or air quality,Noticeable,Coughing through the tour and for an hour after I get home.,true
+837af0b988be,253,80,2026-07-02,Noise,Affects my work,Constant structural rumble on the mezzanine through the whole tour.,true
+bd9c933e5110,502,80,2026-07-02,Noise,Affects my work,Braking screech at the north end of the platform is painful without plugs.,true
+69d166938666,120,82,2026-06-30,Ventilation or airflow,Noticeable,Air is completely still between trains in the crew room.,true
+cc1ed508087d,233,82,2026-06-30,Dust or air quality,Affects my work,Black grit over every surface on the mezzanine within an hour of it being wiped.,true
+19b24243f706,S15,82,2026-06-30,Ventilation or airflow,Affects my work,Air is completely still between trains by the booth.,true
+adb25ef69c25,613,83,2026-06-29,"Damp, mould or standing water",Made me unwell,Standing water on the floor along the express track and the air is heavy with it.,true
+435494f77481,A30,83,2026-06-29,Ventilation or airflow,Affects my work,The fans at the north end of the platform have not run for weeks.,true

@@ -1,11 +1,11 @@
 # Cached Open-Meteo responses. Re-fetched automatically when the TTL expires;
 # three HTTP requests for the whole system, so never worth tracking.
-station_air_quality/.cache/
+admin_dashboard_model/.cache/
 
 # Anonymous worker reports. Kept out of version control so real submissions
 # never reach a public repo; the app reseeds illustrative demo records on
 # first run of a fresh checkout.
-station_air_quality/complaints.json
+admin_dashboard_model/complaints.json
 
 .venv/
 __pycache__/

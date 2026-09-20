@@ -1,5 +1,5 @@
 # NYC subway station air-quality app.
-#   streamlit run station_air_quality/app.py
+#   streamlit run admin_dashboard_model/app.py
 #
 # The repo's .venv already satisfies all of these.
 streamlit>=1.46

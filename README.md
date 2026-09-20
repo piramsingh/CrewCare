@@ -4,8 +4,8 @@ A Streamlit dashboard showing modelled conditions on the platform of any of the
 496 NYC subway stations: **PM2.5**, **temperature** and **humidity**.
 
 ```bash
-pip install -r station_air_quality/requirements.txt
-streamlit run station_air_quality/app.py
+pip install -r admin_dashboard_model/requirements.txt
+streamlit run admin_dashboard_model/app.py
 ```
 
 No API key required — outdoor readings come from
@@ -25,19 +25,19 @@ models. Each station's ventilation and service level come from its own
 
 **The platform figures are modelled estimates, not measurements.** No public
 per-station feed exists for the NYC subway. See
-[`station_air_quality/METHODOLOGY.md`](station_air_quality/METHODOLOGY.md) for
+[`admin_dashboard_model/METHODOLOGY.md`](admin_dashboard_model/METHODOLOGY.md) for
 every formula, constant and limitation.
 
 ## Layout
 
 | path | contents |
 |---|---|
-| `station_air_quality/app.py` | the dashboard |
-| `station_air_quality/openmeteo.py` | live outdoor readings, grid dedupe, disk cache |
-| `station_air_quality/indoor.py` | PM2.5 source model |
-| `station_air_quality/thermal.py` | heat balance and psychrometrics |
-| `station_air_quality/charts.py` | Altair builders and palette |
-| `station_air_quality/METHODOLOGY.md` | how all three figures are calculated |
+| `admin_dashboard_model/app.py` | the dashboard |
+| `admin_dashboard_model/openmeteo.py` | live outdoor readings, grid dedupe, disk cache |
+| `admin_dashboard_model/indoor.py` | PM2.5 source model |
+| `admin_dashboard_model/thermal.py` | heat balance and psychrometrics |
+| `admin_dashboard_model/charts.py` | Altair builders and palette |
+| `admin_dashboard_model/METHODOLOGY.md` | how all three figures are calculated |
 | `datasets/nyc_subway_station_spine.csv` | 496 stations, built from MTA Subway Stations (`39hk-dx4f`) and Entrances (`i9wp-a4ja`) on NYS Open Data |
 
 ## Cost

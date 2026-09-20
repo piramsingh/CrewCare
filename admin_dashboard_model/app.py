@@ -11,7 +11,7 @@ level come from the station's own `structure` and `route_count` in
 `datasets/nyc_subway_station_spine.csv`.
 
 Run with:
-    streamlit run station_air_quality/app.py
+    streamlit run admin_dashboard_model/app.py
 """
 
 from __future__ import annotations
