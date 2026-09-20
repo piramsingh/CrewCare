@@ -59,6 +59,73 @@ These properties are load-bearing, not incidental:
 - **k-anonymity** (25 members) is applied inside `data/mockExposure.ts`, so a
   suppressed cell has nothing left in it for a view to leak.
 
+## WhatsApp Business Cloud API (`server/`)
+
+The browser app is the **simulator**; `server/` is the path that actually
+reaches a worker's phone. A FastAPI service implementing Meta's webhook
+handshake, number linking, and message sending via the Graph API.
+
+```bash
+cd server
+python3 -m venv .venv && ./.venv/bin/pip install -r whatsapp/requirements.txt
+cp whatsapp/.env.example whatsapp/.env     # fill in from your Meta app
+./.venv/bin/uvicorn main:app --reload
+python3 -m unittest discover -s . -v       # flow tests, no network or DB
+```
+
+Without credentials it falls back to `MockWhatsAppClient` and logs what it
+would have sent, so the whole flow — linking, questionnaire, complaint — runs
+locally. For a real number: `ngrok http 8000`, then set
+`<ngrok-url>/api/webhooks/whatsapp` as the callback in Meta's dashboard with
+the same `WHATSAPP_VERIFY_TOKEN`.
+
+### One script, two channels
+
+`src/conversation/script.ts` stays the single source of truth. `npm run
+export:conversation` writes it to `server/whatsapp/script.json`, and
+`crewcare_flow.py` drives the WhatsApp conversation from that file, so the
+thread on a phone cannot drift from the one in the browser. A test fails if
+the committed JSON is stale.
+
+What the flow adds is what a text channel needs and a UI does not: people
+type instead of tapping. A reply matches an option by full label, unique
+prefix, or list position, and comparison normalises dashes and quotes —
+a phone keyboard cannot produce the en dash in "1–4 weeks", and rejecting
+"1-4 weeks" would be rejecting a clear answer.
+
+### Two state machines, one wired in
+
+`conversation_service.py` (the original StationShield flow) and
+`crewcare_flow.py` are two designs of the same conversation. Both shipping
+would guarantee drift, so `conversation_adapter.py` is the single seam and
+points at the CrewCare flow — the questions, wording and branching this
+project has been built around. Flip the import there to use the other.
+
+### What is NOT built
+
+- **No message templates.** Meta only allows free-form replies inside a
+  24-hour window after the worker messages you. The proactive shift alert —
+  the whole point of the alerts opt-in — needs a pre-approved template and
+  does not work without one.
+- **No media handling.** The medical-document step accepts a photo or PDF in
+  the browser; over WhatsApp the media arrives as a webhook event that is not
+  yet downloaded or stored.
+- **Signature verification is skipped when `WHATSAPP_APP_SECRET` is unset**,
+  with a warning. Fine locally, not fine for anything reachable from the
+  internet.
+- **No async queue.** The webhook processes inline.
+
+### The privacy claims change here
+
+The browser demo can honestly say nothing is transmitted or retained, and
+every one of those claims is enforced by a test. **None of that holds once
+messages go over WhatsApp.** Text passes through Meta's infrastructure, and
+answers persist in the server's database. The in-app copy — "stays on your
+phone", "nothing is transmitted or retained" — is true of the simulator and
+would be **false** if the browser app were pointed at this backend. It must
+be rewritten before that happens, and the consent language in the WhatsApp
+flow is the place that carries the real disclosure.
+
 ## Design system
 
 Colours are the exact values from the MTA's official standard, **"MTA Brand

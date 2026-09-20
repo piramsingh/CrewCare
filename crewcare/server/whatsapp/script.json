@@ -1,0 +1,384 @@
+{
+  "_generated": "npm run export:conversation — edit src/conversation/script.ts, not this file",
+  "channel": "whatsapp",
+  "firstStep": "intro",
+  "disclosure": "Your answers stay on your device for this demo. CrewCare is not a medical service and does not give medical advice.",
+  "steps": [
+    {
+      "id": "intro",
+      "kind": "choice",
+      "lines": [
+        {
+          "text": "Hey — this is CrewCare, from your local."
+        },
+        {
+          "text": "It asks a few short questions about your health and your pick, then estimates how much airborne exposure your tours carry compared with the rest of the system."
+        },
+        {
+          "text": "Your answers stay on your device for this demo. CrewCare is not a medical service and does not give medical advice."
+        }
+      ],
+      "options": [
+        {
+          "id": "start",
+          "label": "Get started"
+        },
+        {
+          "id": "about",
+          "label": "What is this?"
+        }
+      ],
+      "next": "q1",
+      "branch": {
+        "about": "about"
+      }
+    },
+    {
+      "id": "about",
+      "kind": "choice",
+      "lines": [
+        {
+          "text": "CrewCare is a prototype built for transit workers. Nothing here is sent anywhere — no server, no account, no record."
+        },
+        {
+          "text": "Your local sees exposure totals by line and tour only, never anything you say about your health."
+        },
+        {
+          "text": "Takes about a minute."
+        }
+      ],
+      "options": [
+        {
+          "id": "start",
+          "label": "Get started"
+        }
+      ],
+      "next": "q1"
+    },
+    {
+      "id": "q1",
+      "kind": "choice",
+      "lines": [
+        {
+          "text": "How would you describe your overall health?"
+        }
+      ],
+      "options": [
+        {
+          "id": "excellent",
+          "label": "Excellent"
+        },
+        {
+          "id": "very-good",
+          "label": "Very good"
+        },
+        {
+          "id": "good",
+          "label": "Good"
+        },
+        {
+          "id": "fair",
+          "label": "Fair"
+        },
+        {
+          "id": "poor",
+          "label": "Poor"
+        },
+        {
+          "id": "prefer-not",
+          "label": "Prefer not to say"
+        }
+      ],
+      "ack": "Got it.",
+      "next": "q2",
+      "allowSkip": true,
+      "summaryLabel": "Overall health"
+    },
+    {
+      "id": "q2",
+      "kind": "choice",
+      "lines": [
+        {
+          "text": "Are you currently experiencing any health problems or symptoms that concern you?"
+        }
+      ],
+      "options": [
+        {
+          "id": "yes",
+          "label": "Yes"
+        },
+        {
+          "id": "no",
+          "label": "No"
+        },
+        {
+          "id": "not-sure",
+          "label": "Not sure"
+        },
+        {
+          "id": "prefer-not",
+          "label": "Prefer not to say"
+        }
+      ],
+      "ack": "Got it.",
+      "next": "q3",
+      "branch": {
+        "no": "medical",
+        "prefer-not": "medical"
+      },
+      "allowSkip": true,
+      "skipTo": "medical",
+      "summaryLabel": "Current concern"
+    },
+    {
+      "id": "q3",
+      "kind": "text",
+      "lines": [
+        {
+          "text": "What is the main health problem or symptom you are experiencing?"
+        }
+      ],
+      "ack": "Got it.",
+      "next": "q4",
+      "allowSkip": true,
+      "summaryLabel": "Main problem",
+      "placeholder": "Type your answer"
+    },
+    {
+      "id": "q4",
+      "kind": "choice",
+      "lines": [
+        {
+          "text": "How long has the problem lasted?"
+        }
+      ],
+      "options": [
+        {
+          "id": "lt-1-day",
+          "label": "Less than 1 day"
+        },
+        {
+          "id": "1-3-days",
+          "label": "1–3 days"
+        },
+        {
+          "id": "lt-1-week",
+          "label": "Less than 1 week"
+        },
+        {
+          "id": "1-4-weeks",
+          "label": "1–4 weeks"
+        },
+        {
+          "id": "1-3-months",
+          "label": "1–3 months"
+        },
+        {
+          "id": "gt-3-months",
+          "label": "More than 3 months"
+        },
+        {
+          "id": "not-sure",
+          "label": "Not sure"
+        }
+      ],
+      "ack": "Got it.",
+      "next": "q5",
+      "allowSkip": true,
+      "summaryLabel": "Duration"
+    },
+    {
+      "id": "q5",
+      "kind": "choice",
+      "lines": [
+        {
+          "text": "Is the problem always present, or does it come and go?"
+        }
+      ],
+      "options": [
+        {
+          "id": "always",
+          "label": "Always present"
+        },
+        {
+          "id": "comes-and-goes",
+          "label": "Comes and goes"
+        },
+        {
+          "id": "during-work",
+          "label": "Happens mainly during work"
+        },
+        {
+          "id": "after-work",
+          "label": "Happens mainly after work"
+        },
+        {
+          "id": "occasionally",
+          "label": "Happens occasionally"
+        },
+        {
+          "id": "not-sure",
+          "label": "Not sure"
+        }
+      ],
+      "ack": "Got it.",
+      "next": "medical",
+      "allowSkip": true,
+      "summaryLabel": "Pattern"
+    },
+    {
+      "id": "medical",
+      "kind": "attach",
+      "lines": [
+        {
+          "text": "Anything from a doctor you want me to know about?"
+        },
+        {
+          "text": "A note or test results. PDF or photo, either works."
+        },
+        {
+          "text": "It stays on your phone and only affects what I text you. Nobody else sees it."
+        }
+      ],
+      "ack": "Got it. That stays on your phone.",
+      "skipAck": "No problem.",
+      "next": "health_app",
+      "allowSkip": true,
+      "summaryLabel": "Medical records",
+      "accept": "image/*,application/pdf"
+    },
+    {
+      "id": "health_app",
+      "kind": "connect",
+      "lines": [
+        {
+          "text": "Want to connect Apple Health or CommonHealth and share that data?"
+        },
+        {
+          "text": "If you do, I can see how your breathing and sleep actually track against the tours you work."
+        },
+        {
+          "text": "Same as the note: it stays on your phone and only changes what I text you."
+        }
+      ],
+      "options": [
+        {
+          "id": "apple",
+          "label": "Apple Health"
+        },
+        {
+          "id": "commonhealth",
+          "label": "CommonHealth"
+        }
+      ],
+      "ack": "Connected. I’ll only use it for your alerts.",
+      "skipAck": "That’s fine.",
+      "next": "notify",
+      "allowSkip": true,
+      "skipLabel": "Not now",
+      "summaryLabel": "Health app",
+      "scopes": [
+        "Respiratory rate",
+        "Blood oxygen",
+        "Resting heart rate",
+        "Sleep"
+      ]
+    },
+    {
+      "id": "notify",
+      "kind": "choice",
+      "lines": [
+        {
+          "text": "Now, the alerts. I can text you once per shift, 90 minutes before you report, with what the air’s like where you’re working that day."
+        },
+        {
+          "text": "Want those?"
+        }
+      ],
+      "options": [
+        {
+          "id": "daily",
+          "label": "Yes, daily"
+        },
+        {
+          "id": "big-changes",
+          "label": "Only big changes"
+        },
+        {
+          "id": "none",
+          "label": "No thanks"
+        }
+      ],
+      "next": "sample",
+      "branch": {
+        "none": "declined"
+      },
+      "summaryLabel": "Shift alerts"
+    },
+    {
+      "id": "declined",
+      "kind": "say",
+      "lines": [
+        {
+          "text": "No problem — I won’t message you."
+        },
+        {
+          "text": "If you change your mind, reply START and I’ll switch them on."
+        },
+        {
+          "text": "One note: these are modeled estimates from station and task, not measurements."
+        }
+      ],
+      "next": "complaint"
+    },
+    {
+      "id": "sample",
+      "kind": "say",
+      "lines": [
+        {
+          "text": "Here’s what one looks like:"
+        },
+        {
+          "text": "👋 Good morning. You’re at 42nd Street today and the dust is running [hotter than usual]. Wear an N95 to stay protected.",
+          "sample": true
+        },
+        {
+          "text": "You’re all set. Reply STOP at any time and the messages end."
+        },
+        {
+          "text": "One note: these are modeled estimates from station and task, not measurements."
+        }
+      ],
+      "next": "complaint"
+    },
+    {
+      "id": "complaint",
+      "kind": "report",
+      "lines": [
+        {
+          "text": "One last thing. Anything wrong at a station you want on record?"
+        },
+        {
+          "text": "Takes a few seconds and it goes to your local, not just into a file somewhere."
+        }
+      ],
+      "ack": "Filed. Your local gets the station, the date and what you wrote. Nothing about your health goes with it.",
+      "skipAck": "Understood.",
+      "next": "done",
+      "allowSkip": true,
+      "skipLabel": "Nothing to report",
+      "summaryLabel": "Station report",
+      "placeholder": "What’s going on?",
+      "actionLabel": "Report a problem"
+    },
+    {
+      "id": "done",
+      "kind": "done",
+      "lines": [
+        {
+          "special": "summary"
+        }
+      ]
+    }
+  ]
+}
