@@ -7,6 +7,10 @@ station_air_quality/.cache/
 # first run of a fresh checkout.
 station_air_quality/complaints.json
 
+# Worker health-export uploads (demographics, self-report). Never real worker
+# data in a public repo.
+station_air_quality/health_uploads.json
+
 .venv/
 __pycache__/
 *.pyc

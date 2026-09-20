@@ -26,9 +26,11 @@ import streamlit as st
 import charts
 import complaints
 import flood
+import health
 import indoor
 import openmeteo as om
 import risk as risk_model
+import sources
 import thermal
 
 REFRESH_CHOICES = {"1 hour": 1.0, "3 hours": 3.0, "6 hours": 6.0, "12 hours": 12.0}
@@ -719,6 +721,302 @@ def render_worker(station: pd.Series, values: dict, daily_means: list[float],
         st.info(note, icon="🌙")
 
 
+_DEMOGRAPHIC_LABELS: dict[str, str] = {
+    "subject_id": "Subject ID",
+    "age_band": "Age band",
+    "sex": "Sex",
+    "height": "Height",
+    "weight": "Weight",
+    "occupation": "Occupation",
+    "division": "Division",
+    "assigned_line": "Assigned line",
+    "tour": "Tour",
+    "regular_days_off": "Regular days off",
+    "home_terminal": "Home terminal",
+}
+
+
+def render_health_upload(stations: pd.DataFrame, mode: str) -> None:
+    """Upload a health export, connect a wearable, and set a notify preference.
+
+    Everything here is a prototype: the file is parsed in memory for this
+    session only, the wearable "connect" contacts nothing and always reports
+    success, and the notification preference is stored but nothing is ever
+    actually sent on it.
+    """
+    ink = charts.palette(mode)
+    st.subheader("Upload a health export")
+    st.caption(
+        "Pulls out your self-report, basic demographics and assigned station "
+        "from an uploaded file. Processed in memory for this session — nothing "
+        "is sent anywhere else."
+    )
+
+    uploaded = st.file_uploader("Health export", type=["pdf", "txt"], key="health_file")
+    if uploaded is not None and uploaded.name != st.session_state.get("health_filename"):
+        text = health.extract_text(uploaded.getvalue(), uploaded.name)
+        demographics = health.parse_demographics(text)
+        self_report = health.parse_self_report(text)
+        st.session_state["health_filename"] = uploaded.name
+        st.session_state["health_demographics"] = demographics
+        st.session_state["health_self_report"] = self_report
+        if not demographics and not self_report:
+            st.session_state["health_raw_text"] = text
+
+    demographics = st.session_state.get("health_demographics")
+    self_report = st.session_state.get("health_self_report")
+    picked_station = None
+
+    if uploaded is not None and not demographics and not self_report:
+        st.warning("Couldn't find recognisable fields in this file.")
+        with st.expander("Raw extracted text"):
+            st.text((st.session_state.get("health_raw_text") or "")[:5000])
+
+    if demographics:
+        st.markdown("**Demographics & assignment**")
+        cols = st.columns(3)
+        items = [(_DEMOGRAPHIC_LABELS[k], v) for k, v in demographics.items()
+                 if k in _DEMOGRAPHIC_LABELS]
+        for i, (label, value) in enumerate(items):
+            with cols[i % 3]:
+                st.markdown(
+                    f"<div style='font-size:11px;text-transform:uppercase;"
+                    f"letter-spacing:.04em;color:{ink['text_secondary']};"
+                    f"margin-top:10px;'>{label}</div>"
+                    f"<div style='font-size:15px;color:{ink['text_primary']};'>{value}</div>",
+                    unsafe_allow_html=True,
+                )
+
+        st.markdown("&nbsp;")
+        st.markdown("**Assigned station**")
+        home_terminal = demographics.get("home_terminal")
+        match = health.match_station(home_terminal, stations)
+        options = list(stations["label"])
+        default_index = options.index(match["label"]) if match is not None else 0
+        picked_label = st.selectbox(
+            "Confirm the station this applies to" if match is not None
+            else "Couldn't match a station automatically — pick one",
+            options, index=default_index, key="health_station_pick",
+        )
+        picked_station = stations[stations["label"] == picked_label].iloc[0]
+        if match is not None:
+            st.caption(f"Matched from “{home_terminal}” in the upload. "
+                       "Change it above if that's wrong.")
+
+    if self_report:
+        st.markdown("**Self-report**")
+        report_df = pd.DataFrame(self_report).rename(
+            columns={"question": "Question", "answer": "Answer"}
+        )
+        st.table(report_df)
+
+    st.divider()
+    st.subheader("Connect a wearable")
+    st.caption(
+        "Prototype — no wearable account is actually contacted; this simulates "
+        "the connection outcome."
+    )
+    provider = st.radio(
+        "Provider", health.WEARABLE_PROVIDERS, horizontal=True, key="wearable_provider_pick",
+    )
+    if st.button("Connect", key="wearable_connect_btn"):
+        result = health.mock_connect_wearable(provider)
+        st.session_state["health_wearable"] = result
+        st.success(result["message"])
+    wearable = st.session_state.get("health_wearable")
+    if wearable:
+        st.caption(f"Connected to {wearable['provider']} at {wearable['connected_at']}.")
+
+    st.divider()
+    st.subheader("Notification preference")
+    pref = st.radio(
+        "How should we notify you about this station's conditions?",
+        health.NOTIFICATION_CHOICES, key="notif_pref_pick",
+    )
+    if st.button("Save preference", key="notif_save_btn"):
+        st.session_state["health_notification_pref"] = pref
+        st.success(f"Preference saved: {pref}.")
+
+    if demographics:
+        st.divider()
+        if st.button("Save this check-in", key="health_save_btn"):
+            upload = health.new_upload(
+                source_filename=st.session_state.get("health_filename", "unknown"),
+                demographics=demographics,
+                self_report=self_report or [],
+                matched_station=picked_station,
+            )
+            upload.wearable_connected = bool(wearable)
+            upload.wearable_provider = (wearable or {}).get("provider")
+            upload.notification_pref = st.session_state.get("health_notification_pref")
+            health.save_upload(upload)
+            st.success("Saved.")
+
+
+def _source_card(item: dict, accent: str, ink: dict) -> str:
+    # display:block SPANs, not divs -- a block element nested inside an <a>
+    # makes Streamlit's HTML renderer reconstruct the anchor around each
+    # block in turn, duplicating the link and its border onto every line.
+    body = (
+        f"<span style='display:block;font-family:monospace;font-size:10.5px;"
+        f"color:{ink['text_secondary']};margin-bottom:6px;word-break:break-word;'>"
+        f"{item['tag']}</span>"
+        f"<span style='display:block;font-size:13.5px;font-weight:600;line-height:1.35;"
+        f"color:{ink['text_primary']};margin-bottom:6px;'>{item['name']}</span>"
+        f"<span style='display:block;font-size:12px;color:{ink['text_secondary']};"
+        f"line-height:1.45;'>{item['note']}</span>"
+    )
+    box = (
+        f"display:block;border:1px solid {ink['grid']};border-left:3px solid {accent};"
+        f"border-radius:10px;padding:13px 14px;background:{ink['forecast_band']};"
+        f"height:100%;box-sizing:border-box;text-decoration:none;"
+    )
+    if item.get("url"):
+        return f"<a href='{item['url']}' target='_blank' rel='noopener' " \
+               f"style='{box}color:inherit;'>{body}</a>"
+    return f"<div style='{box}'>{body}</div>"
+
+
+def _render_card_group(items: list[dict], accent: str, ink: dict, per_row: int = 3) -> None:
+    for i in range(0, len(items), per_row):
+        row = items[i:i + per_row]
+        cols = st.columns(per_row)
+        for col, item in zip(cols, row):
+            with col:
+                st.markdown(_source_card(item, accent, ink), unsafe_allow_html=True)
+
+
+def _context_row(item: dict, ink: dict) -> str:
+    style = (
+        f"display:block;padding:10px 2px;border-bottom:1px solid {ink['grid']};"
+        f"text-decoration:none;color:inherit;"
+    )
+    body = (
+        f"<span style='display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;'>"
+        f"<span style='font-size:13.5px;font-weight:600;color:{ink['text_primary']};'>{item['name']}</span>"
+        f"<span style='font-family:monospace;font-size:10.5px;color:{ink['text_secondary']};"
+        f"white-space:nowrap;'>{item['tag']}</span></span>"
+        f"<span style='display:block;font-size:12px;color:{ink['text_secondary']};"
+        f"margin-top:3px;'>{item['note']}</span>"
+    )
+    if item.get("url"):
+        return f"<a href='{item['url']}' target='_blank' rel='noopener' style='{style}'>{body}</a>"
+    return f"<div style='{style}'>{body}</div>"
+
+
+def _live_card(api: dict, ink: dict) -> str:
+    live_color = ink["series"][2]
+    return (
+        f"<a href='{api['url']}' target='_blank' rel='noopener' style='display:block;"
+        f"text-decoration:none;color:inherit;background:{ink['forecast_band']};"
+        f"border:1px solid {ink['grid']};border-radius:10px;padding:16px 18px;"
+        f"height:100%;box-sizing:border-box;'>"
+        f"<span style='display:block;font-family:monospace;font-size:10px;letter-spacing:.08em;"
+        f"text-transform:uppercase;color:{live_color};margin-bottom:8px;'>&#9679; Live</span>"
+        f"<span style='display:block;font-size:14px;font-weight:700;margin-bottom:6px;"
+        f"color:{ink['text_primary']};'>{api['name']}</span>"
+        f"<span style='display:block;font-size:12.5px;color:{ink['text_secondary']};'>{api['note']}</span></a>"
+    )
+
+
+def _fig_note(label: str, text: str | None, ink: dict) -> str:
+    if not text:
+        return ""
+    return (
+        f"<div style='margin:10px 0 2px;font-size:11px;font-weight:600;"
+        f"text-transform:uppercase;letter-spacing:.05em;color:{ink['text_secondary']};'>"
+        f"{label}</div>"
+        f"<div style='font-size:13px;color:{ink['text_primary']};line-height:1.5;'>{text}</div>"
+    )
+
+
+def render_sources(mode: str) -> None:
+    """Where the four modelled figures' formulas and constants come from.
+
+    Static content, no live data -- this exists so the app's citations are
+    versioned with the code, not a separate page to keep in sync by hand.
+    """
+    ink = charts.palette(mode)
+    st.title("Below the Platform")
+    st.caption(
+        "Four figures on the dashboard — PM2.5, temperature, humidity, and "
+        "flood & mold risk — are modelled, not measured. Below are our formulas that we developed "
+        "for this hackathon and the research that went into it."
+    )
+
+    st.divider()
+    st.subheader("The four modelled figures")
+
+    for fig in sources.FIGURES:
+        accent = ink["series"][fig["series_index"]] if fig["series_index"] is not None \
+            else ink["text_secondary"]
+        st.markdown(
+            f"<div style='display:flex;align-items:center;gap:12px;margin:22px 0 4px;'>"
+            f"<div style='width:34px;height:34px;border-radius:50%;background:{accent};"
+            f"display:flex;align-items:center;justify-content:center;color:#fff;"
+            f"font-weight:800;font-size:12px;flex:none;'>{fig['bullet']}</div>"
+            f"<div><div style='font-size:18px;font-weight:700;"
+            f"color:{ink['text_primary']};'>{fig['name']}</div>"
+            f"<div style='font-family:monospace;font-size:12px;color:{accent};"
+            f"margin-top:2px;'>{fig['formula']}</div></div></div>",
+            unsafe_allow_html=True,
+        )
+        if fig.get("description") or fig.get("climate"):
+            desc_col, climate_col = st.columns(2)
+            with desc_col:
+                st.markdown(_fig_note("How we built this", fig.get("description"), ink),
+                            unsafe_allow_html=True)
+            with climate_col:
+                st.markdown(_fig_note("Under climate change", fig.get("climate"), ink),
+                            unsafe_allow_html=True)
+        for group in fig["groups"]:
+            if group["title"]:
+                st.markdown(
+                    f"<div style='font-size:11.5px;font-weight:600;text-transform:uppercase;"
+                    f"letter-spacing:.05em;color:{ink['text_secondary']};margin:14px 0 8px;'>"
+                    f"{group['title']}</div>",
+                    unsafe_allow_html=True,
+                )
+            else:
+                st.markdown("<div style='height:6px;'></div>", unsafe_allow_html=True)
+            _render_card_group(group["items"], accent, ink)
+
+    st.divider()
+    st.subheader("Public data referenced, not yet wired in")
+    st.caption(
+        "These describe real conditions on the system, modeled by us to best represent each station." \
+        "Since we don't have the actual station structure (volume, depth, etc.) our equations are created" \
+        "to best model what are the expected numbers."
+    )
+    for group in sources.CONTEXT_GROUPS:
+        st.markdown(f"**{group['title']}**")
+        for item in group["items"]:
+            st.markdown(_context_row(item, ink), unsafe_allow_html=True)
+        st.markdown("<div style='height:10px;'></div>", unsafe_allow_html=True)
+
+    st.divider()
+    st.subheader("What the app actually calls, live")
+    st.caption(
+        "Everything above is literature and reference data, consulted once while "
+        "building the model. These three endpoints are hit on every refresh — "
+        "the only genuinely live inputs the dashboard has."
+    )
+    cols = st.columns(3)
+    for col, api in zip(cols, sources.LIVE_APIS):
+        with col:
+            st.markdown(_live_card(api, ink), unsafe_allow_html=True)
+
+    st.divider()
+    st.caption(
+        "**On reading this page as validation:** most entries above establish "
+        "that a mechanism is real and roughly what order of magnitude to expect "
+        "— few directly calibrate a constant. `METHODOLOGY.md` is explicit "
+        "about which coefficients are literature-backed and which are judgment "
+        "calls; treat this as “where the idea came from,” not “proof "
+        "the number is right.”"
+    )
+
+
 def render_footer(snapshot: om.Snapshot, ttl_hours: float, station: pd.Series) -> None:
     age = snapshot.age_seconds()
     fetched = snapshot.fetched_at.astimezone()
@@ -776,23 +1074,35 @@ def main() -> None:
     stations = load_stations()
     station, ttl_hours, borough = render_sidebar(stations)
 
-    try:
-        snapshot = load_snapshot(ttl_hours, st.session_state.get("cache_buster", 0))
-    except Exception as error:  # noqa: BLE001 - surface any API/network failure
-        st.error(f"Could not reach Open-Meteo: {error}")
-        st.stop()
+    tab_conditions, tab_health, tab_sources = st.tabs(
+        ["Station conditions", "Health check-in", "Below the Platform"]
+    )
 
-    values = om.station_current(snapshot, station)
-    daily_means = om.station_daily_means(snapshot, station)
+    with tab_conditions:
+        try:
+            snapshot = load_snapshot(ttl_hours, st.session_state.get("cache_buster", 0))
+        except Exception as error:  # noqa: BLE001 - surface any API/network failure
+            snapshot = None
+            st.error(f"Could not reach Open-Meteo: {error}")
 
-    scored = score_borough(borough, ttl_hours, st.session_state.get("cache_buster", 0))
-    render_map(scored, station, borough, mode)
-    st.divider()
+        if snapshot is not None:
+            values = om.station_current(snapshot, station)
+            daily_means = om.station_daily_means(snapshot, station)
 
-    render_location(station, mode)
-    render_conditions(station, values, daily_means, snapshot, mode)
-    render_worker(station, values, daily_means, snapshot, mode)
-    render_footer(snapshot, ttl_hours, station)
+            scored = score_borough(borough, ttl_hours, st.session_state.get("cache_buster", 0))
+            render_map(scored, station, borough, mode)
+            st.divider()
+
+            render_location(station, mode)
+            render_conditions(station, values, daily_means, snapshot, mode)
+            render_worker(station, values, daily_means, snapshot, mode)
+            render_footer(snapshot, ttl_hours, station)
+
+    with tab_health:
+        render_health_upload(stations, mode)
+
+    with tab_sources:
+        render_sources(mode)
 
 
 if __name__ == "__main__":
