@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+httpx
+anthropic
+python-dotenv
+
+# Operations dashboard API reads the team models in admin_dashboard_model/
+pandas
+requests
