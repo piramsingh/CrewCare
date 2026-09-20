@@ -2,10 +2,10 @@
 
 Real-time air quality at any of the 496 NYC subway stations, from
 [Open-Meteo](https://open-meteo.com/en/docs/air-quality-api), joined to
-`datasets/nyc_subway_station_spine.csv`.
+`admin_dashboard/datasets/nyc_subway_station_spine.csv`.
 
 ```bash
-.venv/bin/python -m streamlit run admin_dashboard_model/app.py
+.venv/bin/python -m streamlit run admin_dashboard/admin_dashboard_model/app.py
 ```
 
 No API key. Open-Meteo's free tier needs none for non-commercial use.

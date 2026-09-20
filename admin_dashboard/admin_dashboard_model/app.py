@@ -8,10 +8,10 @@ The three platform figures are MODELLED, not measured. Live outdoor readings
 come from Open-Meteo; `indoor.py` adds the PM2.5 the trains generate and
 `thermal.py` solves the heat and moisture balances. Ventilation and service
 level come from the station's own `structure` and `route_count` in
-`datasets/nyc_subway_station_spine.csv`.
+`admin_dashboard/datasets/nyc_subway_station_spine.csv`.
 
 Run with:
-    streamlit run admin_dashboard_model/app.py
+    streamlit run admin_dashboard/admin_dashboard_model/app.py
 """
 
 from __future__ import annotations
