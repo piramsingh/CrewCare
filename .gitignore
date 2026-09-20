@@ -10,3 +10,8 @@ admin_dashboard/admin_dashboard_model/complaints.json
 .venv/
 __pycache__/
 *.pyc
+
+# Runtime database for the WhatsApp service. It churns on every run and it
+# accumulates employee-id-to-phone-number links, which is exactly the mapping
+# the rest of the system is designed not to keep.
+project/stationshield_whatsapp.db

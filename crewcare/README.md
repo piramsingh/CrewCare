@@ -5,8 +5,14 @@ everyone: the role is resolved from the account and the app routes itself —
 workers into a mobile messaging portal, administrators into a desktop
 dashboard. The UI never asks which one the person is.
 
-**This is a demo.** There is no backend, no database, no authentication and no
-messaging integration. Every figure is modeled, not measured.
+**This is a demo.** There is no authentication, and the worker's messaging
+portal runs entirely in the browser — no database, no WhatsApp integration (the
+real one lives in [`../project/`](../project/README.md)).
+
+The operations dashboard is the exception: it reads **live data** from
+[`server/`](server/README.md), which runs the team's models over live
+Open-Meteo readings. Every platform figure is modelled, not measured, and the
+worker reports are a synthetic corpus.
 
 ```bash
 npm install
@@ -17,6 +23,46 @@ npm run build
 
 Sign in with any ID. `W1042` lands on the worker path, `A0117` on the
 dashboard; an empty field lands on the worker path.
+
+## Where things live
+
+```
+crewcare/
+  src/
+    screens/worker/     the mobile messaging portal
+    screens/admin/      the operations dashboard
+      Dashboard.tsx       layout, KPI cards, recommendations
+      RiskMap.tsx         MapLibre street map, 496 stations coloured 1–5
+      StationPanel.tsx    the popup: PM2.5, temperature, humidity, mould, reports
+      TopStations.tsx     the five to look at first
+      ConcernBars.tsx     worker reports by concern type
+      ExposureChart.tsx   platform PM2.5 by line
+      ExposureTable.tsx   exposure by tour — still mock, see below
+      useOps.ts           loads the snapshot
+    api/ops.ts          the client for server/; the only source of dashboard data
+    conversation/       the worker conversation machine and script
+    components/         shared UI: bullets, sheets, bubbles, icons
+    data/               mock data for the parts with no pipeline yet
+    theme.ts            the palette and type scale
+  server/               FastAPI over the models — see server/README.md
+  test/                 conversation machine and script export, `npm test`
+  scripts/              icon build and conversation export
+```
+
+**`crewcare/` is not self-contained.** `server/` imports the models from
+`../admin_dashboard/admin_dashboard_model/`; see
+[`server/README.md`](server/README.md) for the search path and the
+`ADMIN_MODEL_DIR` override.
+
+Running the dashboard needs both halves:
+
+```bash
+cd server && uvicorn main:app --port 8000   # terminal 1
+npm run dev                                  # terminal 2
+```
+
+Without the API the dashboard renders its error state and says the data is
+unavailable, rather than showing invented numbers.
 
 ## Running it
 
