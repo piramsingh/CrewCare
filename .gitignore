@@ -1,0 +1,7 @@
+# Cached Open-Meteo responses. Re-fetched automatically when the TTL expires;
+# three HTTP requests for the whole system, so never worth tracking.
+station_air_quality/.cache/
+
+.venv/
+__pycache__/
+*.pyc

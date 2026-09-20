@@ -1,0 +1,9 @@
+# NYC subway station air-quality app.
+#   streamlit run station_air_quality/app.py
+#
+# The repo's .venv already satisfies all of these.
+streamlit>=1.46
+pandas>=2.0
+altair>=5.0
+requests>=2.31
+pydeck>=0.9
