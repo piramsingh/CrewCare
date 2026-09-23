@@ -1,16 +1,77 @@
 # CrewCare
 
-Exposure awareness for NYC transit workers. Platform conditions at all 496
-subway stations — **PM2.5**, **temperature**, **humidity** and **mould risk** —
-modelled from live outdoor readings, combined with what workers report from the
-platform, and served to two audiences: a worker messaging portal and an
-operations dashboard.
+**Exposure awareness for NYC transit workers.** A worker gets a text before their
+shift telling them what the air is like at their station, answers a private
+health check-in that never leaves their phone, and can file a station complaint
+that goes to their union local.
 
-**Every platform figure is modelled, not measured.** No public per-station feed
-exists for the NYC subway, so the numbers are physical estimates from live
-street-level data. They are a planning prior for where to look first, never a
-clearance that a station is safe. The worker reports shipped with the repo are
-a synthetic corpus. Both are labelled as such wherever they appear on screen.
+![CrewCare demo — a worker gets a shift alert, answers a private health check-in, files a station complaint, and the local sees the pattern](docs/crewcare-demo.gif)
+
+▶ **[Watch with sound (23 seconds)](docs/crewcare-demo.mp4)**
+
+---
+
+## What problem this solves
+
+A transit worker shouldn't have to hand over their medical history to report a
+hazard.
+
+Today there is no per-station air quality feed for the NYC subway, and no easy
+way for a worker to flag "the dust on this platform is bad" so that it becomes
+their local's problem rather than their own. CrewCare does both, while keeping a
+hard line between the two.
+
+**Members keep their health. The local gets what it needs to act.**
+
+## How it works, in plain terms
+
+The worker never installs anything. Everything happens in a text thread.
+
+**1 · They get an alert before the shift**
+
+> "Good morning. You're at 42nd Street today and the dust is running hotter than
+> usual. Wear an N95 to stay protected."
+
+Sent about 90 minutes before they report, based on where they're working that
+day.
+
+**2 · They answer a private check-in**
+
+How they're feeling, a doctor's note if they want to add one, Apple Health if
+they want to connect it — each data type granted one at a time. **All of it stays
+on the phone.** None of it is aggregated and none of it reaches the dashboard.
+
+**3 · They can file a complaint**
+
+This is the one thing that deliberately leaves the phone. The confirmation says
+so out loud:
+
+> "Filed. Your local gets the station, the date and what you wrote. Nothing about
+> your health goes with it."
+
+**4 · The local sees the pattern**
+
+A dashboard showing where complaints cluster, which platforms the exposure model
+flags, and where the two agree — so a rep can act on a station rather than an
+anecdote. It never shows anyone's health answers, because it never receives them.
+
+## What's real and what isn't
+
+This is a prototype built at a hackathon, and it is labelled that way on every
+screen. Being precise about this matters more than looking finished.
+
+| | |
+|---|---|
+| **Real** | The privacy architecture. The physical models. Live outdoor weather and air quality from Open-Meteo. The 496-station spine from NYS Open Data. |
+| **Modelled, not measured** | Every platform figure — PM2.5, temperature, humidity, mould risk. No public per-station feed exists, so these are physical estimates from live street-level data. They are a prior for **where to look first**, never a clearance that a station is safe. |
+| **Simulated** | The worker reports. The 449 complaints shipped with the repo are a synthetic corpus, not real submissions. |
+| **Not built** | Real authentication, a live messaging integration, and the Apple Health bridge (which needs a native iOS app). The demo simulates these end to end. |
+
+Independent student project. **Not affiliated with the MTA.**
+
+---
+
+<!-- Everything below is for developers. -->
 
 ## Repository map
 
@@ -22,6 +83,7 @@ crewcare/            the product: React web app + its JSON API
   src/                     worker portal and operations dashboard
   server/                  FastAPI over the models above
 project/             standalone WhatsApp linking service (not used by the web demo)
+docs/                demo video, GIF and poster frame
 ```
 
 Each folder has its own README covering what lives there and why:
@@ -79,6 +141,10 @@ portal.
 
 The first snapshot scores all 496 stations and takes a few seconds; Open-Meteo
 responses are then cached on disk for three hours.
+
+> **If the dashboard shows an error**, the API could not find the models. They
+> live in `admin_dashboard/admin_dashboard_model/`; point at them explicitly with
+> `ADMIN_MODEL_DIR=/path/to/admin_dashboard_model uvicorn main:app --port 8000`.
 
 ### Without the web app
 
