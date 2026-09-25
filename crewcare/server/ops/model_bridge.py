@@ -66,6 +66,19 @@ def load():
     except Exception as exc:  # pragma: no cover - surfaced through the API
         raise ModelsUnavailable(f"could not import the models: {exc}") from exc
 
+    # On a serverless host the deployment directory is read-only, so the
+    # model's disk cache and its seeded complaint store have to move. Both are
+    # plain module constants, so they are redirected here rather than by
+    # editing the team's code. CREWCARE_STATE_DIR is unset locally, where the
+    # package directory is writable and the cache should persist between runs.
+    state = os.environ.get("CREWCARE_STATE_DIR")
+    if state:
+        state_dir = Path(state)
+        state_dir.mkdir(parents=True, exist_ok=True)
+        openmeteo.CACHE_DIR = state_dir / "cache"
+        openmeteo.CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        complaints.STORE = state_dir / "complaints.json"
+
     # A fresh checkout has no complaints.json — it is gitignored so real
     # submissions never reach a public repo, and the app reseeds the
     # illustrative corpus on first run. The Streamlit app does this; without

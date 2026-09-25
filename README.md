@@ -1,13 +1,13 @@
-# CrewCare
+# CrewCares
 
 **Exposure awareness for NYC transit workers.** A worker gets a text before their
 shift telling them what the air is like at their station, answers a private
 health check-in that never leaves their phone, and can file a station complaint
-that goes to their union local.
+that goes to their union rep.
 
-![CrewCare demo — a worker gets a shift alert, answers a private health check-in, files a station complaint, and the local sees the pattern](docs/crewcare-demo.gif)
+![CrewCares demo — a worker gets a shift alert, answers a private health check-in, files a station complaint, and their union rep sees the pattern](docs/crewcares-demo.gif)
 
-▶ **[Watch with sound (23 seconds)](docs/crewcare-demo.mp4)**
+▶ **[Watch with sound (23 seconds)](docs/crewcares-demo.mp4)**
 
 ---
 
@@ -18,10 +18,10 @@ hazard.
 
 Today there is no per-station air quality feed for the NYC subway, and no easy
 way for a worker to flag "the dust on this platform is bad" so that it becomes
-their local's problem rather than their own. CrewCare does both, while keeping a
+their union's problem rather than their own. CrewCares does both, while keeping a
 hard line between the two.
 
-**Members keep their health. The local gets what it needs to act.**
+**Members keep their health. Their union gets what it needs to act.**
 
 ## How it works, in plain terms
 
@@ -49,7 +49,7 @@ so out loud:
 > "Filed. Your local gets the station, the date and what you wrote. Nothing about
 > your health goes with it."
 
-**4 · The local sees the pattern**
+**4 · Their union rep sees the pattern**
 
 A dashboard showing where complaints cluster, which platforms the exposure model
 flags, and where the two agree — so a rep can act on a station rather than an
