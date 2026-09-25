@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CrewCare — exposure awareness for transit workers</title>
+<title>CrewCares — exposure awareness for transit workers</title>
 <meta name="description" content="A transit worker gets a text before their shift about the air at their station, records their health privately, and files a station complaint that reaches their union rep, without their health going with it.">
-<meta property="og:title" content="CrewCare — members keep their health, their union gets what it needs">
+<meta property="og:title" content="CrewCares — members keep their health, their union gets what it needs">
 <meta property="og:description" content="Exposure awareness for NYC transit workers. Independent student prototype, not affiliated with the MTA.">
 <meta property="og:image" content="crewcare-poster.jpg">
 <meta property="og:type" content="website">
@@ -37,6 +37,8 @@
 
   --wrap:1140px;
   --r:16px;
+  /* one spacing scale, in rem so layout grows with the reader's text size */
+  --s3:1rem; --s4:1.5rem; --s5:2rem; --s6:3rem; --s7:4.5rem; --s8:6rem;
   --ease:cubic-bezier(.16,.84,.34,1);
 }
 
@@ -46,7 +48,7 @@ html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
   background:var(--white);color:var(--ink);
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;
-  font-size:17px;line-height:1.6;font-weight:400;
+  font-size:1.0625rem;line-height:1.62;font-weight:400;letter-spacing:0;
   -webkit-font-smoothing:antialiased;
   font-variant-numeric:tabular-nums;
 }
@@ -62,18 +64,22 @@ html{scrollbar-color:#B9C3D6 var(--ground);caret-color:var(--accent)}
 
 a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px}
 a:hover{color:var(--accent-lift)}
-h1,h2,h3{line-height:1.08;letter-spacing:-.035em;font-weight:800}
-h1{font-size:clamp(2.4rem,6.2vw,4.4rem)}
-h2{font-size:clamp(1.9rem,4.2vw,3rem)}
-h3{font-size:clamp(1.3rem,2.6vw,1.9rem);letter-spacing:-.028em;line-height:1.22}
+h1,h2,h3{font-weight:800;text-wrap:balance}
+h1{font-size:clamp(2.75rem,7vw,5.25rem);line-height:1.04;letter-spacing:-.038em}
+h2{font-size:clamp(2rem,4.6vw,3.4rem);line-height:1.07;letter-spacing:-.034em}
+h3{font-size:clamp(1.5rem,2.9vw,2.15rem);line-height:1.14;letter-spacing:-.026em}
 p{max-width:68ch}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px}
-section{padding:clamp(84px,11vw,148px) 0}
-.lede{font-size:clamp(1.1rem,1.9vw,1.32rem);line-height:1.55;color:var(--grey)}
+section{padding:clamp(5.5rem,12vw,10.5rem) 0}
+.lede{font-size:clamp(1.15rem,2vw,1.45rem);line-height:1.5;letter-spacing:-.011em;color:var(--grey)}
 .on-blue .lede{color:var(--grey-on-blue)}
 
 /* ═══ top bar ═══ */
-.top{position:sticky;top:0;z-index:60;background:rgba(5,14,99,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-blue)}
+.top{
+  position:sticky;top:0;z-index:60;
+  background:rgba(4,11,74,.86);backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:0 1px 0 rgba(255,255,255,.07), 0 10px 24px -18px rgba(0,0,0,.9);
+}
 .top .wrap{display:flex;align-items:center;gap:20px;height:62px}
 .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:1.06rem;letter-spacing:-.03em;color:var(--white);text-decoration:none}
 .brand:hover{color:var(--white)}
@@ -95,25 +101,21 @@ section{padding:clamp(84px,11vw,148px) 0}
 
 /* ═══ hero ═══ */
 .hero{
-  background:radial-gradient(120% 90% at 18% 6%, #0F26C4 0%, var(--primary) 42%, var(--deep) 100%);
-  color:var(--white);padding:clamp(60px,8vw,104px) 0 clamp(72px,9vw,120px);
+  background:radial-gradient(130% 100% at 50% 0%, #0F26C4 0%, var(--primary) 46%, var(--deep) 100%);
+  color:var(--white);padding:clamp(4.5rem,10vw,8rem) 0 clamp(5rem,10vw,8.5rem);
 }
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
-.hero h1{max-width:15ch}
-@media (min-width:1040px){
-  .hero .wrap{grid-template-columns:minmax(0,1fr) 520px;gap:64px;align-items:center}
-  .hero-copy{max-width:none}
-  .videowrap{margin-top:0}
-  .hero h1{max-width:13ch}
-}
-.hero .lede{margin-top:26px;max-width:54ch}
+.hero .wrap{text-align:center}
+.hero-copy{max-width:none}
+.hero h1{max-width:17ch;margin:0 auto}
+.hero .lede{margin:var(--s5) auto 0;max-width:46ch}
+.hero-actions{justify-content:center}
 .chip{
   display:inline-flex;align-items:center;gap:9px;margin-bottom:30px;
   border:1.5px solid rgba(255,255,255,.28);border-radius:999px;padding:7px 15px 7px 12px;
   font-size:.82rem;font-weight:600;letter-spacing:.01em;color:#E4EBFF;
 }
 .chip i{width:7px;height:7px;border-radius:50%;background:var(--exposure);flex:none}
-.hero-actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:38px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:var(--s6)}
 .btn{
   display:inline-flex;align-items:center;gap:10px;
   border-radius:12px;padding:15px 24px;font-size:1rem;font-weight:700;
@@ -128,36 +130,36 @@ section{padding:clamp(84px,11vw,148px) 0}
 @media (prefers-reduced-motion:reduce){.btn:hover{transform:none}}
 
 /* ═══ video ═══ */
-.videowrap{margin-top:clamp(44px,6vw,68px)}
+.videowrap{margin-top:clamp(3.5rem,7vw,6rem)}
 .videoframe{
-  position:relative;max-width:560px;border-radius:22px;overflow:hidden;
+  position:relative;max-width:min(680px,92vw);margin:0 auto;border-radius:26px;overflow:hidden;
   border:1px solid rgba(255,255,255,.2);
   box-shadow:0 30px 64px rgba(0,0,0,.45);
   background:var(--deep);
 }
 .videoframe video{display:block;width:100%;height:auto}
-.vcap{margin-top:14px;font-size:.87rem;color:var(--grey-on-blue);max-width:56ch}
+.vcap{margin:var(--s4) auto 0;font-size:.9rem;color:var(--grey-on-blue);max-width:50ch;text-align:center}
 
 /* ═══ statement band ═══ */
 .band{background:var(--ground);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .band .big{
-  font-size:clamp(1.5rem,3.4vw,2.35rem);font-weight:700;letter-spacing:-.032em;
-  line-height:1.24;max-width:24ch;color:var(--ink);
+  font-size:clamp(1.7rem,3.8vw,2.7rem);font-weight:700;letter-spacing:-.032em;
+  line-height:1.2;max-width:22ch;color:var(--ink);
 }
 .band .big em{font-style:normal;color:var(--accent)}
 
 /* ═══ walkthrough steps ═══ */
-.step{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:clamp(40px,6vw,88px);align-items:center}
-.step + .step{margin-top:clamp(92px,11vw,152px)}
+.step{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:clamp(2.5rem,6vw,6rem);align-items:center}
+.step + .step{margin-top:clamp(6rem,12vw,11rem)}
 .step.flip{grid-template-columns:420px minmax(0,1fr)}
 .step.flip .step-copy{order:2}
 .step.flip .step-art{order:1}
 .stepno{
-  display:block;font-size:.84rem;font-weight:800;letter-spacing:.06em;
-  color:var(--accent);margin-bottom:18px;font-variant-numeric:tabular-nums;
+  display:block;font-size:.85rem;font-weight:700;letter-spacing:.04em;
+  color:var(--accent);margin-bottom:var(--s4);font-variant-numeric:tabular-nums;
 }
-.step h3{margin-bottom:18px;max-width:17ch}
-.step p{color:var(--grey);max-width:46ch}
+.step h3{margin-bottom:var(--s4);max-width:16ch}
+.step p{color:var(--grey);max-width:42ch;font-size:1.08rem;line-height:1.6}
 .step p + p{margin-top:15px}
 @media (max-width:900px){
   .step,.step.flip{grid-template-columns:1fr;gap:38px}
@@ -240,28 +242,10 @@ section{padding:clamp(84px,11vw,148px) 0}
 .prov{margin-top:20px;padding-top:15px;border-top:1px solid var(--line);font-size:.78rem;color:var(--grey)}
 @media (max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}.bar .k{width:110px}}
 
-/* ═══ honesty table ═══ */
-.honest{display:grid;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:44px;background:var(--white)}
-.hrow{display:grid;grid-template-columns:210px minmax(0,1fr);gap:0;border-top:1px solid var(--line)}
-.hrow:first-child{border-top:0}
-.hrow dt{padding:22px 24px;font-weight:700;font-size:.95rem;display:flex;align-items:flex-start;gap:11px;background:var(--ground)}
-.hrow dt i{width:9px;height:9px;border-radius:50%;flex:none;margin-top:7px}
-.hrow dd{padding:22px 24px;color:var(--grey);font-size:.97rem;line-height:1.55}
-.hrow dd b{color:var(--ink);font-weight:600}
-@media (max-width:720px){.hrow{grid-template-columns:1fr}.hrow dd{padding-top:0;background:var(--white)}.hrow dt{background:var(--white);padding-bottom:10px}}
-
-/* ═══ how it's made ═══ */
-.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
-.pipe div{border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;background:var(--white)}
-.pipe b{display:block;font-size:.78rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
-.pipe p{font-size:.92rem;color:var(--grey);line-height:1.5}
-@media (max-width:820px){.pipe{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:460px){.pipe{grid-template-columns:1fr}}
-
 /* ═══ close ═══ */
 .close{background:radial-gradient(120% 120% at 80% 0%, #0F26C4 0%, var(--primary) 46%, var(--deep) 100%);color:#fff;text-align:center}
 .close h2{max-width:20ch;margin:0 auto}
-.close .lede{margin:24px auto 0;max-width:52ch}
+.close .lede{margin:var(--s5) auto 0;max-width:46ch}
 .close .hero-actions{justify-content:center}
 
 footer{background:var(--deep);color:var(--grey-on-blue);padding:44px 0;border-top:1px solid var(--line-blue);font-size:.88rem}
@@ -274,6 +258,14 @@ footer a{color:#DCE6FF}
 footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
 
 /* ═══ the one authored moment: the alert arriving, on load ═══ */
+@media (prefers-reduced-transparency:reduce){
+  .top{background:var(--deep);backdrop-filter:none}
+}
+@media (prefers-contrast:more){
+  .top{background:#02073A}
+  :root{--grey:#41505E;--grey-on-blue:#E4EBFF}
+  .btn-ghost,.top .ghost{border-color:#fff}
+}
 @media (prefers-reduced-motion:no-preference){
   .js .hero .notif{animation:drop .82s cubic-bezier(.16,.84,.34,1) .45s both}
   @keyframes drop{from{transform:translateY(-190px);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -285,10 +277,9 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
 
 <header class="top on-blue">
   <div class="wrap">
-    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M160-340v-380q0-41 19-71.5t58.5-50q39.5-19.5 100-29T480-880q86 0 146.5 9t99 28.5Q764-823 782-793t18 73v380q0 59-40.5 99.5T660-200l60 60v20h-70l-80-80H390l-80 80h-70v-20l60-60q-59 0-99.5-40.5T160-340Zm320-480q-120 0-173 15.5T231-760h501q-18-27-76.5-43.5T480-820ZM220-545h234v-155H220v155Zm440 60H220h520-80Zm-146-60h226v-155H514v155ZM374-331q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm290 0q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm-364 76h360q34 0 57-25t23-60v-145H220v145q0 35 23 60t57 25Zm180-505h252-501 249Z"/></svg></span>CrewCare</a>
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M160-340v-380q0-41 19-71.5t58.5-50q39.5-19.5 100-29T480-880q86 0 146.5 9t99 28.5Q764-823 782-793t18 73v380q0 59-40.5 99.5T660-200l60 60v20h-70l-80-80H390l-80 80h-70v-20l60-60q-59 0-99.5-40.5T160-340Zm320-480q-120 0-173 15.5T231-760h501q-18-27-76.5-43.5T480-820ZM220-545h234v-155H220v155Zm440 60H220h520-80Zm-146-60h226v-155H514v155ZM374-331q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm290 0q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm-364 76h360q34 0 57-25t23-60v-145H220v145q0 35 23 60t57 25Zm180-505h252-501 249Z"/></svg></span>CrewCares</a>
     <nav aria-label="Sections">
       <a class="hide-sm" href="#how">How it works</a>
-      <a class="hide-sm" href="#real">What's real</a>
       <a class="ghost" href="https://github.com/piramsingh/CrewCare">Read the code</a>
     </nav>
   </div>
@@ -332,7 +323,7 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
   <section class="band">
     <div class="wrap">
       <p class="big">A transit worker shouldn't have to hand over their medical history to <em>report a hazard</em>.</p>
-      <p class="lede" style="margin-top:24px;max-width:56ch">No public air quality feed exists for the subway, and no simple way to flag a bad platform. CrewCare does both, and keeps a hard line between them.</p>
+      <p class="lede" style="margin-top:24px;max-width:56ch">No public air quality feed exists for the subway, and no simple way to flag a bad platform. CrewCares does both, and keeps a hard line between them.</p>
     </div>
   </section>
 
@@ -359,7 +350,7 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
                 <div class="lockface">
                   <div class="lock-time">6:04</div>
                   <div class="notif">
-                    <div class="notif-hd">CrewCare · now</div>
+                    <div class="notif-hd">CrewCares · now</div>
                     <div class="notif-body">Good morning. You're at 42nd Street today and the dust is running <b>hotter than usual</b>. Wear an N95 to stay protected.</div>
                   </div>
                 </div>
@@ -381,7 +372,7 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
               <div class="screen">
                 <div class="island"></div>
                 <div class="appface">
-                  <div class="app-hd"><span class="dot"></span><span class="nm">CrewCare<s>from your local</s></span></div>
+                  <div class="app-hd"><span class="dot"></span><span class="nm">CrewCares<s>from your local</s></span></div>
                   <div class="thread">
                     <div class="bub in">How would you describe your overall health?</div>
                     <div class="chips"><span class="pill">Good</span><span class="pill on">Fair</span><span class="pill">Prefer not to say</span></div>
@@ -390,7 +381,7 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
                 <div class="sheet">
                   <div class="grab"></div>
                   <div class="sheet-title">Apple Health</div>
-                  <p class="sp">Choose what CrewCare may read. It stays on this phone.</p>
+                  <p class="sp">Choose what CrewCares may read. It stays on this phone.</p>
                   <div class="scope"><span>Respiratory rate</span><span class="sw"><i></i></span></div>
                   <div class="scope"><span>Blood oxygen</span><span class="sw"><i></i></span></div>
                   <div class="scope"><span>Resting heart rate</span><span class="sw"><i></i></span></div>
@@ -415,7 +406,7 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
               <div class="screen">
                 <div class="island"></div>
                 <div class="appface">
-                  <div class="app-hd"><span class="dot"></span><span class="nm">CrewCare<s>from your local</s></span></div>
+                  <div class="app-hd"><span class="dot"></span><span class="nm">CrewCares<s>from your local</s></span></div>
                   <div class="thread">
                     <div class="bub in">Anything wrong at a station you want on record?</div>
                     <div class="bub out">Dust by the express track is worse than usual all tour.</div>
@@ -457,36 +448,6 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
     </div>
   </section>
 
-  <!-- ═══ honesty ═══ -->
-  <section id="real">
-    <div class="wrap">
-      <h2>What's real and what isn't</h2>
-      <p class="lede" style="margin-top:18px;max-width:54ch">Built at a hackathon in a weekend, and labelled this way on every screen, not just here.</p>
-
-      <dl class="honest">
-        <div class="hrow">
-          <dt><i style="background:#2FA855"></i>Real</dt>
-          <dd>The <b>privacy architecture</b> and the <b>physical models</b>. Live outdoor data from Open-Meteo, 496 stations from NYS Open Data, the whole flow running end to end.</dd>
-        </div>
-        <div class="hrow">
-          <dt><i style="background:var(--exposure)"></i>Modelled, not measured</dt>
-          <dd>Every platform figure, estimated from live street-level data because no per-station feed exists. A prior for <b>where to look first</b>, never a clearance that a station is safe.</dd>
-        </div>
-        <div class="hrow">
-          <dt><i style="background:#7C93B8"></i>Simulated</dt>
-          <dd>The 449 complaints in the repository are a <b>synthetic corpus</b>, not real submissions from anyone.</dd>
-        </div>
-        <div class="hrow">
-          <dt><i style="background:#98A2B3"></i>Not built</dt>
-          <dd>Authentication, a live messaging integration, and the Apple Health bridge. The demo simulates all three.</dd>
-        </div>
-      </dl>
-
-      <p class="lede" style="margin-top:40px;max-width:56ch;font-size:1.02rem">Every formula, constant and stated limitation is written up in <a href="https://github.com/piramsingh/CrewCare/blob/main/admin_dashboard/admin_dashboard_model/METHODOLOGY.md">METHODOLOGY.md</a>.</p>
-
-    </div>
-  </section>
-
   <!-- ═══ close ═══ -->
   <section class="close on-blue">
     <div class="wrap">
@@ -505,7 +466,7 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
 
 <footer>
   <div class="wrap">
-    <span class="flock"><span class="mark lg" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M160-340v-380q0-41 19-71.5t58.5-50q39.5-19.5 100-29T480-880q86 0 146.5 9t99 28.5Q764-823 782-793t18 73v380q0 59-40.5 99.5T660-200l60 60v20h-70l-80-80H390l-80 80h-70v-20l60-60q-59 0-99.5-40.5T160-340Zm320-480q-120 0-173 15.5T231-760h501q-18-27-76.5-43.5T480-820ZM220-545h234v-155H220v155Zm440 60H220h520-80Zm-146-60h226v-155H514v155ZM374-331q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm290 0q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm-364 76h360q34 0 57-25t23-60v-145H220v145q0 35 23 60t57 25Zm180-505h252-501 249Z"/></svg></span><span><strong>CrewCare</strong><s>Safer Work. Stronger Transit.</s></span></span>
+    <span class="flock"><span class="mark lg" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M160-340v-380q0-41 19-71.5t58.5-50q39.5-19.5 100-29T480-880q86 0 146.5 9t99 28.5Q764-823 782-793t18 73v380q0 59-40.5 99.5T660-200l60 60v20h-70l-80-80H390l-80 80h-70v-20l60-60q-59 0-99.5-40.5T160-340Zm320-480q-120 0-173 15.5T231-760h501q-18-27-76.5-43.5T480-820ZM220-545h234v-155H220v155Zm440 60H220h520-80Zm-146-60h226v-155H514v155ZM374-331q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm290 0q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm-364 76h360q34 0 57-25t23-60v-145H220v145q0 35 23 60t57 25Zm180-505h252-501 249Z"/></svg></span><span><strong>CrewCares</strong><s>Safer Work. Stronger Transit.</s></span></span>
     <span class="chip"><i></i>Independent student prototype · Not affiliated with the MTA</span>
     <p class="fine">Built at a Cornell climate hackathon. No MTA logo or brand asset is used on this page. Environmental figures are modelled rather than measured, and the worker reports are simulated. <a href="https://github.com/piramsingh/CrewCare">Source on GitHub</a>.</p>
   </div>

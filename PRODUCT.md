@@ -52,7 +52,9 @@ A second, weaker differentiator: no per-station air-quality feed exists for the 
 
 ## Brand Commitments
 
-- Name **CrewCare**; tagline **"Safer Work. Stronger Transit."**
+- The landing page uses **CrewCares**. The repository, the app code and the demo video still read **CrewCare** — reconcile before either is treated as canonical.
+
+- Name **CrewCares** on public-facing surfaces; tagline **"Safer Work. Stronger Transit."**
 - Palette is the MTA published brand standard, encoded in `crewcare/src/theme.ts`: `#08179C` primary, `#0062CF` accent, `#F4F6FA` ground, `#7C858C` grey, `#EB6800` Signal Orange.
 - **Signal Orange is exposure indication only, never decoration.** This is the product's own standing rule and carries to every surface.
 - **No MTA logo, wordmark or roundel may be used.** `crewcare/src/assets/agency-mark.svg` is the MTA roundel and is out of bounds for any public-facing surface.
