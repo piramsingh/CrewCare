@@ -17,3 +17,4 @@ __pycache__/
 project/stationshield_whatsapp.db
 .vercel
 .vercel-out
+*.tsbuildinfo
