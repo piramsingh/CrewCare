@@ -15,3 +15,4 @@ __pycache__/
 # accumulates employee-id-to-phone-number links, which is exactly the mapping
 # the rest of the system is designed not to keep.
 project/stationshield_whatsapp.db
+.vercel
