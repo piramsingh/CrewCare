@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { AgencyMark } from './AgencyMark'
+import { BrandMark } from './BrandMark'
 
 /**
  * A simulated push notification, in the shape iOS uses.
@@ -46,7 +46,7 @@ export function PushNotification({
     >
       <div className="flex items-center gap-2">
         <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center overflow-hidden rounded-[5px] bg-white">
-          <AgencyMark size={16} />
+          <BrandMark size={16} />
         </span>
         <span className="text-[12px] font-semibold tracking-wide text-black/55 uppercase">
           CrewCare

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { AgencyMark } from '../../components/AgencyMark'
+import { BrandMark } from '../../components/BrandMark'
 import { DataNotice } from '../../components/DataNotice'
 import { DemoBanner } from '../../components/DemoBanner'
 import { PhoneFrame } from '../../components/PhoneFrame'
@@ -38,7 +38,7 @@ export function ChannelSelect({
       <PhoneFrame>
         <div className="flex flex-1 flex-col px-7 pt-[68px] pb-8">
           <div className="flex items-center gap-3">
-            <AgencyMark size={40} />
+            <BrandMark size={40} />
             <div>
               <p className="text-[15px] font-bold text-cc-primary">You're signed in.</p>
               <p className="text-[14px] text-cc-grey">Pick where CrewCare should reach you.</p>

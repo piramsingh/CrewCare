@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
-import { AgencyMark } from '../components/AgencyMark'
-import { DEMO_HINT, resolveRole, type Role } from '../auth/roles'
+import { BrandMark } from '../components/BrandMark'
+import { resolveRole, type Role } from '../auth/roles'
 import { DemoBanner } from '../components/DemoBanner'
 import { PhoneFrame } from '../components/PhoneFrame'
 import { brand } from '../theme'
@@ -39,7 +39,7 @@ export function SignIn({ onContinue }: { onContinue: (role: Role) => void }) {
       <PhoneFrame>
         <form onSubmit={handleSubmit} className="flex flex-1 flex-col px-10 pt-[76px]">
           <div className="flex flex-col items-center">
-            <AgencyMark size={108} />
+            <BrandMark size={96} />
             <h1 className="pt-4 text-[30px] leading-none font-bold text-black">
               {brand.wordmark}
             </h1>
@@ -95,11 +95,42 @@ export function SignIn({ onContinue }: { onContinue: (role: Role) => void }) {
             >
               Continue
             </button>
-            <p className="pt-3 text-center text-[13px] font-normal text-cc-grey">{DEMO_HINT}</p>
+            {/*
+              DEMO ONLY — delete with the rest of the simulated auth.
+
+              The product never asks a person which role they are; the role
+              comes off the account and the app routes itself. These two
+              buttons break that rule on purpose, because a visitor to the
+              public demo has no account and should not have to be told an
+              employee ID to type. They are labelled as a demo shortcut so
+              the real behaviour is not misread from this screen.
+            */}
+            <div className="pt-5">
+              <p className="pb-2.5 text-center text-[13px] font-normal text-cc-grey">
+                No account? Jump straight in:
+              </p>
+              <div className="flex gap-2.5">
+                <DemoEntry label="As a worker" onClick={() => onContinue('worker')} />
+                <DemoEntry label="As a union rep" onClick={() => onContinue('admin')} />
+              </div>
+            </div>
           </div>
         </form>
       </PhoneFrame>
     </div>
+  )
+}
+
+/** A demo shortcut into one of the two paths. Removed with the simulated auth. */
+function DemoEntry({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex-1 rounded-full border border-cc-accent px-4 py-3 text-[15px] font-semibold text-cc-accent transition active:scale-[0.99] hover:bg-cc-accent hover:text-white"
+    >
+      {label}
+    </button>
   )
 }
 

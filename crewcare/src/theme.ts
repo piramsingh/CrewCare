@@ -35,11 +35,11 @@ export const color = {
 
 export const brand = {
   /** Compact form, used in app chrome (thread header, dashboard rail). */
-  name: 'CrewCare',
+  name: 'CrewCares',
   /** Sign-in wordmark, set as two words in the mockup. */
-  wordmark: 'Crew Care',
+  wordmark: 'CrewCares',
   /** Sign-in tagline, set on two lines in the mockup. */
-  taglineLines: ['Safer works', 'Stronger Transit.'],
+  taglineLines: ['Safer Work.', 'Stronger Transit.'],
   tagline: 'Safer Work. Stronger Transit.',
 } as const
 

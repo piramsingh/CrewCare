@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import type { Role } from './auth/roles'
 import { DemoBanner } from './components/DemoBanner'
+import { SiteNav } from './components/SiteNav'
 import { PhoneFrame } from './components/PhoneFrame'
 import { Dashboard } from './screens/admin/Dashboard'
 import { SignIn } from './screens/SignIn'
@@ -36,23 +37,34 @@ export function App() {
     setSession((n) => n + 1)
   }
 
-  switch (route.screen) {
-    case 'signin':
-      return <SignIn key={session} onContinue={signIn} />
+  /* The site bar is chrome around every screen, so the route only decides
+     what sits beneath it. */
+  return (
+    <div className="flex min-h-full flex-col">
+      <SiteNav />
+      <div className="flex flex-1 flex-col">{screenFor()}</div>
+    </div>
+  )
 
-    case 'admin':
-      return <Dashboard key={session} onSignOut={signOut} />
+  function screenFor() {
+    switch (route.screen) {
+      case 'signin':
+        return <SignIn key={session} onContinue={signIn} />
 
-    case 'worker':
-      return route.channel ? (
-        <ThreadPage key={session} channel={route.channel} onSignOut={signOut} />
-      ) : (
-        <ChannelSelect
-          key={session}
-          onChoose={(channel) => setRoute({ screen: 'worker', channel })}
-          onSignOut={signOut}
-        />
-      )
+      case 'admin':
+        return <Dashboard key={session} onSignOut={signOut} />
+
+      case 'worker':
+        return route.channel ? (
+          <ThreadPage key={session} channel={route.channel} onSignOut={signOut} />
+        ) : (
+          <ChannelSelect
+            key={session}
+            onChoose={(channel) => setRoute({ screen: 'worker', channel })}
+            onSignOut={signOut}
+          />
+        )
+    }
   }
 }
 

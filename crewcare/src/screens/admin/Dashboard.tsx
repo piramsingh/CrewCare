@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { DataNotice } from '../../components/DataNotice'
 import { MaterialIcon, type MaterialIconName } from '../../components/MaterialIcon'
-import { AgencyMark } from '../../components/AgencyMark'
+import { BrandMark } from '../../components/BrandMark'
 import { type OpsSnapshot, type OpsStation, type Recommendation } from '../../api/ops'
 import { RANGES, type Range } from '../../data/mockOperations'
 import { brand } from '../../theme'
@@ -292,7 +292,7 @@ function Rail({
         {/* On a white tile: the roundel's blue is close to the sidebar's own
             navy and disappears against it otherwise. */}
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white">
-          <AgencyMark size={26} />
+          <BrandMark size={26} />
         </span>
         <span className="text-[16px] font-bold text-white">{brand.name}</span>
       </div>
@@ -322,7 +322,7 @@ function Rail({
 
       <div className="flex-1" />
       <div className="flex items-center gap-2.5 border-t border-white/15 px-2 pt-4">
-        <AgencyMark size={30} />
+        <BrandMark size={30} />
         <span className="text-[11px] leading-tight font-semibold text-white/80">
           Safer Workers
           <br />
