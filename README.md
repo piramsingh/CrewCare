@@ -7,7 +7,12 @@ that goes to their union rep.
 
 ![CrewCares demo — a worker gets a shift alert, answers a private health check-in, files a station complaint, and their union rep sees the pattern](docs/crewcares-demo.gif)
 
-▶ **[Watch with sound (23 seconds)](docs/crewcares-demo.mp4)**
+**[Open the live site](https://crewcares.vercel.app)** ·
+**[Try the working demo](https://crewcares.vercel.app/demo)** ·
+[Watch the video with sound (23s)](docs/crewcares-demo.mp4)
+
+The demo needs no account. On the sign-in screen, **As a worker** opens the
+messaging portal and **As a union rep** opens the dashboard.
 
 ---
 
@@ -122,7 +127,11 @@ dashboard says so — nothing is filled in with a plausible number.
 
 ## Quick start
 
-Two processes: the API, then the web app.
+Nothing to run if you only want to look: **<https://crewcares.vercel.app/demo>**
+is the same build, with the operations API deployed as a serverless function
+beside it.
+
+To run it locally, two processes: the API, then the web app.
 
 ```bash
 # 1. the API  (http://localhost:8000)
@@ -136,8 +145,8 @@ npm install
 npm run dev
 ```
 
-Sign in with any ID. `A0117` opens the operations dashboard, `W1042` the worker
-portal.
+Sign in with any ID — `A0117` opens the operations dashboard and `W1042` the
+worker portal — or use the **As a worker** / **As a union rep** buttons.
 
 The first snapshot scores all 496 stations and takes a few seconds; Open-Meteo
 responses are then cached on disk for three hours.
@@ -160,6 +169,27 @@ python test_conditions.py            # 22 checks against live data
 
 streamlit run app.py                 # the original Streamlit dashboard
 ```
+
+## Deployment
+
+The whole thing is one Vercel project, built from this repository on every
+push to `main`:
+
+| path | what it serves | built from |
+|---|---|---|
+| `/` | the landing page | `docs/` |
+| `/demo` | the React app | `crewcare/`, built with `--base=/demo/` |
+| `/api/ops/*` | the operations API | `api/index.py`, reusing `crewcare/server` unchanged |
+
+`api/index.py` only fixes what a serverless host changes: `ADMIN_MODEL_DIR`
+points at `admin_dashboard/admin_dashboard_model/`, which sits outside
+`crewcare/`, and `CREWCARE_STATE_DIR` moves the model's disk cache and
+complaint store to `/tmp`, the only writable path on the function. No model
+code is edited.
+
+A cold request to `/api/ops/snapshot` takes roughly 8–9 seconds, because it
+scores all 496 stations and `/tmp` does not persist between invocations. The
+function is configured with a 60-second limit for that reason.
 
 ## Data
 
