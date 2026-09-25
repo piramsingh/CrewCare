@@ -138,6 +138,8 @@ section{padding:clamp(5.5rem,12vw,10.5rem) 0}
   background:var(--deep);
 }
 .videoframe video{display:block;width:100%;height:auto}
+.vcap a{color:var(--sky);font-weight:600}
+.vcap b{color:#fff;font-weight:700;font-variant-numeric:tabular-nums}
 .vcap{margin:var(--s4) auto 0;font-size:.9rem;color:var(--grey-on-blue);max-width:50ch;text-align:center}
 
 /* ═══ statement band ═══ */
@@ -280,6 +282,7 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
     <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M160-340v-380q0-41 19-71.5t58.5-50q39.5-19.5 100-29T480-880q86 0 146.5 9t99 28.5Q764-823 782-793t18 73v380q0 59-40.5 99.5T660-200l60 60v20h-70l-80-80H390l-80 80h-70v-20l60-60q-59 0-99.5-40.5T160-340Zm320-480q-120 0-173 15.5T231-760h501q-18-27-76.5-43.5T480-820ZM220-545h234v-155H220v155Zm440 60H220h520-80Zm-146-60h226v-155H514v155ZM374-331q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm290 0q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm-364 76h360q34 0 57-25t23-60v-145H220v145q0 35 23 60t57 25Zm180-505h252-501 249Z"/></svg></span>CrewCares</a>
     <nav aria-label="Sections">
       <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="/demo">Demo</a>
       <a class="ghost" href="https://github.com/piramsingh/CrewCare">Read the code</a>
     </nav>
   </div>
@@ -294,13 +297,13 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
       <h1>Members keep their health. Their union gets what it needs to act.</h1>
       <p class="lede">A text before every shift about the air at their station. Health answers that never leave the phone. One report that reaches their union rep.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#how">
+        <a class="btn btn-primary" href="/demo">
+          Try the demo
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#how">
           See how it works
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="https://github.com/piramsingh/CrewCare">
-          Read the code
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3H3.5A1.5 1.5 0 0 0 2 4.5v8A1.5 1.5 0 0 0 3.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-3"/><path d="M9.5 2H14v4.5"/><path d="M7 9 14 2"/></svg>
         </a>
       </div>
       </div>
@@ -314,7 +317,7 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
             Your browser can't play this video. <a href="crewcares-demo.mp4">Download it instead (2.6 MB).</a>
           </video>
         </div>
-        <p class="vcap">23 seconds, with sound. Every screen is the real product and every figure is one the service returns.</p>
+        <p class="vcap">23 seconds, with sound. Or <a href="/demo">open the working demo</a> and sign in as <b>W4271</b> for the worker path, <b>A6035</b> for the dashboard.</p>
       </div>
     </div>
   </section>
@@ -454,11 +457,14 @@ footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
       <h2>The boundary is the product, not a setting.</h2>
       <p class="lede">The code is public, so you don't have to take that on trust.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://github.com/piramsingh/CrewCare">
+        <a class="btn btn-primary" href="/demo">
+          Try the demo
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/piramsingh/CrewCare">
           Read the code
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3H3.5A1.5 1.5 0 0 0 2 4.5v8A1.5 1.5 0 0 0 3.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-3"/><path d="M9.5 2H14v4.5"/><path d="M7 9 14 2"/></svg>
         </a>
-        <a class="btn btn-ghost" href="crewcares-demo.mp4">Download the demo</a>
       </div>
     </div>
   </section>

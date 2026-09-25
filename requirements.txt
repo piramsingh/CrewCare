@@ -1,0 +1,7 @@
+# Dependencies for the Vercel serverless API (api/index.py).
+# Only what the five model modules and the FastAPI layer actually import —
+# streamlit, altair and pydeck belong to the standalone Streamlit app and
+# are deliberately not installed here.
+fastapi>=0.110
+pandas>=2.0
+requests>=2.31

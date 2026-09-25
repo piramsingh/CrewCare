@@ -16,3 +16,4 @@ __pycache__/
 # the rest of the system is designed not to keep.
 project/stationshield_whatsapp.db
 .vercel
+.vercel-out

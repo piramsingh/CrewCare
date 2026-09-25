@@ -1,9 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": null,
-  "installCommand": null,
-  "outputDirectory": "docs",
+  "installCommand": "cd crewcare && npm ci",
+  "buildCommand": "cd crewcare && npm run build -- --base=/demo/ && cd .. && rm -rf .vercel-out && mkdir -p .vercel-out/demo && cp -R docs/. .vercel-out/ && cp -R crewcare/dist/. .vercel-out/demo/",
+  "outputDirectory": ".vercel-out",
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60,
+      "includeFiles": "{admin_dashboard/**,crewcare/server/**}"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/ops/:path*", "destination": "/api/index" }
+  ],
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
