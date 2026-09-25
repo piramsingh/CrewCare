@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CrewCare — exposure awareness for transit workers</title>
+<meta name="description" content="A transit worker gets a text before their shift about the air at their station, records their health privately, and files a station complaint that reaches their union rep, without their health going with it.">
+<meta property="og:title" content="CrewCare — members keep their health, their union gets what it needs">
+<meta property="og:description" content="Exposure awareness for NYC transit workers. Independent student prototype, not affiliated with the MTA.">
+<meta property="og:image" content="crewcare-poster.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Cg%20transform%3D%27translate%281.5%2C30.5%29%20scale%280.0302%29%27%3E%3Cpath%20fill%3D%27%2308179C%27%20d%3D%27M160-340v-380q0-41%2019-71.5t58.5-50q39.5-19.5%20100-29T480-880q86%200%20146.5%209t99%2028.5Q764-823%20782-793t18%2073v380q0%2059-40.5%2099.5T660-200l60%2060v20h-70l-80-80H390l-80%2080h-70v-20l60-60q-59%200-99.5-40.5T160-340Zm320-480q-120%200-173%2015.5T231-760h501q-18-27-76.5-43.5T480-820ZM220-545h234v-155H220v155Zm440%2060H220h520-80Zm-146-60h226v-155H514v155ZM374-331q16-16%2016-39t-16-39q-16-16-39-16t-39%2016q-16%2016-16%2039t16%2039q16%2016%2039%2016t39-16Zm290%200q16-16%2016-39t-16-39q-16-16-39-16t-39%2016q-16%2016-16%2039t16%2039q16%2016%2039%2016t39-16Zm-364%2076h360q34%200%2057-25t23-60v-145H220v145q0%2035%2023%2060t57%2025Zm180-505h252-501%20249Z%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<style>
+/* ═══ tokens — the MTA brand standard the product encodes (crewcare/src/theme.ts) ═══ */
+:root{
+  --primary:#08179C;
+  --deep:#050E63;
+  --accent:#0062CF;
+  --accent-lift:#1E7BEA;
+  --ground:#F4F6FA;
+  --white:#FFFFFF;
+  --ink:#0B1533;
+  /* Signal Orange — exposure indication only, never decoration */
+  --exposure:#EB6800;
+  /* the same signal, darkened only where it has to carry text on a light ground */
+  --exposure-text:#C25600;
+  /* product grey is #7C858C; darkened so body copy clears AA on light grounds */
+  --grey:#5E6874;
+  --grey-on-blue:#C3CFF5;
+  --line:#DFE5EF;
+  --line-blue:rgba(255,255,255,.16);
+  --titanium:#C8CBD2;
+  --sky:#8FE3FF;
+
+  --wrap:1140px;
+  --r:16px;
+  --ease:cubic-bezier(.16,.84,.34,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  background:var(--white);color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;
+  font-size:17px;line-height:1.6;font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;
+}
+/* browser surfaces themed from the palette */
+::selection{background:rgba(0,98,207,.22);color:var(--ink)}
+html{scrollbar-color:#B9C3D6 var(--ground);caret-color:var(--accent)}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:var(--ground)}
+::-webkit-scrollbar-thumb{background:#B9C3D6;border-radius:99px;border:3px solid var(--ground)}
+::-webkit-scrollbar-thumb:hover{background:#94A1BA}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.on-blue :focus-visible{outline-color:var(--sky)}
+
+a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px}
+a:hover{color:var(--accent-lift)}
+h1,h2,h3{line-height:1.08;letter-spacing:-.035em;font-weight:800}
+h1{font-size:clamp(2.4rem,6.2vw,4.4rem)}
+h2{font-size:clamp(1.9rem,4.2vw,3rem)}
+h3{font-size:clamp(1.3rem,2.6vw,1.9rem);letter-spacing:-.028em;line-height:1.22}
+p{max-width:68ch}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px}
+section{padding:clamp(84px,11vw,148px) 0}
+.lede{font-size:clamp(1.1rem,1.9vw,1.32rem);line-height:1.55;color:var(--grey)}
+.on-blue .lede{color:var(--grey-on-blue)}
+
+/* ═══ top bar ═══ */
+.top{position:sticky;top:0;z-index:60;background:rgba(5,14,99,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-blue)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:62px}
+.brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:1.06rem;letter-spacing:-.03em;color:var(--white);text-decoration:none}
+.brand:hover{color:var(--white)}
+/* placeholder mark — Material Symbols "train", the same Apache-2.0 set the
+   product inlines (crewcare/src/components/materialIcons.ts). SF Symbols is
+   licensed for Apple platforms only, so it cannot ship on a public web page. */
+.mark{display:block;flex:none;line-height:0}
+.mark svg{width:30px;height:30px;fill:currentColor;display:block}
+.mark.lg svg{width:38px;height:38px}
+.top nav{margin-left:auto;display:flex;align-items:center;gap:6px}
+.top nav a{
+  color:var(--grey-on-blue);font-size:.9rem;font-weight:500;text-decoration:none;
+  padding:8px 13px;border-radius:9px;transition:color .18s var(--ease),background .18s var(--ease);
+}
+.top nav a:hover{color:var(--white);background:rgba(255,255,255,.09)}
+.top .ghost{border:1.5px solid rgba(255,255,255,.3);color:var(--white)}
+.top .ghost:hover{border-color:var(--sky);background:transparent;color:var(--sky)}
+@media (max-width:640px){.top nav a.hide-sm{display:none}}
+
+/* ═══ hero ═══ */
+.hero{
+  background:radial-gradient(120% 90% at 18% 6%, #0F26C4 0%, var(--primary) 42%, var(--deep) 100%);
+  color:var(--white);padding:clamp(60px,8vw,104px) 0 clamp(72px,9vw,120px);
+}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.hero h1{max-width:15ch}
+@media (min-width:1040px){
+  .hero .wrap{grid-template-columns:minmax(0,1fr) 520px;gap:64px;align-items:center}
+  .hero-copy{max-width:none}
+  .videowrap{margin-top:0}
+  .hero h1{max-width:13ch}
+}
+.hero .lede{margin-top:26px;max-width:54ch}
+.chip{
+  display:inline-flex;align-items:center;gap:9px;margin-bottom:30px;
+  border:1.5px solid rgba(255,255,255,.28);border-radius:999px;padding:7px 15px 7px 12px;
+  font-size:.82rem;font-weight:600;letter-spacing:.01em;color:#E4EBFF;
+}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--exposure);flex:none}
+.hero-actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:38px}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  border-radius:12px;padding:15px 24px;font-size:1rem;font-weight:700;
+  text-decoration:none;border:1.5px solid transparent;cursor:pointer;
+  transition:transform .18s var(--ease),background .18s var(--ease),border-color .18s var(--ease),color .18s var(--ease);
+}
+.btn svg{width:17px;height:17px;flex:none}
+.btn-primary{background:var(--white);color:var(--primary)}
+.btn-primary:hover{background:var(--sky);color:#062033;transform:translateY(-2px)}
+.btn-ghost{border-color:rgba(255,255,255,.34);color:var(--white)}
+.btn-ghost:hover{border-color:var(--sky);color:var(--sky);transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.btn:hover{transform:none}}
+
+/* ═══ video ═══ */
+.videowrap{margin-top:clamp(44px,6vw,68px)}
+.videoframe{
+  position:relative;max-width:560px;border-radius:22px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 30px 64px rgba(0,0,0,.45);
+  background:var(--deep);
+}
+.videoframe video{display:block;width:100%;height:auto}
+.vcap{margin-top:14px;font-size:.87rem;color:var(--grey-on-blue);max-width:56ch}
+
+/* ═══ statement band ═══ */
+.band{background:var(--ground);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.band .big{
+  font-size:clamp(1.5rem,3.4vw,2.35rem);font-weight:700;letter-spacing:-.032em;
+  line-height:1.24;max-width:24ch;color:var(--ink);
+}
+.band .big em{font-style:normal;color:var(--accent)}
+
+/* ═══ walkthrough steps ═══ */
+.step{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:clamp(40px,6vw,88px);align-items:center}
+.step + .step{margin-top:clamp(92px,11vw,152px)}
+.step.flip{grid-template-columns:420px minmax(0,1fr)}
+.step.flip .step-copy{order:2}
+.step.flip .step-art{order:1}
+.stepno{
+  display:block;font-size:.84rem;font-weight:800;letter-spacing:.06em;
+  color:var(--accent);margin-bottom:18px;font-variant-numeric:tabular-nums;
+}
+.step h3{margin-bottom:18px;max-width:17ch}
+.step p{color:var(--grey);max-width:46ch}
+.step p + p{margin-top:15px}
+@media (max-width:900px){
+  .step,.step.flip{grid-template-columns:1fr;gap:38px}
+  .step.flip .step-copy{order:1}
+  .step.flip .step-art{order:2}
+}
+
+/* ═══ the device — iPhone 16 Pro; the product's PHONE token is 402×874 ═══ */
+.device{
+  position:relative;width:340px;height:712px;margin:0 auto;
+  border-radius:52px;padding:11px;
+  background:linear-gradient(150deg,#E3E6EC 0%,var(--titanium) 34%,#9DA2AC 68%,#D6D9DF 100%);
+  box-shadow:0 30px 64px rgba(0,0,0,.24);
+}
+.screen{position:relative;width:100%;height:100%;border-radius:42px;overflow:hidden;background:#EDF1F7}
+.island{position:absolute;top:13px;left:50%;margin-left:-50px;width:100px;height:29px;border-radius:19px;background:#05070F;z-index:40}
+.bside{position:absolute;background:linear-gradient(90deg,#AEB3BC,#DDE0E6);border-radius:3px}
+.b-act{left:-2px;top:122px;width:3px;height:31px}
+.b-up{left:-2px;top:174px;width:3px;height:54px}
+.b-dn{left:-2px;top:240px;width:3px;height:54px}
+.b-pwr{right:-2px;top:194px;width:3px;height:78px}
+@media (max-width:420px){.device{width:290px;height:608px;border-radius:46px}.screen{border-radius:37px}}
+
+/* lock screen */
+.lockface{position:absolute;inset:0;background:linear-gradient(172deg,#0A1BB4 0%,#05107A 58%,#03093F 100%)}
+.lock-time{position:absolute;top:78px;left:0;right:0;text-align:center;color:#fff;font-size:62px;font-weight:600;letter-spacing:-.035em;line-height:1}
+.notif{
+  position:absolute;top:194px;left:14px;right:14px;
+  background:rgba(255,255,255,.98);border-radius:22px;padding:16px 18px;
+  box-shadow:0 16px 32px rgba(3,10,60,.32);
+}
+.notif-hd{font-size:12px;font-weight:700;color:#41506B;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.notif-body{font-size:19px;line-height:1.38;color:var(--ink);letter-spacing:-.012em}
+.notif-body b{color:var(--exposure);font-weight:700}
+
+/* thread */
+.appface{position:absolute;inset:0;background:#EDF1F7;display:flex;flex-direction:column}
+.app-hd{padding:50px 18px 13px;background:#fff;border-bottom:1px solid #DCE3ED;display:flex;align-items:center;gap:11px}
+.app-hd .dot{width:37px;height:37px;border-radius:50%;background:var(--primary);flex:none}
+.app-hd .nm{font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.015em;line-height:1.2}
+.app-hd .nm s{display:block;text-decoration:none;font-size:13px;font-weight:500;color:var(--grey);margin-top:2px}
+.thread{flex:1;padding:17px 16px;display:flex;flex-direction:column;gap:11px;overflow:hidden}
+.bub{max-width:242px;padding:13px 15px;border-radius:19px;font-size:18px;line-height:1.36;letter-spacing:-.012em}
+.bub.in{background:#fff;color:var(--ink);border-bottom-left-radius:6px;align-self:flex-start}
+.bub.out{background:var(--accent);color:#fff;border-bottom-right-radius:6px;align-self:flex-end}
+.bub.ack{background:#DCF2E6;color:#0A4427;border-bottom-left-radius:6px;align-self:flex-start}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}
+.pill{border:1.6px solid var(--accent);color:var(--accent);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:600}
+.pill.on{background:var(--accent);color:#fff}
+
+/* consent sheet */
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:30;background:#fff;border-radius:26px 26px 0 0;padding:15px 18px 22px;box-shadow:0 -14px 34px rgba(3,10,60,.24)}
+.grab{width:46px;height:5px;border-radius:99px;background:#D3DAE5;margin:0 auto 13px}
+.sheet .sheet-title{font-size:18px;font-weight:700;color:var(--ink);letter-spacing:-.015em}
+.sheet .sp{font-size:13.5px;color:var(--grey);margin-top:5px;line-height:1.4;max-width:none}
+.scope{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #ECF0F6}
+.scope span{font-size:15.5px;color:var(--ink)}
+.sw{width:41px;height:25px;border-radius:99px;background:#2FA855;position:relative;flex:none}
+.sw i{position:absolute;top:3px;right:3px;width:19px;height:19px;border-radius:50%;background:#fff}
+.allow{margin-top:14px;background:var(--accent);color:#fff;border-radius:13px;padding:12px;text-align:center;font-size:16.5px;font-weight:700}
+.sheetback{position:absolute;inset:0;background:#0A1660;z-index:20}
+
+/* ═══ dashboard art ═══ */
+.dash{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:26px 26px 22px;box-shadow:0 18px 44px rgba(0,0,0,.08)}
+.dash-hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.dash-hd b{font-size:1.15rem;font-weight:800;color:var(--primary);letter-spacing:-.028em}
+.dash-hd i{font-style:normal;font-size:.82rem;color:var(--grey)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.kpi{padding:4px 18px;border-left:1px solid var(--line)}
+.kpi:first-child{border-left:0;padding-left:0}
+.kpi b{display:block;font-size:2.2rem;font-weight:800;color:var(--primary);letter-spacing:-.045em;line-height:1}
+.kpi s{display:block;text-decoration:none;margin-top:8px;font-size:.78rem;color:var(--grey);line-height:1.35}
+.kpi.warn b{color:var(--exposure-text)}
+.bars{margin-top:22px;display:grid;gap:9px}
+.bar{display:flex;align-items:center;gap:13px;font-size:.88rem}
+.bar .k{width:150px;color:var(--ink);flex:none}
+.bar .t{display:block;flex:1;height:10px;border-radius:99px;background:#E3E9F2;overflow:hidden}
+.bar .f{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.bar .v{width:44px;text-align:right;font-weight:700;color:var(--primary)}
+.prov{margin-top:20px;padding-top:15px;border-top:1px solid var(--line);font-size:.78rem;color:var(--grey)}
+@media (max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}.bar .k{width:110px}}
+
+/* ═══ honesty table ═══ */
+.honest{display:grid;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:44px;background:var(--white)}
+.hrow{display:grid;grid-template-columns:210px minmax(0,1fr);gap:0;border-top:1px solid var(--line)}
+.hrow:first-child{border-top:0}
+.hrow dt{padding:22px 24px;font-weight:700;font-size:.95rem;display:flex;align-items:flex-start;gap:11px;background:var(--ground)}
+.hrow dt i{width:9px;height:9px;border-radius:50%;flex:none;margin-top:7px}
+.hrow dd{padding:22px 24px;color:var(--grey);font-size:.97rem;line-height:1.55}
+.hrow dd b{color:var(--ink);font-weight:600}
+@media (max-width:720px){.hrow{grid-template-columns:1fr}.hrow dd{padding-top:0;background:var(--white)}.hrow dt{background:var(--white);padding-bottom:10px}}
+
+/* ═══ how it's made ═══ */
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+.pipe div{border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;background:var(--white)}
+.pipe b{display:block;font-size:.78rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+.pipe p{font-size:.92rem;color:var(--grey);line-height:1.5}
+@media (max-width:820px){.pipe{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:460px){.pipe{grid-template-columns:1fr}}
+
+/* ═══ close ═══ */
+.close{background:radial-gradient(120% 120% at 80% 0%, #0F26C4 0%, var(--primary) 46%, var(--deep) 100%);color:#fff;text-align:center}
+.close h2{max-width:20ch;margin:0 auto}
+.close .lede{margin:24px auto 0;max-width:52ch}
+.close .hero-actions{justify-content:center}
+
+footer{background:var(--deep);color:var(--grey-on-blue);padding:44px 0;border-top:1px solid var(--line-blue);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px 34px;align-items:center}
+footer .flock{display:inline-flex;align-items:center;gap:13px}
+footer .flock strong{display:block;color:#fff;font-weight:800;font-size:1.06rem;letter-spacing:-.03em;line-height:1.2}
+footer .flock s{display:block;text-decoration:none;font-size:.86rem;margin-top:2px}
+footer .chip{margin-bottom:0}
+footer a{color:#DCE6FF}
+footer .fine{flex-basis:100%;max-width:70ch;line-height:1.65;margin-top:2px}
+
+/* ═══ the one authored moment: the alert arriving, on load ═══ */
+@media (prefers-reduced-motion:no-preference){
+  .js .hero .notif{animation:drop .82s cubic-bezier(.16,.84,.34,1) .45s both}
+  @keyframes drop{from{transform:translateY(-190px);opacity:0}to{transform:translateY(0);opacity:1}}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');document.body&&0;</script>
+
+<header class="top on-blue">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M160-340v-380q0-41 19-71.5t58.5-50q39.5-19.5 100-29T480-880q86 0 146.5 9t99 28.5Q764-823 782-793t18 73v380q0 59-40.5 99.5T660-200l60 60v20h-70l-80-80H390l-80 80h-70v-20l60-60q-59 0-99.5-40.5T160-340Zm320-480q-120 0-173 15.5T231-760h501q-18-27-76.5-43.5T480-820ZM220-545h234v-155H220v155Zm440 60H220h520-80Zm-146-60h226v-155H514v155ZM374-331q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm290 0q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm-364 76h360q34 0 57-25t23-60v-145H220v145q0 35 23 60t57 25Zm180-505h252-501 249Z"/></svg></span>CrewCare</a>
+    <nav aria-label="Sections">
+      <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#real">What's real</a>
+      <a class="ghost" href="https://github.com/piramsingh/CrewCare">Read the code</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ═══ hero ═══ -->
+  <section class="hero on-blue">
+    <div class="wrap">
+      <div class="hero-copy">
+      <h1>Members keep their health. Their union gets what it needs to act.</h1>
+      <p class="lede">A text before every shift about the air at their station. Health answers that never leave the phone. One report that reaches their union rep.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#how">
+          See how it works
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/piramsingh/CrewCare">
+          Read the code
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3H3.5A1.5 1.5 0 0 0 2 4.5v8A1.5 1.5 0 0 0 3.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-3"/><path d="M9.5 2H14v4.5"/><path d="M7 9 14 2"/></svg>
+        </a>
+      </div>
+      </div>
+
+      <div class="videowrap">
+        <div class="videoframe">
+          <video controls preload="metadata" poster="crewcare-poster.jpg"
+                 width="1080" height="1080"
+                 aria-label="A 23-second walkthrough: a worker receives a shift alert, answers a private health check-in, files a station complaint, and their union rep sees the pattern.">
+            <source src="crewcare-demo.mp4" type="video/mp4">
+            Your browser can't play this video. <a href="crewcare-demo.mp4">Download it instead (2.6 MB).</a>
+          </video>
+        </div>
+        <p class="vcap">23 seconds, with sound. Every screen is the real product and every figure is one the service returns.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ the problem ═══ -->
+  <section class="band">
+    <div class="wrap">
+      <p class="big">A transit worker shouldn't have to hand over their medical history to <em>report a hazard</em>.</p>
+      <p class="lede" style="margin-top:24px;max-width:56ch">No public air quality feed exists for the subway, and no simple way to flag a bad platform. CrewCare does both, and keeps a hard line between them.</p>
+    </div>
+  </section>
+
+  <!-- ═══ walkthrough ═══ -->
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="lede" style="margin-top:18px;max-width:52ch">No app to install. All four steps happen in a text thread.</p>
+
+      <div style="margin-top:clamp(56px,7vw,84px)">
+
+        <!-- 01 -->
+        <div class="step">
+          <div class="step-copy">
+            <span class="stepno">01 — Before the shift</span>
+            <h3>A text 90 minutes before they report.</h3>
+            <p>Where they're working today, and what the air is doing there. The instruction, not the evidence.</p>
+          </div>
+          <div class="step-art">
+            <div class="device">
+              <span class="bside b-act"></span><span class="bside b-up"></span><span class="bside b-dn"></span><span class="bside b-pwr"></span>
+              <div class="screen">
+                <div class="island"></div>
+                <div class="lockface">
+                  <div class="lock-time">6:04</div>
+                  <div class="notif">
+                    <div class="notif-hd">CrewCare · now</div>
+                    <div class="notif-body">Good morning. You're at 42nd Street today and the dust is running <b>hotter than usual</b>. Wear an N95 to stay protected.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 -->
+        <div class="step flip">
+          <div class="step-copy">
+            <span class="stepno">02 — Their own health</span>
+            <h3>Answers stay on the phone.</h3>
+            <p>Symptoms, a doctor's note, Apple Health. Each optional, each granted separately, none of it aggregated and none of it reaching the dashboard.</p>
+          </div>
+          <div class="step-art">
+            <div class="device">
+              <span class="bside b-act"></span><span class="bside b-up"></span><span class="bside b-dn"></span><span class="bside b-pwr"></span>
+              <div class="screen">
+                <div class="island"></div>
+                <div class="appface">
+                  <div class="app-hd"><span class="dot"></span><span class="nm">CrewCare<s>from your local</s></span></div>
+                  <div class="thread">
+                    <div class="bub in">How would you describe your overall health?</div>
+                    <div class="chips"><span class="pill">Good</span><span class="pill on">Fair</span><span class="pill">Prefer not to say</span></div>
+                  </div>
+                </div>
+                <div class="sheet">
+                  <div class="grab"></div>
+                  <div class="sheet-title">Apple Health</div>
+                  <p class="sp">Choose what CrewCare may read. It stays on this phone.</p>
+                  <div class="scope"><span>Respiratory rate</span><span class="sw"><i></i></span></div>
+                  <div class="scope"><span>Blood oxygen</span><span class="sw"><i></i></span></div>
+                  <div class="scope"><span>Resting heart rate</span><span class="sw"><i></i></span></div>
+                  <div class="scope"><span>Sleep</span><span class="sw"><i></i></span></div>
+                  <div class="allow">Allow</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 -->
+        <div class="step">
+          <div class="step-copy">
+            <span class="stepno">03 — The one thing that leaves</span>
+            <h3>A complaint goes to their union rep. Nothing else does.</h3>
+            <p>No category picker. Just the sentence only they can write. The station and date come along on their own.</p>
+          </div>
+          <div class="step-art">
+            <div class="device">
+              <span class="bside b-act"></span><span class="bside b-up"></span><span class="bside b-dn"></span><span class="bside b-pwr"></span>
+              <div class="screen">
+                <div class="island"></div>
+                <div class="appface">
+                  <div class="app-hd"><span class="dot"></span><span class="nm">CrewCare<s>from your local</s></span></div>
+                  <div class="thread">
+                    <div class="bub in">Anything wrong at a station you want on record?</div>
+                    <div class="bub out">Dust by the express track is worse than usual all tour.</div>
+                    <div class="bub ack">Filed. Your local gets the station, the date and what you wrote. Nothing about your health goes with it.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 04 dashboard ═══ -->
+  <section class="band">
+    <div class="wrap">
+      <span class="stepno">04 — What the union sees</span>
+      <h3 style="max-width:22ch;margin-bottom:16px">Patterns across the system. Never a person's health.</h3>
+      <p class="lede" style="max-width:54ch;margin-bottom:8px">Where complaints cluster, and where they agree with the model. Enough to act on a station instead of an anecdote.</p>
+
+      <div class="dash" style="margin-top:38px">
+        <div class="dash-hd"><b>Union rep view</b><i>Last 30 days · all boroughs</i></div>
+        <div class="kpis">
+          <div class="kpi"><b>496</b><s>Stations monitored</s></div>
+          <div class="kpi warn"><b>46</b><s>High-risk platforms</s></div>
+          <div class="kpi"><b>233</b><s>Member reports</s></div>
+          <div class="kpi"><b>87</b><s>Stations with both signals</s></div>
+        </div>
+        <div class="bars">
+          <div class="bar"><span class="k">Dust or air quality</span><span class="t"><span class="f" style="width:30%"></span></span><span class="v">30%</span></div>
+          <div class="bar"><span class="k">Heat</span><span class="t"><span class="f" style="width:30%"></span></span><span class="v">30%</span></div>
+          <div class="bar"><span class="k">Damp or mould</span><span class="t"><span class="f" style="width:12%"></span></span><span class="v">12%</span></div>
+          <div class="bar"><span class="k">Ventilation</span><span class="t"><span class="f" style="width:12%"></span></span><span class="v">12%</span></div>
+        </div>
+        <p class="prov">Outdoor readings live · platform figures modelled · worker reports simulated</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ honesty ═══ -->
+  <section id="real">
+    <div class="wrap">
+      <h2>What's real and what isn't</h2>
+      <p class="lede" style="margin-top:18px;max-width:54ch">Built at a hackathon in a weekend, and labelled this way on every screen, not just here.</p>
+
+      <dl class="honest">
+        <div class="hrow">
+          <dt><i style="background:#2FA855"></i>Real</dt>
+          <dd>The <b>privacy architecture</b> and the <b>physical models</b>. Live outdoor data from Open-Meteo, 496 stations from NYS Open Data, the whole flow running end to end.</dd>
+        </div>
+        <div class="hrow">
+          <dt><i style="background:var(--exposure)"></i>Modelled, not measured</dt>
+          <dd>Every platform figure, estimated from live street-level data because no per-station feed exists. A prior for <b>where to look first</b>, never a clearance that a station is safe.</dd>
+        </div>
+        <div class="hrow">
+          <dt><i style="background:#7C93B8"></i>Simulated</dt>
+          <dd>The 449 complaints in the repository are a <b>synthetic corpus</b>, not real submissions from anyone.</dd>
+        </div>
+        <div class="hrow">
+          <dt><i style="background:#98A2B3"></i>Not built</dt>
+          <dd>Authentication, a live messaging integration, and the Apple Health bridge. The demo simulates all three.</dd>
+        </div>
+      </dl>
+
+      <p class="lede" style="margin-top:40px;max-width:56ch;font-size:1.02rem">Every formula, constant and stated limitation is written up in <a href="https://github.com/piramsingh/CrewCare/blob/main/admin_dashboard/admin_dashboard_model/METHODOLOGY.md">METHODOLOGY.md</a>.</p>
+
+    </div>
+  </section>
+
+  <!-- ═══ close ═══ -->
+  <section class="close on-blue">
+    <div class="wrap">
+      <h2>The boundary is the product, not a setting.</h2>
+      <p class="lede">The code is public, so you don't have to take that on trust.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://github.com/piramsingh/CrewCare">
+          Read the code
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3H3.5A1.5 1.5 0 0 0 2 4.5v8A1.5 1.5 0 0 0 3.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-3"/><path d="M9.5 2H14v4.5"/><path d="M7 9 14 2"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="crewcare-demo.mp4">Download the demo</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="flock"><span class="mark lg" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M160-340v-380q0-41 19-71.5t58.5-50q39.5-19.5 100-29T480-880q86 0 146.5 9t99 28.5Q764-823 782-793t18 73v380q0 59-40.5 99.5T660-200l60 60v20h-70l-80-80H390l-80 80h-70v-20l60-60q-59 0-99.5-40.5T160-340Zm320-480q-120 0-173 15.5T231-760h501q-18-27-76.5-43.5T480-820ZM220-545h234v-155H220v155Zm440 60H220h520-80Zm-146-60h226v-155H514v155ZM374-331q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm290 0q16-16 16-39t-16-39q-16-16-39-16t-39 16q-16 16-16 39t16 39q16 16 39 16t39-16Zm-364 76h360q34 0 57-25t23-60v-145H220v145q0 35 23 60t57 25Zm180-505h252-501 249Z"/></svg></span><span><strong>CrewCare</strong><s>Safer Work. Stronger Transit.</s></span></span>
+    <span class="chip"><i></i>Independent student prototype · Not affiliated with the MTA</span>
+    <p class="fine">Built at a Cornell climate hackathon. No MTA logo or brand asset is used on this page. Environmental figures are modelled rather than measured, and the worker reports are simulated. <a href="https://github.com/piramsingh/CrewCare">Source on GitHub</a>.</p>
+  </div>
+</footer>
+
+</body>
+</html>
