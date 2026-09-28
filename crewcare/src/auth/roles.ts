@@ -3,7 +3,7 @@
  *
  * DEMO ONLY. There is no directory lookup, no credential check, no network
  * call. When this prototype is wired to real auth, replace the body of
- * `resolveRole` with the identity provider's claim and delete `DEMO_HINT`.
+ * `resolveRole` with the identity provider's claim.
  * Nothing else in the app needs to change.
  *
  * The resolution rule is deliberately never surfaced in the UI. The app routes
@@ -29,8 +29,3 @@ export function resolveRole(employeeId: string): Role {
  * these are simply the ones printed on screen so an operator has something to
  * type without being told the rule.
  */
-export const DEMO_WORKER_ID = 'W4271'
-export const DEMO_ADMIN_ID = 'A6035'
-
-/** Operator-facing hint shown under the Continue button. Not the rule itself. */
-export const DEMO_HINT = `Demo: any ID works. Try ${DEMO_WORKER_ID} or ${DEMO_ADMIN_ID}.`

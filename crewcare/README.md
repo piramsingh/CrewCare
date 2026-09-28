@@ -1,9 +1,13 @@
-# CrewCare — demo build
+# CrewCares — demo build
 
-An exposure-awareness prototype for transit workers. One sign-in serves
-everyone: the role is resolved from the account and the app routes itself —
-workers into a mobile messaging portal, administrators into a desktop
-dashboard. The UI never asks which one the person is.
+An exposure-awareness prototype for transit workers. In the product one
+sign-in serves everyone: the role is resolved from the account and the app
+routes itself — workers into a mobile messaging portal, union reps into a
+desktop dashboard — and the UI never asks which one the person is.
+
+The demo has no accounts, so the entry screen picks the path directly.
+`resolveRole` in `src/auth/roles.ts` is where a real identity provider's
+claim would go.
 
 **This is a demo.** There is no backend, no database, no authentication and no
 messaging integration. Every figure is modeled, not measured.
@@ -15,8 +19,8 @@ npm test         # conversation machine, no browser needed
 npm run build
 ```
 
-Sign in with any ID. `W1042` lands on the worker path, `A0117` on the
-dashboard; an empty field lands on the worker path.
+Pick **As a worker** or **As a union rep** on the entry screen. There is no
+sign-in and nothing to type.
 
 ## Running it
 
@@ -27,9 +31,9 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-Sign in with `W4271` (worker) or `A6035` (admin). The worker path — sign-in,
-channel choice, the whole simulated thread — runs entirely in the tab, with
-no server and no network. A test asserts it issues zero off-origin requests.
+Pick either path on the entry screen. The worker path — entry, channel
+choice, the whole simulated thread — runs entirely in the tab, with no server
+and no network. A test asserts it issues zero off-origin requests.
 
 **The admin dashboard needs the model API**, because its figures are real:
 
@@ -63,9 +67,8 @@ These properties are load-bearing, not incidental:
   cookies or network requests on either path. No webfont is linked, which is
   why Inter is used when present locally and falls back to the system stack.
 - **Nothing is logged.** Health answers never reach the console.
-- **Credentials are never held.** Both sign-in fields are uncontrolled. The
-  employee ID is read once to resolve a role and cleared; the password field
-  is never read at all.
+- **No credentials are ever requested.** The demo's entry screen asks for no
+  employee ID and no password; there is nothing to hold, clear or leak.
 - **The assignment is not collected and not editable.** The roster lives in
   the MTA's back end, so today's date, role and station sit in a strip at the
   top of the thread (`ThreadMeta`) rather than in the conversation. There is
@@ -122,7 +125,7 @@ real output.
 
 ### Design notes
 
-`A`-prefixed sign-ins land here. Built to the supplied design: stat row, live
+The union-rep path lands here. Built to the supplied design: stat row, live
 risk map, station detail panel, top-five table, concern breakdown and a
 placeholder for recommendations.
 
@@ -206,7 +209,7 @@ src/
   conversation/script.ts       questions, options, branching — data only
   conversation/machine.ts      pure state machine, no React, testable alone
   data/mockExposure.ts         admin mock data, k-anonymity applied
-  screens/                     SignIn · worker/{ChannelSelect,MessageThread} · admin/*
+  screens/                     Entry · worker/{ChannelSelect,MessageThread} · admin/*
   components/                  Bubble · QuickReplies · TypingIndicator ·
                                ThreadMeta · ProviderMark · Sheet · DemoBanner · DataNotice ·
                                PhoneFrame · AgencyMark

@@ -11,8 +11,8 @@ that goes to their union rep.
 **[Try the working demo](https://crewcares.vercel.app/demo)** ·
 [Watch the video with sound (23s)](docs/crewcares-demo.mp4)
 
-The demo needs no account. On the sign-in screen, **As a worker** opens the
-messaging portal and **As a union rep** opens the dashboard.
+The demo needs no account and no sign-in — pick **As a worker** for the
+messaging portal or **As a union rep** for the dashboard.
 
 ---
 
@@ -145,8 +145,9 @@ npm install
 npm run dev
 ```
 
-Sign in with any ID — `A0117` opens the operations dashboard and `W1042` the
-worker portal — or use the **As a worker** / **As a union rep** buttons.
+Pick **As a worker** or **As a union rep** on the entry screen. There is no
+sign-in: the demo has no accounts, and `resolveRole` in
+`crewcare/src/auth/roles.ts` marks where real authentication would slot in.
 
 The first snapshot scores all 496 stations and takes a few seconds; Open-Meteo
 responses are then cached on disk for three hours.

@@ -5,7 +5,7 @@ import { DemoBanner } from './components/DemoBanner'
 import { SiteNav } from './components/SiteNav'
 import { PhoneFrame } from './components/PhoneFrame'
 import { Dashboard } from './screens/admin/Dashboard'
-import { SignIn } from './screens/SignIn'
+import { Entry } from './screens/Entry'
 import { ChannelSelect } from './screens/worker/ChannelSelect'
 import { MessageThread } from './screens/worker/MessageThread'
 import { channels, type Channel } from './theme'
@@ -49,7 +49,7 @@ export function App() {
   function screenFor() {
     switch (route.screen) {
       case 'signin':
-        return <SignIn key={session} onContinue={signIn} />
+        return <Entry key={session} onContinue={signIn} />
 
       case 'admin':
         return <Dashboard key={session} onSignOut={signOut} />
